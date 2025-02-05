@@ -6,7 +6,7 @@
 # Imports
 
 import os
-import multiprocessing
+import subprocess
 import tkinter
 
 
@@ -33,10 +33,15 @@ def main():
     window.configure(bg=darkest_blue)
     window.title("PwrStat GUI")
 
+    # Dependency Checks
+
+    if not [substring in subprocess.run(["sudo", "apt", "-qq", "list", "python3"], capture_output=True, text=True).stdout for substring in ("python3", "[installed]")]:
+
     # Window Mainloop
 
     window.mainloop()
 
 
 # Run Main Function
+
 main()
