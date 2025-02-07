@@ -5,7 +5,7 @@
 
 # Imports
 
-import os
+from PIL import Image, ImageTk
 import setproctitle
 import subprocess
 import time
@@ -18,7 +18,7 @@ darkest = "#000712"
 dark = "#001429"
 medium = "#001F3D"
 light = "#2C4F70"
-highlight = "#FFC200"
+highlight = "#FFC300"
 off_white = "#C0C0C0"
 medium_grey = "#8C8C8C"
 
@@ -41,7 +41,7 @@ def open_info():
     main_frame.pack_propagate(False)
     main_frame.pack(fill=tkinter.BOTH, expand=True)
     footer_frame = tkinter.Frame(info_window, width=500, height=50, bg=dark)
-    main_frame.pack_propagate(False)
+    footer_frame.pack_propagate(False)
     footer_frame.pack(fill=tkinter.BOTH, expand=True)
     info_window.update()
 
@@ -62,7 +62,6 @@ def open_info():
         side=tkinter.RIGHT,
         padx=10
     )
-
     info_window.update()
 
     # App Info
@@ -88,7 +87,6 @@ def open_info():
         bg=darkest,
         height=5
     ).pack()
-
     info_window.update()
 
     # UPS Info
@@ -106,7 +104,6 @@ def open_info():
         bg=darkest,
         height=2
     ).pack()
-
     info_window.update()
 
     if "Properties" in ups_info_raw:
@@ -119,7 +116,6 @@ def open_info():
         ]
 
         for property in properties:
-
             tkinter.Label(
                 main_frame,
                 text=f"{property[0]}: {property[1]}",
@@ -128,7 +124,6 @@ def open_info():
                 bg=darkest,
                 height=1
             ).pack()
-
             info_window.update()
 
     else:
@@ -144,8 +139,11 @@ def open_info():
             bg=darkest,
             height=7
         ).pack()
-
         info_window.update()
+
+    # Window Mainloop
+
+    info_window.mainloop()
 
 def open_settings():
 
@@ -159,8 +157,10 @@ def open_settings():
     settings_window.title("PwrStat GUI Settings")
 
     main_frame = tkinter.Frame(settings_window, width=500, height=450, bg=darkest)
+    main_frame.pack_propagate(False)
     main_frame.pack(fill=tkinter.BOTH, expand=True)
     footer_frame = tkinter.Frame(settings_window, width=500, height=50, bg=dark)
+    footer_frame.pack_propagate(False)
     footer_frame.pack(fill=tkinter.BOTH, expand=True)
     settings_window.update()
 
@@ -182,6 +182,10 @@ def open_settings():
         padx=10
     )
 
+    # Window Mainloop
+
+    settings_window.mainloop()
+
 
 # Main Function
 
@@ -190,11 +194,12 @@ def main():
     # Window Setup
 
     window = tkinter.Tk()
-    window.geometry("500x500")
-    window.minsize(width=500, height=500)
-    window.maxsize(width=500, height=500)
+    window.geometry("750x500")
+    window.minsize(width=750, height=500)
+    window.maxsize(width=750, height=500)
     window.configure(bg=darkest)
     window.title("PwrStat GUI")
+    window.iconphoto(True, ImageTk.PhotoImage(Image.open("logo.png")))
     window.update()
 
     setproctitle.setproctitle("PwrStat GUI")
@@ -267,9 +272,11 @@ def main():
 
     # Home Screen
 
-    main_frame = tkinter.Frame(window, width=500, height=450, bg=darkest)
+    main_frame = tkinter.Frame(window, width=750, height=450, bg=darkest)
+    main_frame.pack_propagate(False)
     main_frame.pack(fill=tkinter.BOTH, expand=True)
-    footer_frame = tkinter.Frame(window, width=500, height=50, bg=dark)
+    footer_frame = tkinter.Frame(window, width=750, height=50, bg=dark)
+    footer_frame.pack_propagate(False)
     footer_frame.pack(fill=tkinter.BOTH, expand=True)
     window.update()
 
@@ -292,21 +299,6 @@ def main():
     )
     tkinter.Button(
         footer_frame,
-        text="Settings",
-        font=("Garamond", 12),
-        width=10,
-        height=1,
-        fg=light,
-        bg=medium,
-        activeforeground=highlight,
-        activebackground=light,
-        command=open_settings
-    ).pack(
-        side=tkinter.RIGHT,
-        padx=10
-    )
-    tkinter.Button(
-        footer_frame,
         text="Info",
         font=("Garamond", 12),
         width=10,
@@ -316,6 +308,21 @@ def main():
         activeforeground=highlight,
         activebackground=light,
         command=open_info
+    ).pack(
+        side=tkinter.RIGHT,
+        padx=10
+    )
+    tkinter.Button(
+        footer_frame,
+        text="Settings",
+        font=("Garamond", 12),
+        width=10,
+        height=1,
+        fg=light,
+        bg=medium,
+        activeforeground=highlight,
+        activebackground=light,
+        command=open_settings
     ).pack(
         side=tkinter.RIGHT,
         padx=10
