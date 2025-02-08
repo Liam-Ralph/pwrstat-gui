@@ -1,0 +1,4 @@
+color-set: #000712, #001429, #001F3D, #2C4F70, #FFC300
+font: Garamond
+log-path: NOT SET
+sample-interval: 1
