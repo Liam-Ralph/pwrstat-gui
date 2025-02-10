@@ -17,7 +17,30 @@ from tkinter import messagebox
 # Functions
 # Alphabetical order
 
-def choose_color(parent_window, color_type):
+def check_exit_flag():
+
+    # Global Variables
+    
+    global exit_flag
+    global clicked
+
+    # Check Exit Flag
+
+    if exit_flag:
+
+        # Update Clicked
+
+        clicked.set(True)
+
+        exit()
+
+def choose_color(color_type):
+
+    # Window Variables
+
+    global window_home
+    global window_info
+    global window_settings
     
     # Settings Variables
 
@@ -31,7 +54,7 @@ def choose_color(parent_window, color_type):
 
     color_raw = (
         colorchooser.askcolor(
-            parent=parent_window,
+            parent=window_settings,
             title="Choose Color for " + color_type.capitalize()
         )[1]
     )
@@ -41,6 +64,8 @@ def choose_color(parent_window, color_type):
         color_raw = color_raw.upper()
 
         if color_raw not in (darkest, dark, medium, light, highlight):
+
+            # Change Variable and Settings File
 
             with open("data/settings.txt", "r") as file:
                 text = file.read().strip()
@@ -65,10 +90,14 @@ def choose_color(parent_window, color_type):
             with open("data/settings.txt", "w") as file:
                 file.write(text)
 
+            # Reload Windows
+
+            reload_windows()
+
         else:
 
             messagebox.showwarning(
-                parent=parent_window,
+                parent=window_settings,
                 title="Color Choosing Failed",
                 message="Color choosing failed: color already selected."
             )
@@ -76,30 +105,142 @@ def choose_color(parent_window, color_type):
     else:
 
         messagebox.showwarning(
-            parent=parent_window,
+            parent=window_settings,
             title="Color Choosing Failed",
             message="Color choosing failed: operation cancelled."
         )
 
-    # Reopen Settings Window
-
-    parent_window.destroy()
-    open_settings()
-
 def darken_color(color_raw):
+
+    # Convert Hex Code to RGB
+
     rgb = [int(color_raw.replace("#", "")[i:i+2], 16) for i in (0, 2, 4)]
+
+    # Darken RGB
+
     for i in range(3):
         if rgb[i] > 3:
             rgb[i] -= 3
         else:
             rgb[i] = 0
+
+    # Return Darkened RGB as Hex Code
+
     return "#{0:02x}{1:02x}{2:02x}".format(rgb[0], rgb[1], rgb[2])
 
-def open_info():
+def open_window_home(child_type=None):
 
-    # Root Window
+    # Home Window Variable
 
-    global window
+    global window_home
+
+    # Info and Settings Variables
+
+    global name
+    global created
+    global version
+    global updated
+
+    global darkest
+    global dark
+    global medium
+    global light
+    global highlight
+    global font
+    global log_path
+    global sample_interval
+
+    # Exit Flag
+
+    global exit_flag
+
+    exit_flag = True
+
+    # Window Setup
+
+    window_home = tkinter.Tk()
+    window_home.geometry("800x600")
+    window_home.minsize(width=800, height=600)
+    window_home.maxsize(width=800, height=600)
+    window_home.configure(bg=darkest)
+    window_home.title("PwrStat GUI")
+    window_home.protocol("WM_DELETE_WINDOW", check_exit_flag)
+    window_home.update()
+
+    # Home Screen
+
+    frame_main = tkinter.Frame(window_home, width=800, height=550, bg=darkest)
+    frame_main.pack_propagate(False)
+    frame_main.pack(fill=tkinter.BOTH, expand=True)
+    frame_footer = tkinter.Frame(window_home, width=800, height=50, bg=dark)
+    frame_footer.pack_propagate(False)
+    frame_footer.pack(fill=tkinter.BOTH, expand=True)
+    window_home.update()
+
+    # Footer Frame Buttons
+
+    tkinter.Button(
+        frame_footer,
+        text="Close",
+        font=(font, 12),
+        width=10,
+        height=1,
+        fg=light,
+        bg=medium,
+        activeforeground=highlight,
+        activebackground=light,
+        command=window_home.destroy
+    ).pack(
+        side=tkinter.RIGHT,
+        padx=10
+    )
+    tkinter.Button(
+        frame_footer,
+        text="Info",
+        font=(font, 12),
+        width=10,
+        height=1,
+        fg=light,
+        bg=medium,
+        activeforeground=highlight,
+        activebackground=light,
+        command=open_window_info
+    ).pack(
+        side=tkinter.RIGHT,
+        padx=10
+    )
+    tkinter.Button(
+        frame_footer,
+        text="Settings",
+        font=(font, 12),
+        width=10,
+        height=1,
+        fg=light,
+        bg=medium,
+        activeforeground=highlight,
+        activebackground=light,
+        command=open_window_settings
+    ).pack(
+        side=tkinter.RIGHT,
+        padx=10
+    )
+    window_home.update()
+
+    # Open Child Window
+
+    if child_type is not None:
+        open_window_settings()
+
+    # Window Mainloop
+
+    window_home.mainloop()
+
+def open_window_info():
+
+    # Window Variables
+
+    global window_home
+    global window_info
 
     # Info and Settings Variables
 
@@ -117,26 +258,25 @@ def open_info():
 
     # Info Window Setup
 
-    info_window = tkinter.Toplevel(window)
-    info_window.grab_set()
-    info_window.geometry("500x500")
-    info_window.minsize(width=500, height=500)
-    info_window.maxsize(width=500, height=500)
-    info_window.configure(bg=darkest)
-    info_window.title("PwrStat GUI Info")
+    window_info = tkinter.Toplevel(window_home, bg=darkest)
+    window_info.grab_set()
+    window_info.geometry("500x500")
+    window_info.minsize(width=500, height=500)
+    window_info.maxsize(width=500, height=500)
+    window_info.title("PwrStat GUI Info")
 
-    main_frame = tkinter.Frame(info_window, width=500, height=450, bg=darkest)
-    main_frame.pack_propagate(False)
-    main_frame.pack(fill=tkinter.BOTH, expand=True)
-    footer_frame = tkinter.Frame(info_window, width=500, height=50, bg=dark)
-    footer_frame.pack_propagate(False)
-    footer_frame.pack(fill=tkinter.BOTH, expand=True)
-    info_window.update()
+    frame_main = tkinter.Frame(window_info, width=500, height=450, bg=darkest)
+    frame_main.pack_propagate(False)
+    frame_main.pack(fill=tkinter.BOTH, expand=True)
+    frame_footer = tkinter.Frame(window_info, width=500, height=50, bg=dark)
+    frame_footer.pack_propagate(False)
+    frame_footer.pack(fill=tkinter.BOTH, expand=True)
+    window_info.update()
 
     # Close Window Button
 
     tkinter.Button(
-        footer_frame,
+        frame_footer,
         text="Close",
         font=(font, 12),
         width=10,
@@ -145,17 +285,17 @@ def open_info():
         bg=medium,
         activeforeground=highlight,
         activebackground=light,
-        command=info_window.destroy
+        command=window_info.destroy
     ).pack(
         side=tkinter.RIGHT,
         padx=10
     )
-    info_window.update()
+    window_info.update()
 
     # App Info
 
     tkinter.Label(
-        main_frame,
+        frame_main,
         text="PwrStat GUI",
         font=(font, 20),
         fg=highlight,
@@ -163,7 +303,7 @@ def open_info():
         height=2
     ).pack()
     tkinter.Label(
-        main_frame,
+        frame_main,
         text=(
             name + "\n" +
             f"Created {created}\n" +
@@ -175,7 +315,7 @@ def open_info():
         bg=darkest,
         height=5
     ).pack()
-    info_window.update()
+    window_info.update()
 
     # UPS Info
 
@@ -185,14 +325,14 @@ def open_info():
     ).strip()
 
     tkinter.Label(
-        main_frame,
+        frame_main,
         text="UPS Information",
         font=(font, 20),
         fg=highlight,
         bg=darkest,
         height=2
     ).pack()
-    info_window.update()
+    window_info.update()
 
     if "Properties" in ups_info_raw:
 
@@ -205,19 +345,19 @@ def open_info():
 
         for property in properties:
             tkinter.Label(
-                main_frame,
+                frame_main,
                 text=f"{property[0]}: {property[1]}",
                 font=(font, 12),
                 fg=light,
                 bg=darkest,
                 height=1
             ).pack()
-            info_window.update()
+            window_info.update()
 
     else:
 
         tkinter.Label(
-            main_frame,
+            frame_main,
             text=(
                 "No UPS info available,\n" +
                 "check connection using lsusb."
@@ -227,17 +367,18 @@ def open_info():
             bg=darkest,
             height=7
         ).pack()
-        info_window.update()
+        window_info.update()
 
     # Window Mainloop
 
-    info_window.mainloop()
+    window_info.mainloop()
 
-def open_settings():
+def open_window_settings():
 
-    # Root Window
+    # Window Variables
 
-    global window
+    global window_home
+    global window_settings
 
     # Settings Variables
 
@@ -252,26 +393,25 @@ def open_settings():
 
     # Settings Window Setup
 
-    settings_window = tkinter.Toplevel(window)
-    settings_window.grab_set()
-    settings_window.geometry("750x500")
-    settings_window.minsize(width=800, height=600)
-    settings_window.maxsize(width=800, height=600)
-    settings_window.configure(bg=darkest)
-    settings_window.title("PwrStat GUI Settings")
+    window_settings = tkinter.Toplevel(window_home, bg=darkest)
+    window_settings.grab_set()
+    window_settings.geometry("750x500")
+    window_settings.minsize(width=800, height=600)
+    window_settings.maxsize(width=800, height=600)
+    window_settings.title("PwrStat GUI Settings")
 
-    main_frame = tkinter.Frame(settings_window, width=800, height=550, bg=darkest)
-    main_frame.pack_propagate(False)
-    main_frame.pack(fill=tkinter.BOTH, expand=True)
-    footer_frame = tkinter.Frame(settings_window, width=800, height=50, bg=dark)
-    footer_frame.pack_propagate(False)
-    footer_frame.pack(fill=tkinter.BOTH, expand=True)
-    settings_window.update()
+    frame_main = tkinter.Frame(window_settings, width=800, height=550, bg=darkest)
+    frame_main.pack_propagate(False)
+    frame_main.pack(fill=tkinter.BOTH, expand=True)
+    frame_footer = tkinter.Frame(window_settings, width=800, height=50, bg=dark)
+    frame_footer.pack_propagate(False)
+    frame_footer.pack(fill=tkinter.BOTH, expand=True)
+    window_settings.update()
 
     # Footer Frame Buttons
 
     tkinter.Button(
-        footer_frame,
+        frame_footer,
         text="Close",
         font=(font, 12),
         width=10,
@@ -280,14 +420,14 @@ def open_settings():
         bg=medium,
         activeforeground=highlight,
         activebackground=light,
-        command=settings_window.destroy
+        command=window_settings.destroy
     ).pack(
         side=tkinter.RIGHT,
         padx=10
     )
 
     tkinter.Button(
-        footer_frame,
+        frame_footer,
         text="Reset Settings",
         font=(font, 12),
         width=15,
@@ -296,7 +436,7 @@ def open_settings():
         bg=medium,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: reset_settings(settings_window)
+        command=reset_settings
     ).pack(
         side=tkinter.RIGHT,
         padx=10
@@ -305,19 +445,19 @@ def open_settings():
     # Settings Title
 
     tkinter.Label(
-        main_frame,
+        frame_main,
         text="Settings",
         font=(font, 20),
         fg=highlight,
         bg=darkest,
         height=2
     ).pack()
-    settings_window.update()
+    window_settings.update()
 
     # Settings Frames
 
     color_set_frame = tkinter.Frame(
-        main_frame,
+        frame_main,
         width=800, 
         height=50, 
         bg=darken_color(darkest)
@@ -326,7 +466,7 @@ def open_settings():
     color_set_frame.pack(fill=tkinter.BOTH, expand=True) # Actual height > 50
 
     font_frame = tkinter.Frame(
-        main_frame,
+        frame_main,
         width=800,
         height=50,
         bg=darkest
@@ -335,7 +475,7 @@ def open_settings():
     font_frame.pack(fill=tkinter.BOTH, expand=True)
 
     log_path_frame = tkinter.Frame(
-        main_frame,
+        frame_main,
         width=800,
         height=50,
         bg=darken_color(darkest)
@@ -344,7 +484,7 @@ def open_settings():
     log_path_frame.pack(fill=tkinter.BOTH, expand=True)
 
     log_toggle_frame = tkinter.Frame(
-        main_frame,
+        frame_main,
         width=800,
         height=50,
         bg=darkest
@@ -353,7 +493,7 @@ def open_settings():
     log_toggle_frame.pack(fill=tkinter.BOTH, expand=True)
 
     sample_interval_frame = tkinter.Frame(
-        main_frame,
+        frame_main,
         width=800,
         height=50,
         bg=darken_color(darkest)
@@ -361,7 +501,7 @@ def open_settings():
     sample_interval_frame.pack_propagate(False)
     sample_interval_frame.pack(fill=tkinter.BOTH, expand=True)
 
-    settings_window.update()
+    window_settings.update()
 
     # Color Set Setting
 
@@ -371,7 +511,7 @@ def open_settings():
         font=(font, 14),
         fg=highlight,
         bg=darken_color(darkest),
-        width=8,
+        width=10,
         height=1
     ).pack(
         side=tkinter.LEFT,
@@ -392,7 +532,7 @@ def open_settings():
         bg=darkest,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color(settings_window, "darkest")
+        command=lambda: choose_color("darkest")
     ).pack(
         side=tkinter.LEFT,
         padx=5
@@ -412,7 +552,7 @@ def open_settings():
         bg=dark,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color(settings_window, "dark")
+        command=lambda: choose_color("dark")
     ).pack(
         side=tkinter.LEFT,
         padx=5
@@ -432,7 +572,7 @@ def open_settings():
         bg=medium,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color(settings_window, "medium")
+        command=lambda: choose_color("medium")
     ).pack(
         side=tkinter.LEFT,
         padx=5
@@ -452,7 +592,7 @@ def open_settings():
         bg=light,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color(settings_window, "light")
+        command=lambda: choose_color("light")
     ).pack(
         side=tkinter.LEFT,
         padx=5
@@ -472,19 +612,81 @@ def open_settings():
         bg=highlight,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color(settings_window, "highlight")
+        command=lambda: choose_color("highlight")
     ).pack(
         side=tkinter.LEFT,
         padx=5
     )
 
-    settings_window.update()
+    window_settings.update()
+
+    # Font Setting
+
+    tkinter.Label(
+        font_frame,
+        text="Font",
+        font=(font, 14),
+        fg=highlight,
+        bg=darkest,
+        width=10,
+        height=1
+    ).pack(
+        side=tkinter.LEFT,
+        padx=5
+    )
+
+    clicked = tkinter.StringVar()
+    clicked.set(font)
+    tkinter.OptionMenu(
+        font_frame,
+        clicked,
+        *[
+            "Garamond",
+            "Segoe UI",
+            "Times New Roman",
+            "Arial",
+            "Verdana",
+            "Helvetica",
+            "Ubuntu",
+            "Noto Sans",
+            "Comic Sans",
+            "Courier New",
+            "Hack",
+            "Monospace Regular 12",
+        ],
+        command=update_font
+    ).pack(
+        side=tkinter.LEFT,
+        padx=5
+    )
+
+    window_settings.update()
 
     # Window Mainloop
 
-    settings_window.mainloop()
+    window_settings.mainloop()
 
-def reset_settings(settings_window):
+def reload_windows():
+
+    # Home Window Variable
+
+    global window_home
+
+    # Exit Flag
+
+    global exit_flag
+
+    exit_flag = False
+
+    # Close Home Window
+
+    window_home.destroy()
+
+    # Reopen Home Window
+    
+    open_window_home("settings")
+
+def reset_settings():
     
     # Global Variables
 
@@ -518,19 +720,34 @@ def reset_settings(settings_window):
             sample-interval: 1""".replace("    ", "")
         )
 
-    # Reopen Settings Window
+    # Reload Windows
 
-    settings_window.destroy()
-    open_settings()
+    reload_windows()
+
+def update_font(new_font):
+
+    # Settings Variable
+
+    global font
+
+    # Change Font Variable and Settings File
+
+    with open("data/settings.txt", "r") as file:
+        text = file.read().strip().replace(font, new_font)
+
+    font = new_font
+
+    with open("data/settings.txt", "w") as file:
+        file.write(text)
+
+    # Reload Windows
+
+    reload_windows()
 
 
 # Main Function
 
 def main():
-
-    # Root Window
-
-    global window
 
     # Info and Settings Variables
 
@@ -547,6 +764,18 @@ def main():
     global font
     global log_path
     global sample_interval
+
+    # Button Clicked
+
+    global clicked
+
+    # Exit Flag
+
+    global exit_flag
+
+    exit_flag = True
+
+    # Info and Settings Reading
 
     with open("data/info.txt", "r") as file:
         info_raw = file.read().split("\n")
@@ -565,26 +794,26 @@ def main():
     highlight = color_set[4]
     font = settings_raw[1].replace("font: ", "")
     log_path = settings_raw[2].replace("log-path: ", "")
-    font = int(settings_raw[3].replace("sample-interval: ", ""))
+    sample_interval = int(settings_raw[3].replace("sample-interval: ", ""))
 
     # Window Setup
 
-    window = tkinter.Tk()
-    window.protocol("WM_DELETE_WINDOW", exit)
-    window.geometry("800x600")
-    window.minsize(width=800, height=600)
-    window.maxsize(width=800, height=600)
-    window.configure(bg=darkest)
-    window.title("PwrStat GUI")
-    window.iconphoto(True, ImageTk.PhotoImage(Image.open("images/logo.png")))
-    window.update()
+    window_start = tkinter.Tk()
+    window_start.geometry("800x600")
+    window_start.minsize(width=800, height=600)
+    window_start.maxsize(width=800, height=600)
+    window_start.configure(bg=darkest)
+    window_start.title("PwrStat GUI")
+    window_start.protocol("WM_DELETE_WINDOW", check_exit_flag)
+    window_start.iconphoto(True, ImageTk.PhotoImage(Image.open("images/logo.png")))
+    window_start.update()
 
     setproctitle.setproctitle("pwrstat-gui")
 
     # Starting Screen
 
     tkinter.Label(
-        window,
+        window_start,
         text="PwrStat GUI",
         font=(font, 20),
         fg=highlight,
@@ -592,7 +821,7 @@ def main():
         height=2
     ).pack()
     tkinter.Label(
-        window,
+        window_start,
         text=(
             "A graphical user interface for PowerPanel on Linux.\n" +
             "Created by Liam Ralph.\n" +
@@ -603,14 +832,14 @@ def main():
         bg=darkest,
         height=4
     ).pack()
-    window.update()
+    window_start.update()
 
     # Dependency Check
 
     if (not "powerpanel" in
     subprocess.run(["dpkg-query", "--list", "powerpanel"], capture_output=True, text=True).stdout):
         tkinter.Label(
-            window,
+            window_start,
             text=(
                 "PowerPanel Linux must be installed.\n" +
                 "App shutdown in 5 seconds."
@@ -620,16 +849,16 @@ def main():
             bg=darkest,
             height=2
         ).pack()
-        window.update()
+        window_start.update()
         time.sleep(5)
-        window.destroy()
+        window_start.destroy()
         exit()
 
     # Clear Window
 
     clicked = tkinter.BooleanVar()
     button = tkinter.Button(
-        window,
+        window_start,
         text="Start",
         font=(font, 12),
         width=10,
@@ -641,74 +870,15 @@ def main():
         command=lambda: clicked.set(True)
     )
     button.pack()
-    window.update()
+    window_start.update()
 
     button.wait_variable(clicked)
-    for child in window.winfo_children():
-        child.destroy()
+    exit_flag = False
+    window_start.destroy()
 
-    # Home Screen
+    # Home Window
 
-    main_frame = tkinter.Frame(window, width=800, height=550, bg=darkest)
-    main_frame.pack_propagate(False)
-    main_frame.pack(fill=tkinter.BOTH, expand=True)
-    footer_frame = tkinter.Frame(window, width=800, height=50, bg=dark)
-    footer_frame.pack_propagate(False)
-    footer_frame.pack(fill=tkinter.BOTH, expand=True)
-    window.update()
-
-    # Footer Frame Buttons
-
-    tkinter.Button(
-        footer_frame,
-        text="Close",
-        font=(font, 12),
-        width=10,
-        height=1,
-        fg=light,
-        bg=medium,
-        activeforeground=highlight,
-        activebackground=light,
-        command=window.destroy
-    ).pack(
-        side=tkinter.RIGHT,
-        padx=10
-    )
-    tkinter.Button(
-        footer_frame,
-        text="Info",
-        font=(font, 12),
-        width=10,
-        height=1,
-        fg=light,
-        bg=medium,
-        activeforeground=highlight,
-        activebackground=light,
-        command=open_info
-    ).pack(
-        side=tkinter.RIGHT,
-        padx=10
-    )
-    tkinter.Button(
-        footer_frame,
-        text="Settings",
-        font=(font, 12),
-        width=10,
-        height=1,
-        fg=light,
-        bg=medium,
-        activeforeground=highlight,
-        activebackground=light,
-        command=open_settings
-    ).pack(
-        side=tkinter.RIGHT,
-        padx=10
-    )
-    window.update()
-
-    # Window Mainloop
-
-    window.mainloop()
+    open_window_home()
 
 
 # Run Main Function
