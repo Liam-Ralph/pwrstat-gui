@@ -17,24 +17,27 @@ from tkinter import messagebox
 # Functions
 # Alphabetical order
 
-def check_exit_flag():
+def change_font(new_font):
 
-    # Global Variables
-    
-    global exit_flag
-    global clicked
+    # Settings Variable
 
-    # Check Exit Flag
+    global font
 
-    if exit_flag:
+    # Change Font Variable and Settings File
 
-        # Update Clicked
+    with open("data/settings.txt", "r") as file:
+        text = file.read().strip().replace(font, new_font)
 
-        clicked.set(True)
+    font = new_font
 
-        exit()
+    with open("data/settings.txt", "w") as file:
+        file.write(text)
 
-def choose_color(color_type):
+    # Reload Windows
+
+    reload_windows()
+
+def change_color(color_type):
 
     # Window Variables
 
@@ -109,6 +112,48 @@ def choose_color(color_type):
             title="Color Choosing Failed",
             message="Color choosing failed: operation cancelled."
         )
+
+def change_sample_interval(new_sample_interval):
+
+    # Settings Variable
+
+    global sample_interval
+
+    # Change Font Variable and Settings File
+
+    with open("data/settings.txt", "r") as file:
+        text = (
+            file.read().strip().replace(
+                "sample-interval: " + str(sample_interval),
+                "sample-interval: " + str(new_sample_interval)
+            ) # '"sample-interval: " +' needed to prevent replacing an integer from color-set
+        )
+
+    sample_interval = new_sample_interval
+
+    with open("data/settings.txt", "w") as file:
+        file.write(text)
+
+    # Reload Windows
+
+    reload_windows()
+
+def check_exit_flag():
+
+    # Global Variables
+    
+    global exit_flag
+    global clicked
+
+    # Check Exit Flag
+
+    if exit_flag:
+
+        # Update Clicked
+
+        clicked.set(True)
+
+        exit()
 
 def darken_color(color_raw):
 
@@ -511,7 +556,7 @@ def open_window_settings():
         font=(font, 14),
         fg=highlight,
         bg=darken_color(darkest),
-        width=10,
+        width=11,
         height=1
     ).pack(
         side=tkinter.LEFT,
@@ -532,7 +577,7 @@ def open_window_settings():
         bg=darkest,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color("darkest")
+        command=lambda: change_color("darkest")
     ).pack(
         side=tkinter.LEFT,
         padx=5
@@ -552,7 +597,7 @@ def open_window_settings():
         bg=dark,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color("dark")
+        command=lambda: change_color("dark")
     ).pack(
         side=tkinter.LEFT,
         padx=5
@@ -572,7 +617,7 @@ def open_window_settings():
         bg=medium,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color("medium")
+        command=lambda: change_color("medium")
     ).pack(
         side=tkinter.LEFT,
         padx=5
@@ -592,7 +637,7 @@ def open_window_settings():
         bg=light,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color("light")
+        command=lambda: change_color("light")
     ).pack(
         side=tkinter.LEFT,
         padx=5
@@ -612,7 +657,7 @@ def open_window_settings():
         bg=highlight,
         activeforeground=highlight,
         activebackground=light,
-        command=lambda: choose_color("highlight")
+        command=lambda: change_color("highlight")
     ).pack(
         side=tkinter.LEFT,
         padx=5
@@ -628,18 +673,18 @@ def open_window_settings():
         font=(font, 14),
         fg=highlight,
         bg=darkest,
-        width=10,
+        width=6,
         height=1
     ).pack(
         side=tkinter.LEFT,
         padx=5
     )
 
-    clicked = tkinter.StringVar()
-    clicked.set(font)
+    font_choice = tkinter.StringVar()
+    font_choice.set(font)
     tkinter.OptionMenu(
         font_frame,
-        clicked,
+        font_choice,
         *[
             "Garamond",
             "Segoe UI",
@@ -654,10 +699,61 @@ def open_window_settings():
             "Hack",
             "Monospace Regular 12",
         ],
-        command=update_font
+        command=change_font
     ).pack(
         side=tkinter.LEFT,
         padx=5
+    )
+
+    window_settings.update()
+
+    # Sample Interval Setting
+
+    sample_interval_choice = tkinter.DoubleVar()
+    sample_interval_choice.set(sample_interval)
+    tkinter.Label(
+        sample_interval_frame,
+        text="Sample Interval",
+        font=(font, 14),
+        fg=highlight,
+        bg=darken_color(darkest),
+        width=17,
+        height=1
+    ).pack(
+        side=tkinter.LEFT,
+        padx=5
+    )
+
+    tkinter.Scale(
+        sample_interval_frame,
+        variable=sample_interval_choice,
+        from_=1,
+        to=10,
+        resolution=0.5,
+        orient=tkinter.HORIZONTAL,
+        fg=highlight,
+        bg=medium,
+        troughcolor=dark,
+        activebackground=light
+    ).pack(
+        side=tkinter.LEFT,
+        padx=5
+    )
+
+    tkinter.Button(
+        sample_interval_frame,
+        text="Update",
+        font=(font, 10),
+        width=8,
+        height=1,
+        fg=light,
+        bg=medium,
+        activeforeground=highlight,
+        activebackground=light,
+        command=lambda: change_sample_interval(sample_interval_choice.get())
+    ).pack(
+        side=tkinter.LEFT,
+        padx=15
     )
 
     window_settings.update()
@@ -708,7 +804,7 @@ def reset_settings():
     highlight = "#FFC300"
     font = "Garamond"
     log_path = "NOT SET"
-    sample_interval = 1
+    sample_interval = 1.0
 
     # Resetting Settings File
 
@@ -717,28 +813,8 @@ def reset_settings():
             """color-set: #000712, #001429, #001F3D, #2C4F70, #FFC300
             font: Garamond
             log-path: NOT SET
-            sample-interval: 1""".replace("    ", "")
+            sample-interval: 1.0""".replace("    ", "")
         )
-
-    # Reload Windows
-
-    reload_windows()
-
-def update_font(new_font):
-
-    # Settings Variable
-
-    global font
-
-    # Change Font Variable and Settings File
-
-    with open("data/settings.txt", "r") as file:
-        text = file.read().strip().replace(font, new_font)
-
-    font = new_font
-
-    with open("data/settings.txt", "w") as file:
-        file.write(text)
 
     # Reload Windows
 
@@ -794,7 +870,7 @@ def main():
     highlight = color_set[4]
     font = settings_raw[1].replace("font: ", "")
     log_path = settings_raw[2].replace("log-path: ", "")
-    sample_interval = int(settings_raw[3].replace("sample-interval: ", ""))
+    sample_interval = float(settings_raw[3].replace("sample-interval: ", ""))
 
     # Window Setup
 
