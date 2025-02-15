@@ -14,6 +14,15 @@ from tkinter import colorchooser
 from tkinter import messagebox
 
 
+# Variables
+
+global PATH_DATA
+PATH_DATA = "data"
+
+global PATH_IMAGES
+PATH_IMAGES = "images"
+
+
 # Functions
 # Alphabetical order
 
@@ -25,12 +34,12 @@ def change_font(new_font):
 
     # Change Font Variable and Settings File
 
-    with open("data/settings.txt", "r") as file:
+    with open(PATH_DATA+"/settings.txt", "r") as file:
         text = file.read().strip().replace(font, new_font)
 
     font = new_font
 
-    with open("data/settings.txt", "w") as file:
+    with open(PATH_DATA+"/settings.txt", "w") as file:
         file.write(text)
 
     # Reload Windows
@@ -70,7 +79,7 @@ def change_color(color_type):
 
             # Change Variable and Settings File
 
-            with open("data/settings.txt", "r") as file:
+            with open(PATH_DATA+"/settings.txt", "r") as file:
                 text = file.read().strip()
 
             match (color_type):
@@ -90,7 +99,7 @@ def change_color(color_type):
                     text = text.replace(highlight, color_raw, 1)
                     highlight = color_raw
 
-            with open("data/settings.txt", "w") as file:
+            with open(PATH_DATA+"/settings.txt", "w") as file:
                 file.write(text)
 
             # Reload Windows
@@ -121,7 +130,7 @@ def change_sample_interval(new_sample_interval):
 
     # Change Font Variable and Settings File
 
-    with open("data/settings.txt", "r") as file:
+    with open(PATH_DATA+"/settings.txt", "r") as file:
         text = (
             file.read().strip().replace(
                 "sample-interval: " + str(sample_interval),
@@ -131,7 +140,7 @@ def change_sample_interval(new_sample_interval):
 
     sample_interval = new_sample_interval
 
-    with open("data/settings.txt", "w") as file:
+    with open(PATH_DATA+"/settings.txt", "w") as file:
         file.write(text)
 
     # Reload Windows
@@ -808,7 +817,7 @@ def reset_settings():
 
     # Resetting Settings File
 
-    with open("data/settings.txt", "w") as file:
+    with open(PATH_DATA+"/settings.txt", "w") as file:
         file.write(
             """color-set: #000712, #001429, #001F3D, #2C4F70, #FFC300
             font: Garamond
@@ -853,14 +862,14 @@ def main():
 
     # Info and Settings Reading
 
-    with open("data/info.txt", "r") as file:
+    with open(PATH_DATA+"/info.txt", "r") as file:
         info_raw = file.read().split("\n")
     name = info_raw[0].replace("Name: ", "")
     created = info_raw[1].replace("Created: ", "")
     version = info_raw[2].replace("Version: ", "")
     updated = info_raw[3].replace("Updated: ", "")
 
-    with open("data/settings.txt", "r") as file:
+    with open(PATH_DATA+"/settings.txt", "r") as file:
         settings_raw = file.read().split("\n")
     color_set = settings_raw[0].replace("color-set: ", "").split(", ")
     darkest = color_set[0]
@@ -881,7 +890,7 @@ def main():
     window_start.configure(bg=darkest)
     window_start.title("PwrStat GUI")
     window_start.protocol("WM_DELETE_WINDOW", check_exit_flag)
-    window_start.iconphoto(True, ImageTk.PhotoImage(Image.open("images/logo.png")))
+    window_start.iconphoto(True, ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/logo.png")))
     window_start.update()
 
     setproctitle.setproctitle("pwrstat-gui")
