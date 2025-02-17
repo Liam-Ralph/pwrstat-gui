@@ -53,7 +53,7 @@ def change_color(color_type):
     global window_home
     global window_info
     global window_settings
-    
+
     # Settings Variables
 
     global darkest
@@ -150,7 +150,7 @@ def change_sample_interval(new_sample_interval):
 def check_exit_flag():
 
     # Global Variables
-    
+
     global exit_flag
     global clicked
 
@@ -182,7 +182,7 @@ def darken_color(color_raw):
 
     return "#{0:02x}{1:02x}{2:02x}".format(rgb[0], rgb[1], rgb[2])
 
-def open_window_home(child_type=None):
+def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     # Home Window Variable
 
@@ -213,9 +213,8 @@ def open_window_home(child_type=None):
     # Window Setup
 
     window_home = tkinter.Tk()
-    window_home.geometry("800x600")
-    window_home.minsize(width=800, height=600)
-    window_home.maxsize(width=800, height=600)
+    window_home.geometry(f"{window_dimensions[0]}x{window_dimensions[1]}")
+    window_home.minsize(width=window_dimensions[0], height=window_dimensions[1])
     window_home.configure(bg=darkest)
     window_home.title("PwrStat GUI")
     window_home.protocol("WM_DELETE_WINDOW", check_exit_flag)
@@ -223,12 +222,22 @@ def open_window_home(child_type=None):
 
     # Home Screen
 
-    frame_main = tkinter.Frame(window_home, width=800, height=550, bg=darkest)
+    frame_main = tkinter.Frame(
+        window_home,
+        width=window_dimensions[0],
+        height=window_dimensions[1] - 100,
+        bg=darkest
+    )
     frame_main.pack_propagate(False)
     frame_main.pack(fill=tkinter.BOTH, expand=True)
-    frame_footer = tkinter.Frame(window_home, width=800, height=50, bg=dark)
+    frame_footer = tkinter.Frame(
+        window_home,
+        width=window_dimensions[0],
+        height=100,
+        bg=dark
+    )
     frame_footer.pack_propagate(False)
-    frame_footer.pack(fill=tkinter.BOTH, expand=True)
+    frame_footer.pack(fill=tkinter.BOTH, expand=False)
     window_home.update()
 
     # Footer Frame Buttons
@@ -282,14 +291,14 @@ def open_window_home(child_type=None):
 
     # Open Child Window
 
-    if child_type is not None:
-        open_window_settings()
+    if settings_dimensions is not None:
+        open_window_settings(settings_dimensions)
 
     # Window Mainloop
 
     window_home.mainloop()
 
-def open_window_info():
+def open_window_info(window_dimensions=[500, 500]):
 
     # Window Variables
 
@@ -314,17 +323,26 @@ def open_window_info():
 
     window_info = tkinter.Toplevel(window_home, bg=darkest)
     window_info.grab_set()
-    window_info.geometry("500x500")
-    window_info.minsize(width=500, height=500)
-    window_info.maxsize(width=500, height=500)
+    window_info.geometry(f"{window_dimensions[0]}x{window_dimensions[1]}")
+    window_info.minsize(width=window_dimensions[0], height=window_dimensions[1])
     window_info.title("PwrStat GUI Info")
 
-    frame_main = tkinter.Frame(window_info, width=500, height=450, bg=darkest)
+    frame_main = tkinter.Frame(
+        window_info,
+        width=window_dimensions[0],
+        height=window_dimensions[1] - 100,
+        bg=darkest
+    )
     frame_main.pack_propagate(False)
     frame_main.pack(fill=tkinter.BOTH, expand=True)
-    frame_footer = tkinter.Frame(window_info, width=500, height=50, bg=dark)
+    frame_footer = tkinter.Frame(
+        window_info,
+        width=window_dimensions[0],
+        height=100,
+        bg=dark
+    )
     frame_footer.pack_propagate(False)
-    frame_footer.pack(fill=tkinter.BOTH, expand=True)
+    frame_footer.pack(fill=tkinter.BOTH, expand=False)
     window_info.update()
 
     # Close Window Button
@@ -427,7 +445,7 @@ def open_window_info():
 
     window_info.mainloop()
 
-def open_window_settings():
+def open_window_settings(window_dimensions=[800, 600]):
 
     # Window Variables
 
@@ -449,17 +467,17 @@ def open_window_settings():
 
     window_settings = tkinter.Toplevel(window_home, bg=darkest)
     window_settings.grab_set()
-    window_settings.geometry("750x500")
+    window_settings.geometry(f"{window_dimensions[0]}x{window_dimensions[1]}")
+    window_settings.minsize(width=window_dimensions[0], height=window_dimensions[1])
     window_settings.minsize(width=800, height=600)
-    window_settings.maxsize(width=800, height=600)
     window_settings.title("PwrStat GUI Settings")
 
     frame_main = tkinter.Frame(window_settings, width=800, height=550, bg=darkest)
     frame_main.pack_propagate(False)
     frame_main.pack(fill=tkinter.BOTH, expand=True)
-    frame_footer = tkinter.Frame(window_settings, width=800, height=50, bg=dark)
+    frame_footer = tkinter.Frame(window_settings, width=800, height=100, bg=dark)
     frame_footer.pack_propagate(False)
-    frame_footer.pack(fill=tkinter.BOTH, expand=True)
+    frame_footer.pack(fill=tkinter.BOTH, expand=False)
     window_settings.update()
 
     # Footer Frame Buttons
@@ -512,8 +530,8 @@ def open_window_settings():
 
     color_set_frame = tkinter.Frame(
         frame_main,
-        width=800, 
-        height=50, 
+        width=800,
+        height=50,
         bg=darken_color(darkest)
     )
     color_set_frame.pack_propagate(False)
@@ -773,9 +791,10 @@ def open_window_settings():
 
 def reload_windows():
 
-    # Home Window Variable
+    # Window Variables
 
     global window_home
+    global window_settings
 
     # Exit Flag
 
@@ -783,16 +802,30 @@ def reload_windows():
 
     exit_flag = False
 
+    # Get Current Window Heights
+
+    current_home_dimensions = [
+        window_home.winfo_width(),
+        window_home.winfo_height()
+    ]
+    current_settings_dimensions = [
+        window_home.winfo_width(),
+        window_home.winfo_height()
+    ]
+
     # Close Home Window
 
     window_home.destroy()
 
     # Reopen Home Window
-    
-    open_window_home("settings")
+
+    open_window_home(
+        window_dimensions=current_home_dimensions,
+        settings_dimensions=current_settings_dimensions
+    )
 
 def reset_settings():
-    
+
     # Global Variables
 
     global darkest
@@ -886,7 +919,6 @@ def main():
     window_start = tkinter.Tk()
     window_start.geometry("800x600")
     window_start.minsize(width=800, height=600)
-    window_start.maxsize(width=800, height=600)
     window_start.configure(bg=darkest)
     window_start.title("PwrStat GUI")
     window_start.protocol("WM_DELETE_WINDOW", check_exit_flag)
