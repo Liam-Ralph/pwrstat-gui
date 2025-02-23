@@ -5,9 +5,11 @@
 
 # Imports
 
+import os
 from PIL import Image, ImageTk
 import setproctitle
 import subprocess
+import sys
 import time
 import tkinter
 from tkinter import colorchooser
@@ -19,8 +21,8 @@ from tkinter import messagebox
 global PATH_DATA
 global PATH_IMAGES
 
-PATH_DATA = "data"
-PATH_IMAGES = "images"
+PATH_DATA = "/home/liam-ralph/Files/Projects/PwrStat GUI/data"
+PATH_IMAGES = "/home/liam-ralph/Files/Projects/PwrStat GUI/images"
 
 
 # Functions
@@ -221,6 +223,10 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     window_home.configure(bg=darkest)
     window_home.title("PwrStat GUI")
     window_home.protocol("WM_DELETE_WINDOW", check_exit_flag)
+    window_home.iconphoto(
+        True,
+        ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/logo.png"))
+    )
     window_home.update()
 
     # Home Screen
@@ -228,7 +234,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     frame_main = tkinter.Frame(
         window_home,
         width = window_width,
-        height = window_height - 100,
+        height = window_height - 60,
         bg = darkest
     )
     frame_main.pack_propagate(False)
@@ -236,7 +242,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     frame_footer = tkinter.Frame(
         window_home,
         width = window_width,
-        height = 100,
+        height = 60,
         bg = dark
     )
     frame_footer.pack_propagate(False)
@@ -332,11 +338,15 @@ def open_window_info(window_dimensions=[500, 500]):
     window_info.geometry(f"{window_width}x{window_height}")
     window_info.minsize(width=window_width, height=window_height)
     window_info.title("PwrStat GUI Info")
+    window_info.iconphoto(
+        True,
+        ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/info.png"))
+    )
 
     frame_main = tkinter.Frame(
         window_info,
         width = window_width,
-        height = window_height - 100,
+        height = window_height - 60,
         bg = darkest
     )
     frame_main.pack_propagate(False)
@@ -344,7 +354,7 @@ def open_window_info(window_dimensions=[500, 500]):
     frame_footer = tkinter.Frame(
         window_info,
         width = window_width,
-        height = 100,
+        height = 60,
         bg = dark
     )
     frame_footer.pack_propagate(False)
@@ -399,7 +409,7 @@ def open_window_info(window_dimensions=[500, 500]):
 
     ups_info_raw = (
         subprocess.run(
-            ["sudo", "pwrstat", "-status"],
+            ["pwrstat", "-status"],
             capture_output = True,
             text = True
         ).stdout
@@ -483,18 +493,22 @@ def open_window_settings(window_dimensions=[800, 600]):
     window_settings.minsize(width=window_width, height=window_height)
     window_settings.minsize(width=window_width, height=window_height)
     window_settings.title("PwrStat GUI Settings")
+    window_settings.iconphoto(
+        True,
+        ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/settings.png"))
+    )
 
     frame_main = tkinter.Frame(
         window_settings,
         width = window_width,
-        height = window_height - 100,
+        height = window_height - 60,
         bg = darkest
     )
     frame_main.pack_propagate(False)
     frame_main.pack(fill=tkinter.BOTH, expand=True)
     frame_footer = tkinter.Frame(window_settings,
         width = window_width,
-        height = 100,
+        height = 60,
         bg = dark
     )
     frame_footer.pack_propagate(False)
@@ -830,8 +844,8 @@ def reload_windows():
         window_home.winfo_height()
     ]
     current_settings_dimensions = [
-        window_home.winfo_width(),
-        window_home.winfo_height()
+        window_settings.winfo_width(),
+        window_settings.winfo_height()
     ]
 
     # Close Home Window
@@ -914,6 +928,23 @@ def main():
 
     exit_flag = True
 
+    # Getting Root Privileges
+
+    if os.geteuid() != 0:
+
+        # Get DISPLAY and XAUTHORITY if they exist
+        env = os.environ.copy()
+        display = env.get("DISPLAY", ":0")  # Default to :0 if missing
+        xauthority = env.get("XAUTHORITY", "/tmp/xauth_XIOaut")
+
+        # Relaunch with pkexec and pass the environment variables
+        command = [
+            "pkexec", 
+            "env", f"DISPLAY={display}", f"XAUTHORITY={xauthority}",
+            sys.executable
+        ] + sys.argv
+        os.execvp("pkexec", command)
+
     # Info and Settings Reading
 
     with open(PATH_DATA+"/info.txt", "r") as file:
@@ -943,7 +974,10 @@ def main():
     window_start.configure(bg=darkest)
     window_start.title("PwrStat GUI")
     window_start.protocol("WM_DELETE_WINDOW", check_exit_flag)
-    window_start.iconphoto(True, ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/logo.png")))
+    window_start.iconphoto(
+        False,
+        ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/logo.png"))
+    )
     window_start.update()
 
     setproctitle.setproctitle("pwrstat-gui")
