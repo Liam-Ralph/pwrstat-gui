@@ -2,6 +2,11 @@
 
 <br/>
 
+Installation files may eventually be moved,
+as Github is not normally used to distribute executables.
+
+<br/>
+
 ## 1. Debian
 
 Supported Versions <br>
@@ -13,9 +18,9 @@ Assumed:
 
 ### 1a. Debian Packages
 1. Download the .deb file in Installation/Debian/
-2. Navigate to your downloads file
-3. Install the file using dpkg -i &lt;file_name&gt;.deb, replacing
-&lt;file_name&gt; with the actual .deb file's name
+2. Navigate the folder you downloaded to
+3. Install the file using `dpkg -i <file_name>.deb`, replacing
+`<file_name>` with the actual .deb file's name
 
 ### 1b. Running Python
 1. Download this projects using either `git clone` or by manually

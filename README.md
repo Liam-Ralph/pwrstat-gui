@@ -14,17 +14,30 @@ the UPS. Can also log gathered information in a csv file.
 
 ## Requirements
 This project requires __CyberPower's PowerPanel for Linux__,
-as well as __python3__, __python3-pil__,
-__python3-setproctitle__, and __python3-tk__. PowerPanel
-can be found on
-[CyberPower's website](https://www.cyberpowersystems.com/products/software/power-panel-personal/)
-and Python dependencies can be installed using
-`sudo apt update` and `sudo apt install <dependency>`,
-assuming they are not installed already.
+which can be found on
+[CyberPower's website](https://www.cyberpowersystems.com/products/software/power-panel-personal/).
 
 ### Memory
-As per testing, this program uses approximately xxxMiB of memory,
-though results may vary.
+As per testing, the executable program uses approximately
+128KiB of memory, though results may vary.
+Running the Python program uses more memory, and memory usage
+can increase to an unknown limit by change settings repeatedly.
+Memory usage starts at around 16MiB and typically stays below 20MiB,
+but can be increased to 50MiB through purposeful effort.
 
 ### Storage
-Installing this application requires approximately xxMiB of storage.
+This application uses approximately 16MiB of storage.
+
+<br/>
+
+## Operating System Support
+
+### Legend
+ - Confirmed - Support for unedited versions of this
+   operating system have been confirmed by the developer
+ - Assummed - Support for this operating system is assumed,
+   but has not been confirmed
+
+|Ubuntu 24.04 |Ubuntu 18.04 |Linux Mint 22|Linux Mint 21|Debian 12    |Other Debian |
+|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
+|Confirmed    |Confirmed    |Confirmed    |Confirmed    |Confirmed    |Assumed      |
