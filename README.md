@@ -30,6 +30,21 @@ This application uses approximately 16MiB of storage.
 
 <br/>
 
+## Installation
+
+### 1. Python
+1. Download this projects using either `git clone` or by manually
+downloading files (only main.py, images, and data are required)
+2. Run main.py in your favorite console or IDE
+
+### 2. Debian
+1. Download the .deb file [here](liam-ralph.github.io/projects/)
+2. Navigate the folder you downloaded to
+3. Install the file using `dpkg -i <file_name>.deb`, replacing
+`<file_name>` with the actual .deb file's name
+
+<br/>
+
 ## Operating System Support
 
 ### Legend
