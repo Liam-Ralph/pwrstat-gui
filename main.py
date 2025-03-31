@@ -5,48 +5,48 @@
 
 # Imports
 
-import os
-from PIL import Image, ImageTk
-import setproctitle
-import subprocess
-import sys
-import time
+# Tkinter
+
 import tkinter
-from tkinter import colorchooser
 from tkinter import messagebox
+from tkinter import colorchooser
+import tkinter.filedialog
+
+# System
+
+import os
+import sys
+import subprocess
+import setproctitle
+
+# Pillow Imaging Library
+
+from PIL import Image, ImageTk
+
+# Multiprocessing
+
+import multiprocessing
+
+# CSV Files
+
+import csv
+
+# Time
+
+import time
 
 
-# Variables
+# Paths
 
 global PATH_DATA
 global PATH_IMAGES
 
-PATH_DATA = "/home/liam-ralph/Files/Projects/PwrStat GUI/data"
-PATH_IMAGES = "/home/liam-ralph/Files/Projects/PwrStat GUI/images"
+PATH_DATA = "/usr/share/pwrstat-gui/data"
+PATH_IMAGES = "/usr/share/pwrstat-gui/images"
 
 
 # Functions
 # Alphabetical order
-
-def change_font(new_font):
-
-    # Settings Variable
-
-    global font
-
-    # Change Font Variable and Settings File
-
-    with open(PATH_DATA+"/settings.txt", "r") as file:
-        text = file.read().strip().replace(font, new_font)
-
-    font = new_font
-
-    with open(PATH_DATA+"/settings.txt", "w") as file:
-        file.write(text)
-
-    # Reload Windows
-
-    reload_windows()
 
 def change_color(color_type):
 
@@ -124,23 +124,73 @@ def change_color(color_type):
             message = "Color choosing failed: operation cancelled."
         )
 
-def change_sample_interval(new_sample_interval):
+def change_font(new_font):
+
+    # Window Variable
+
+    global window_settings
 
     # Settings Variable
 
-    global sample_interval
+    global font
+
+    # Change Font Variable and Settings File
+
+    with open(PATH_DATA+"/settings.txt", "r") as file:
+        text = file.read().strip().replace(font, new_font)
+
+    font = new_font
+
+    with open(PATH_DATA+"/settings.txt", "w") as file:
+        file.write(text)
+
+    # Reload Windows
+
+    reload_windows()
+
+def change_log_path():
+
+    # Settings Variable
+
+    global log_path
+
+    # Choose Log Path
+
+    choice = tkinter.filedialog.askdirectory(parent=window_settings)
+
+    if choice != "()":
+
+        log_path = choice
+
+        # Reload Windows
+
+        reload_windows()
+
+    else:
+
+        messagebox.showwarning(
+            parent = window_settings,
+            title = "Log Path Choosing Failed",
+            message = "Log path choosing failed: invalid choice."
+        )
+
+def change_sampling_interval(new_sampling_interval):
+
+    # Settings Variable
+
+    global sampling_interval
 
     # Change Font Variable and Settings File
 
     with open(PATH_DATA+"/settings.txt", "r") as file:
         text = (
             file.read().strip().replace(
-                "sample-interval: " + str(sample_interval),
-                "sample-interval: " + str(new_sample_interval)
-            ) # '"sample-interval: " +' needed to prevent replacing an integer from color-set
+                "sampling-interval: " + str(sampling_interval),
+                "sampling-interval: " + str(new_sampling_interval)
+            ) # '"sampling-interval: " +' needed to prevent replacing an integer from color-set
         )
 
-    sample_interval = new_sample_interval
+    sampling_interval = new_sampling_interval
 
     with open(PATH_DATA+"/settings.txt", "w") as file:
         file.write(text)
@@ -164,7 +214,7 @@ def check_exit_flag():
 
         clicked.set(True)
 
-        exit()
+        sys.exit()
 
 def darken_color(color_raw):
 
@@ -204,7 +254,12 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     global highlight
     global font
     global log_path
-    global sample_interval
+    global sampling_interval
+
+    # Logging
+
+    global logging
+    global frame_main_mid
 
     # Exit Flag
 
@@ -297,6 +352,93 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         padx = 10
     )
     window_home.update()
+
+    # Logging Toggle
+
+    tkinter.Checkbutton(
+        frame_footer,
+        text = "Logging",
+        bg = medium,
+        fg = light,
+        command = toggle_logging
+    ).pack(
+        side = tkinter.LEFT,
+        padx = 15
+    )
+    window_home.update()
+
+    # Main Frame
+
+    tkinter.Label(
+        frame_main,
+        text = "UPS Monitoring",
+        font = (font, 12),
+        bg = darkest,
+        fg = highlight
+    ).pack(
+        pady = 10
+    )
+
+    frame_main_left = tkinter.Frame(
+        frame_main,
+        width = 200,
+        height = window_height - 60,
+        bg = darkest
+    )
+    frame_main_left.pack_propagate(False)
+    frame_main_left.pack(
+        side = tkinter.LEFT,
+        fill=tkinter.BOTH,
+        expand=False
+    )
+
+    frame_main_mid = tkinter.Frame(
+        frame_main,
+        width = 50,
+        height = window_height - 60,
+        bg = darkest
+    )
+    frame_main_mid.pack_propagate(False)
+    frame_main_mid.pack(
+        side = tkinter.LEFT,
+        fill=tkinter.BOTH,
+        expand=False
+    )
+
+    frame_main_right = tkinter.Frame(
+        frame_main,
+        width = window_width - 250,
+        height = window_height - 60,
+        bg = dark
+    )
+    frame_main_right.pack_propagate(False)
+    frame_main_right.pack(
+        side = tkinter.RIGHT,
+        fill=tkinter.BOTH,
+        expand=False
+    )
+    window_home.update()
+
+    # Main Left Frame
+
+    for item in [
+        "State", "Utility Voltage", "Output Voltage",
+        "Battery Capacity", "Remaining Runtime", "Load (Watts)", "Load (%)"
+    ]:
+        tkinter.Label(
+            frame_main_left,
+            text = item,
+            font = (font, 12),
+            anchor = "e",
+            width = 20,
+            fg = light,
+            bg = darkest,
+            height = 1
+        ).pack(
+            padx = 10,
+            pady = 10
+        )
+        window_home.update()
 
     # Open Child Window
 
@@ -480,7 +622,7 @@ def open_window_settings(window_dimensions=[800, 600]):
     global highlight
     global font
     global log_path
-    global sample_interval
+    global sampling_interval
 
     # Settings Window Setup
 
@@ -590,23 +732,14 @@ def open_window_settings(window_dimensions=[800, 600]):
     log_path_frame.pack_propagate(False)
     log_path_frame.pack(fill=tkinter.BOTH, expand=True)
 
-    log_toggle_frame = tkinter.Frame(
+    sampling_interval_frame = tkinter.Frame(
         frame_main,
         width = 800,
         height = 50,
         bg = darkest
     )
-    log_toggle_frame.pack_propagate(False)
-    log_toggle_frame.pack(fill=tkinter.BOTH, expand=True)
-
-    sample_interval_frame = tkinter.Frame(
-        frame_main,
-        width = 800,
-        height = 50,
-        bg = darken_color(darkest)
-    )
-    sample_interval_frame.pack_propagate(False)
-    sample_interval_frame.pack(fill=tkinter.BOTH, expand=True)
+    sampling_interval_frame.pack_propagate(False)
+    sampling_interval_frame.pack(fill=tkinter.BOTH, expand=True)
 
     window_settings.update()
 
@@ -769,13 +902,44 @@ def open_window_settings(window_dimensions=[800, 600]):
 
     window_settings.update()
 
-    # Sample Interval Setting
+    # Logging Path Setting
 
-    sample_interval_choice = tkinter.DoubleVar()
-    sample_interval_choice.set(sample_interval)
     tkinter.Label(
-        sample_interval_frame,
-        text = "Sample Interval",
+        log_path_frame,
+        text = f"Log Path: {log_path}",
+        font = (font, 14),
+        fg = highlight,
+        bg = darken_color(darkest),
+        width = (10 + len(log_path)),
+        height = 1
+    ).pack(
+        side = tkinter.LEFT,
+        padx = 5
+    )
+
+    tkinter.Button(
+        log_path_frame,
+        text = "Change Log Path",
+        font = (font, 10),
+        width = 16,
+        height = 1,
+        fg = light,
+        bg = medium,
+        activeforeground = highlight,
+        activebackground = light,
+        command = change_log_path
+    ).pack(
+        side = tkinter.LEFT,
+        padx = 15
+    )
+
+    # Sampling Interval Setting
+
+    sampling_interval_choice = tkinter.DoubleVar()
+    sampling_interval_choice.set(sampling_interval)
+    tkinter.Label(
+        sampling_interval_frame,
+        text = "Sampling Interval",
         font = (font, 14),
         fg = highlight,
         bg = darken_color(darkest),
@@ -787,8 +951,8 @@ def open_window_settings(window_dimensions=[800, 600]):
     )
 
     tkinter.Scale(
-        sample_interval_frame,
-        variable = sample_interval_choice,
+        sampling_interval_frame,
+        variable = sampling_interval_choice,
         from_ = 1,
         to = 10,
         resolution = 0.5,
@@ -803,7 +967,7 @@ def open_window_settings(window_dimensions=[800, 600]):
     )
 
     tkinter.Button(
-        sample_interval_frame,
+        sampling_interval_frame,
         text = "Update",
         font = (font, 10),
         width = 8,
@@ -812,7 +976,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         bg = medium,
         activeforeground = highlight,
         activebackground = light,
-        command = lambda: change_sample_interval(sample_interval_choice.get())
+        command = lambda: change_sampling_interval(sampling_interval_choice.get())
     ).pack(
         side = tkinter.LEFT,
         padx = 15
@@ -870,7 +1034,7 @@ def reset_settings():
     global highlight
     global font
     global log_path
-    global sample_interval
+    global sampling_interval
 
     # Resetting Variables
 
@@ -881,7 +1045,7 @@ def reset_settings():
     highlight = "#FFC300"
     font = "Garamond"
     log_path = "NOT SET"
-    sample_interval = 1.0
+    sampling_interval = 1.0
 
     # Resetting Settings File
 
@@ -890,13 +1054,89 @@ def reset_settings():
             """color-set: #000712, #001429, #001F3D, #2C4F70, #FFC300
             font: Garamond
             log-path: NOT SET
-            sample-interval: 1.0""".replace("    ", "")
+            sampling-interval: 1.0""".replace("    ", "")
         )
 
     # Reload Windows
 
     reload_windows()
 
+def toggle_logging():
+
+    # Home Window
+
+    global window_home
+
+    # Logging Variables
+
+    global logging
+    global log_path
+
+    # Logging Path
+
+    logging = not logging
+
+    if logging:
+
+        # Start Logging
+
+        if log_path == "NOT SET":
+
+            messagebox.showwarning(
+                parent = window_home,
+                title = "Logging Failed",
+                message = "Logging failed: path not set."
+            )
+
+            logging = False
+
+        elif not log_path:
+
+            messagebox.showwarning(
+                parent = window_home,
+                title = "Logging Failed",
+                message = f"Logging failed: Directory {log_path} does not exist."
+            )
+
+            logging = False
+
+        else:
+
+            if not os.path.exists(log_path):
+
+                with open(log_path, mode="w", newline="") as file:
+                    csv.writer(file).writerows(
+                        [
+                            [
+                                "State", "Utility Voltage", "Output Voltage",
+                                "Battery Capacity", "Remaining Runtime", "Load (Watts)", "Load (%)"
+                            ]
+                        ]
+                    )
+
+def update_info():
+
+    # Settings Variables
+
+    global darkest
+    global dark
+    global medium
+    global light
+    global highlight
+    global font
+    global log_path
+    global sampling_interval
+
+    # Logging
+
+    global logging
+    global frame_main_mid
+
+    while True:
+
+        
+
+        time.sleep(sampling_interval)
 
 # Main Function
 
@@ -916,11 +1156,17 @@ def main():
     global highlight
     global font
     global log_path
-    global sample_interval
+    global sampling_interval
 
     # Button Clicked
 
     global clicked
+
+    # Logging
+
+    global logging
+
+    logging = False
 
     # Exit Flag
 
@@ -938,9 +1184,12 @@ def main():
         xauthority = env.get("XAUTHORITY", "/tmp/xauth_XIOaut")
 
         # Relaunch with pkexec and pass the environment variables
+
         command = [
-            "pkexec", 
-            "env", f"DISPLAY={display}", f"XAUTHORITY={xauthority}",
+            "pkexec",
+            "env",
+            f"DISPLAY={display}",
+            f"XAUTHORITY={xauthority}",
             sys.executable
         ] + sys.argv
         os.execvp("pkexec", command)
@@ -964,7 +1213,7 @@ def main():
     highlight = color_set[4]
     font = settings_raw[1].replace("font: ", "")
     log_path = settings_raw[2].replace("log-path: ", "")
-    sample_interval = float(settings_raw[3].replace("sample-interval: ", ""))
+    sampling_interval = float(settings_raw[3].replace("sampling-interval: ", ""))
 
     # Window Setup
 
@@ -1027,7 +1276,7 @@ def main():
         window_start.update()
         time.sleep(5)
         window_start.destroy()
-        exit()
+        sys.exit()
 
     # Clear Window
 
