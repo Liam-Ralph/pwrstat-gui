@@ -8,7 +8,7 @@
 A graphical user interface for CyberPower's PowerPanel
 Linux software using Python's tkinter library. Runs the
 command `sudo pwrstat -status` to gather information from
-the UPS. Can also log gathered information in a csv file.
+the UPS. Can also log gathered information in a CSV file.
 
 <br/>
 
@@ -19,23 +19,23 @@ which can be found on
 
 ### Memory
 As per testing, the executable program uses approximately
-128KiB of memory, though results may vary.
+128 KiB of memory, though results may vary.
 Running the Python program uses more memory, and memory usage
-can increase to an unknown limit by change settings repeatedly.
-Memory usage starts at around 16MiB and typically stays below 20MiB,
-but can be increased to 50MiB through purposeful effort.
+can increase to an unknown limit by changing settings repeatedly.
+Memory usage starts at around 16 MiB and typically stays below 20 MiB,
+but can be increased to 50 MiB through purposeful effort.
 
 ### Storage
-This application uses approximately 16MiB of storage.
+This application uses approximately 16 MiB of storage.
 
 <br/>
 
 ## Installation
 
 ### 1. Python
-1. Download this projects using either `git clone` or by manually
+1. Download this project using either `git clone` or by manually
 downloading files (only main.py, images, and data are required)
-2. Run main.py in your favorite console or IDE
+2. Run main.py in your favourite console or IDE
 
 ### 2. Debian
 1. Download the .deb file [here](liam-ralph.github.io/projects/)
@@ -55,4 +55,4 @@ downloading files (only main.py, images, and data are required)
 
 |Ubuntu 24.04 |Ubuntu 18.04 |Linux Mint 22|Linux Mint 21|Debian 12    |Other Debian |
 |:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
-|Confirmed    |Confirmed    |Confirmed    |Confirmed    |Confirmed    |Assumed      |
+|Confirmed    |Assumed      |Assumed      |Assumed      |Assumed      |Assumed      |

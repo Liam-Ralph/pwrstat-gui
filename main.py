@@ -1,6 +1,12 @@
-# Created by Liam Ralph
+# Copyright (C) 2025 Liam Ralph
 # https://github.com/liam-ralph
-# Source at https://github.com/liam-ralph/pwrstat-gui
+
+# This program, including this file, is licensed under the
+# GNU General Public License v3.0 (GNU GPLv3).
+# See LICENSE or this project's source for more information.
+# Project Source: https://github.com/liam-ralph/pwrstat-gui
+
+# PwrStat GUI, a GUI for CyberPower's pwrstat terminal command.
 
 
 # Imports
