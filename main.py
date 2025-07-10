@@ -231,10 +231,10 @@ def darken_color(color_raw):
     # Darken RGB
 
     for i in range(3):
-        if rgb[i] > 3:
-            rgb[i] -= 3
+        if rgb[i] > 5:
+            rgb[i] -= 5
         else:
-            rgb[i] = 3 # lighten if dark
+            rgb[i] = 5 # lighten if dark
 
     # Return Darkened RGB as Hex Code
 
@@ -769,7 +769,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         text = (
             "Darkest\n" +
             darkest + "\n" +
-            "Default:\n#000712"
+            "Default:\n#000000"
         ),
         font = (font, 10),
         width = 12,
@@ -789,7 +789,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         text = (
             "Dark\n" +
             dark + "\n" +
-            "Default:\n#001429"
+            "Default:\n#101010"
         ),
         font = (font, 10),
         width = 12,
@@ -809,7 +809,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         text = (
             "Medium\n" +
             medium + "\n" +
-            "Default:\n#001F3D"
+            "Default:\n#202020"
         ),
         font = (font, 10),
         width = 12,
@@ -829,7 +829,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         text = (
             "Light\n" +
             light + "\n" +
-            "Default:\n#2C4F70"
+            "Default:\n#404040"
         ),
         font = (font, 10),
         width = 12,
@@ -849,7 +849,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         text = (
             "Highlight\n" +
             highlight + "\n" +
-            "Default:\n#FFC300"
+            "Default:\n#AA0000"
         ),
         font = (font, 10),
         width = 12,
@@ -948,7 +948,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         text = "Sampling Interval",
         font = (font, 14),
         fg = highlight,
-        bg = darken_color(darkest),
+        bg = darkest,
         width = 17,
         height = 1
     ).pack(
@@ -1044,11 +1044,11 @@ def reset_settings():
 
     # Resetting Variables
 
-    darkest = "#000712"
-    dark = "#001429"
-    medium = "#001F3D"
-    light = "#2C4F70"
-    highlight = "#FFC300"
+    darkest = "#000000"
+    dark = "#101010"
+    medium = "#202020"
+    light = "#404040"
+    highlight = "#AA0000"
     font = "Garamond"
     log_path = "NOT SET"
     sampling_interval = 1.0
@@ -1057,7 +1057,7 @@ def reset_settings():
 
     with open(PATH_DATA+"/settings.txt", "w") as file:
         file.write(
-            """color-set: #000712, #001429, #001F3D, #2C4F70, #FFC300
+            """color-set: #000000, #101010, #202020, #404040, #AA0000
             font: Garamond
             log-path: NOT SET
             sampling-interval: 1.0""".replace("    ", "")
