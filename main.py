@@ -29,17 +29,12 @@ import setproctitle
 
 from PIL import Image, ImageTk
 
-# Multiprocessing
-
-import multiprocessing
-
-# CSV Files
+# Others
 
 import csv
-
-# Time
-
+import threading
 import time
+import traceback
 
 
 # Paths
@@ -47,8 +42,8 @@ import time
 global PATH_DATA
 global PATH_IMAGES
 
-PATH_DATA = "/usr/share/pwrstat-gui/data"
-PATH_IMAGES = "/usr/share/pwrstat-gui/images"
+PATH_DATA = "/home/liam-ralph/Files/Projects/PwrStat GUI/data"
+PATH_IMAGES = "/home/liam-ralph/Files/Projects/PwrStat GUI/images"
 
 
 # Functions
@@ -220,7 +215,7 @@ def check_exit_flag():
 
         clicked.set(True)
 
-        sys.exit()
+        sys.exit() 
 
 def darken_color(color_raw):
 
@@ -262,10 +257,10 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     global log_path
     global sampling_interval
 
-    # Logging
+    # Logging and Status
 
     global logging
-    global frame_main_mid
+    global frame_main_center
 
     # Exit Flag
 
@@ -398,14 +393,14 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         expand=False
     )
 
-    frame_main_mid = tkinter.Frame(
+    frame_main_center = tkinter.Frame(
         frame_main,
-        width = 50,
+        width = 100,
         height = window_height - 60,
         bg = darkest
     )
-    frame_main_mid.pack_propagate(False)
-    frame_main_mid.pack(
+    frame_main_center.pack_propagate(False)
+    frame_main_center.pack(
         side = tkinter.LEFT,
         fill=tkinter.BOTH,
         expand=False
@@ -413,7 +408,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     frame_main_right = tkinter.Frame(
         frame_main,
-        width = window_width - 250,
+        width = window_width - 300,
         height = window_height - 60,
         bg = dark
     )
@@ -421,7 +416,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     frame_main_right.pack(
         side = tkinter.RIGHT,
         fill=tkinter.BOTH,
-        expand=False
+        expand=True
     )
     window_home.update()
 
@@ -438,6 +433,23 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
             anchor = "e",
             width = 20,
             fg = light,
+            bg = darkest,
+            height = 1
+        ).pack(
+            padx = 10,
+            pady = 10
+        )
+        window_home.update()
+
+    # Main Center Frame
+
+    for _ in range(7):
+        tkinter.Label(
+            frame_main_center,
+            text = "...",
+            font = (font, 12),
+            width = 20,
+            fg = highlight,
             bg = darkest,
             height = 1
         ).pack(
@@ -1120,29 +1132,44 @@ def toggle_logging():
                         ]
                     )
 
-def update_info():
+def update_status():
 
-    # Settings Variables
+    # Global Variables
 
-    global darkest
-    global dark
-    global medium
-    global light
-    global highlight
-    global font
-    global log_path
+    global frame_main_center
     global sampling_interval
-
-    # Logging
-
-    global logging
-    global frame_main_mid
 
     while True:
 
-        
+        try:
 
-        time.sleep(sampling_interval)
+            ups_info_raw = (
+                subprocess.run(
+                    ["pwrstat", "-status"],
+                    capture_output = True,
+                    text = True
+                ).stdout
+            ).strip()
+
+            if "Properties" in ups_info_raw:
+
+                for child in frame_main_center.winfo_children():
+
+                    pass
+
+            else:
+
+                for child in frame_main_center.winfo_children():
+
+                    child.config(text="N/A")
+
+            time.sleep(sampling_interval)
+
+        except(NameError):
+
+            time.sleep(0.5)
+
+            pass
 
 # Main Function
 
@@ -1252,7 +1279,8 @@ def main():
         text = (
             "A graphical user interface for PowerPanel on Linux.\n" +
             "Created by Liam Ralph.\n" +
-            "v0.0\n"
+            "Licensed under the GNU General Public License v3.0.\n" +
+            "v0.0\n\n"
         ),
         font = (font, 10),
         fg = light,
@@ -1283,6 +1311,12 @@ def main():
         time.sleep(5)
         window_start.destroy()
         sys.exit()
+
+    # Starting Threading
+
+    update_thread = threading.Thread(target=update_status)
+    update_thread.daemon = True
+    update_thread.start()
 
     # Clear Window
 
