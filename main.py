@@ -32,9 +32,9 @@ from PIL import Image, ImageTk
 # Others
 
 import csv
+import re
 import threading
 import time
-import traceback
 
 
 # Paths
@@ -42,8 +42,8 @@ import traceback
 global PATH_DATA
 global PATH_IMAGES
 
-PATH_DATA = "/home/liam-ralph/Files/Projects/PwrStat GUI/data"
-PATH_IMAGES = "/home/liam-ralph/Files/Projects/PwrStat GUI/images"
+PATH_DATA = "/usr/share/pwrstat-gui/data"
+PATH_IMAGES = "/usr/share/pwrstat-gui/images"
 
 
 # Functions
@@ -395,7 +395,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     frame_main_center = tkinter.Frame(
         frame_main,
-        width = 100,
+        width = 200,
         height = window_height - 60,
         bg = darkest
     )
@@ -408,7 +408,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     frame_main_right = tkinter.Frame(
         frame_main,
-        width = window_width - 300,
+        width = window_width - 400,
         height = window_height - 60,
         bg = dark
     )
@@ -1153,9 +1153,45 @@ def update_status():
 
             if "Properties" in ups_info_raw:
 
-                for child in frame_main_center.winfo_children():
+                lines = ups_info_raw.replace(".", "").split("\n")
 
-                    pass
+                state = "Unknown"
+
+                for line in lines:
+                    if "State" in line:
+                        state = line.replace("State", "").strip()
+                        break
+
+                if state == "Normal":
+
+                    values = ["0"] * 6
+
+                    for line in lines:
+                        if "Utility" in line:
+                            values[0] = re.sub(r"\D", "", line)
+                        elif "Output" in line:
+                            values[1] = re.sub(r"\D", "", line)
+                        elif "Battery" in line:
+                            values[2] = re.sub(r"\D", "", line)
+                        elif "Runtime" in line:
+                            values[3] = re.sub(r"\D", "", line)
+                        elif "Load" in line:
+                            value = re.sub(r"[^\d(]", "", line)
+                            values[4], values[5] = value.split("(")
+
+                    children = frame_main_center.winfo_children()
+                    children[0].config(text="Normal")
+
+                    for i in range(6):
+                        children[i+1].config(text=values[i])
+
+                else:
+
+                    for child in frame_main_center.winfo_children():
+
+                        child.config(text="N/A")
+                    
+                    frame_main_center.winfo_children()[0].config(text=state)
 
             else:
 
