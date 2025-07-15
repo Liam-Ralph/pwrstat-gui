@@ -29,6 +29,12 @@ import setproctitle
 
 from PIL import Image, ImageTk
 
+# Matplotlib
+
+"""from matplotlib import pyplot
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg"""
+
 # Others
 
 import csv
@@ -260,6 +266,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     # Logging and Status
 
     global logging
+    global logging_button
     global frame_main_center
 
     # Exit Flag
@@ -356,13 +363,14 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     # Logging Toggle
 
-    tkinter.Checkbutton(
+    logging_button = tkinter.Checkbutton(
         frame_footer,
         text = "Logging",
         bg = medium,
         fg = light,
         command = toggle_logging
-    ).pack(
+    )
+    logging_button.pack(
         side = tkinter.LEFT,
         padx = 15
     )
@@ -457,6 +465,31 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
             pady = 10
         )
         window_home.update()
+
+    # Main Right Frame
+
+    """pixels = 1 / pyplot.rcParams['figure.dpi']
+    figure = Figure(figsize=((window_width-400)*pixels, (window_height-60)*pixels), facecolor="grey", edgecolor="grey")
+
+    plot1 = figure.add_subplot(1, 1, 1)
+    plot1.plot([i**2 for i in range(101)])
+
+    canvas = FigureCanvasTkAgg(figure, master = frame_main_right)
+    canvas.draw()
+
+    # placing the canvas on the Tkinter window
+    canvas.get_tk_widget().pack()
+
+    # placing the toolbar on the Tkinter window
+    canvas.get_tk_widget().pack()"""
+
+    graph = tkinter.Canvas(frame_main_right)
+    graph.create_polygon(
+        ((0, 0), (400, 600), (0, 600)),
+        fill=dark,
+        width=0
+    )
+    graph.pack(fill=tkinter.BOTH, expand=True)
 
     # Open Child Window
 
@@ -1088,6 +1121,7 @@ def toggle_logging():
     # Logging Variables
 
     global logging
+    global logging_button
     global log_path
 
     # Logging Path
@@ -1107,16 +1141,18 @@ def toggle_logging():
             )
 
             logging = False
+            logging_button.deselect()
 
-        elif not log_path:
+        elif not os.path.exists(os.path.dirname(log_path)):
 
             messagebox.showwarning(
                 parent = window_home,
                 title = "Logging Failed",
-                message = f"Logging failed: Directory {log_path} does not exist."
+                message = f"Logging failed: Directory {os.path.dirname(log_path)} does not exist."
             )
 
             logging = False
+            logging_button.deselect()
 
         else:
 
@@ -1126,8 +1162,8 @@ def toggle_logging():
                     csv.writer(file).writerows(
                         [
                             [
-                                "State", "Utility Voltage", "Output Voltage",
-                                "Battery Capacity", "Remaining Runtime", "Load (Watts)", "Load (%)"
+                                "Utility Voltage", "Output Voltage", "Battery Capacity",
+                                "Remaining Runtime", "Load (Watts)", "Load (%)"
                             ]
                         ]
                     )
@@ -1136,6 +1172,7 @@ def update_status():
 
     # Global Variables
 
+    global logging
     global frame_main_center
     global sampling_interval
 
@@ -1178,6 +1215,16 @@ def update_status():
                         elif "Load" in line:
                             value = re.sub(r"[^\d(]", "", line)
                             values[4], values[5] = value.split("(")
+
+                    if logging:
+                        pass
+
+                    values[0] += " Volts"
+                    values[1] += " Volts"
+                    values[2] += "%"
+                    values[3] += " mins"
+                    values[4] += " Watts"
+                    values[5] += "%"
 
                     children = frame_main_center.winfo_children()
                     children[0].config(text="Normal")
