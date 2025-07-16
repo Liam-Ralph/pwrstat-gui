@@ -267,7 +267,9 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     global logging
     global logging_button
+    global frame_sides_height
     global frame_main_center
+    global graph
 
     # Exit Flag
 
@@ -378,53 +380,56 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     # Main Frame
 
-    tkinter.Label(
+    frame_main_title = tkinter.Label(
         frame_main,
         text = "UPS Monitoring",
         font = (font, 12),
         bg = darkest,
         fg = highlight
-    ).pack(
+    )
+    frame_main_title.pack(
         pady = 10
     )
+
+    frame_sides_height = 60 - frame_main_title.winfo_height()
 
     frame_main_left = tkinter.Frame(
         frame_main,
         width = 200,
-        height = window_height - 60,
+        height = window_height - frame_sides_height,
         bg = darkest
     )
     frame_main_left.pack_propagate(False)
     frame_main_left.pack(
         side = tkinter.LEFT,
-        fill=tkinter.BOTH,
-        expand=False
+        fill = tkinter.BOTH,
+        expand = False
     )
 
     frame_main_center = tkinter.Frame(
         frame_main,
         width = 200,
-        height = window_height - 60,
+        height = window_height - frame_sides_height,
         bg = darkest
     )
     frame_main_center.pack_propagate(False)
     frame_main_center.pack(
         side = tkinter.LEFT,
-        fill=tkinter.BOTH,
-        expand=False
+        fill = tkinter.BOTH,
+        expand = False
     )
 
     frame_main_right = tkinter.Frame(
         frame_main,
         width = window_width - 400,
-        height = window_height - 60,
+        height = window_height - frame_sides_height,
         bg = dark
     )
     frame_main_right.pack_propagate(False)
     frame_main_right.pack(
         side = tkinter.RIGHT,
-        fill=tkinter.BOTH,
-        expand=True
+        fill = tkinter.BOTH,
+        expand = True
     )
     window_home.update()
 
@@ -484,11 +489,6 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     canvas.get_tk_widget().pack()"""
 
     graph = tkinter.Canvas(frame_main_right)
-    graph.create_polygon(
-        ((0, 0), (400, 600), (0, 600)),
-        fill=dark,
-        width=0
-    )
     graph.pack(fill=tkinter.BOTH, expand=True)
 
     # Open Child Window
@@ -1168,6 +1168,16 @@ def toggle_logging():
                         ]
                     )
 
+def update_graph():
+
+    global graph
+
+    while True:
+
+        if stats_list != []:
+
+            
+
 def update_status():
 
     # Global Variables
@@ -1175,6 +1185,9 @@ def update_status():
     global logging
     global frame_main_center
     global sampling_interval
+    global stats_list
+
+    stats_list = []
 
     while True:
 
@@ -1219,6 +1232,11 @@ def update_status():
                     if logging:
                         pass
 
+                    stats_list.append([time.time(), values[4]])
+
+                    if len(stats_list) > 60:
+                        stats_list = stats_list[-60:]
+
                     values[0] += " Volts"
                     values[1] += " Volts"
                     values[2] += "%"
@@ -1253,6 +1271,7 @@ def update_status():
             time.sleep(0.5)
 
             pass
+
 
 # Main Function
 
@@ -1400,6 +1419,10 @@ def main():
     update_thread = threading.Thread(target=update_status)
     update_thread.daemon = True
     update_thread.start()
+
+    update_graph_thread = threading.Thread(target=update_graph)
+    update_graph_thread.daemon = True
+    update_graph_thread.start()
 
     # Clear Window
 
