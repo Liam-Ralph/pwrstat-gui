@@ -488,7 +488,12 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     # placing the toolbar on the Tkinter window
     canvas.get_tk_widget().pack()"""
 
-    graph = tkinter.Canvas(frame_main_right)
+    graph = tkinter.Canvas(
+        frame_main_right,
+        width = frame_main_right.winfo_width(),
+        height = frame_main_right.winfo_height(),
+        bg = darkest
+    )
     graph.pack(fill=tkinter.BOTH, expand=True)
 
     # Open Child Window
@@ -1170,13 +1175,39 @@ def toggle_logging():
 
 def update_graph():
 
+    global stats_list
+    global max_watts
     global graph
+    global sampling_interval
 
     while True:
 
-        if stats_list != []:
+        try:
 
-            
+            if stats_list is not None or stats_list != []:
+
+                graph.delete("all")
+
+                width = graph.winfo_width()
+                height = graph.winfo_height()
+                max_time = stats_list[-1][0]
+
+                points = [(width - int(round(width * (max_time - stats_list[0][0]) / (100 * sampling_interval))), height)]
+
+                for [stat_time, watts] in stats_list:
+                    time_pct = (max_time - stat_time) / (100 * sampling_interval)
+                    watts_pct = watts / max_watts
+                    points.append((width - int(round(width * time_pct)), height - int(round(height * watts_pct))))
+
+                points.append((width, height))
+
+                graph.create_polygon(points, fill=highlight)
+
+                time.sleep(0.1)
+
+        except(NameError):
+
+            time.sleep(0.5)
 
 def update_status():
 
@@ -1186,6 +1217,7 @@ def update_status():
     global frame_main_center
     global sampling_interval
     global stats_list
+    global max_watts
 
     stats_list = []
 
@@ -1217,14 +1249,21 @@ def update_status():
                     values = ["0"] * 6
 
                     for line in lines:
-                        if "Utility" in line:
+                        if "Rating Power" in line:
+                            max_watts = int(re.sub(r"\D", "", line))
+                            continue
+                        elif "Utility" in line:
                             values[0] = re.sub(r"\D", "", line)
+                            continue
                         elif "Output" in line:
                             values[1] = re.sub(r"\D", "", line)
+                            continue
                         elif "Battery" in line:
                             values[2] = re.sub(r"\D", "", line)
+                            continue
                         elif "Runtime" in line:
                             values[3] = re.sub(r"\D", "", line)
+                            continue
                         elif "Load" in line:
                             value = re.sub(r"[^\d(]", "", line)
                             values[4], values[5] = value.split("(")
@@ -1232,7 +1271,7 @@ def update_status():
                     if logging:
                         pass
 
-                    stats_list.append([time.time(), values[4]])
+                    stats_list.append([time.time(), int(values[4])])
 
                     if len(stats_list) > 60:
                         stats_list = stats_list[-60:]
@@ -1269,8 +1308,6 @@ def update_status():
         except(NameError):
 
             time.sleep(0.5)
-
-            pass
 
 
 # Main Function
