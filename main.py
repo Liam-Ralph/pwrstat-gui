@@ -1175,6 +1175,8 @@ def toggle_logging():
 
 def update_graph():
 
+    global font
+
     global stats_list
     global max_watts
     global graph
@@ -1184,28 +1186,55 @@ def update_graph():
 
         try:
 
-            if stats_list is not None or stats_list != []:
+            if "stats_list" in globals() and "graph" in globals() and stats_list != []:
 
-                graph.delete("all")
+                graph.delete(tkinter.ALL)
 
                 width = graph.winfo_width()
                 height = graph.winfo_height()
                 max_time = stats_list[-1][0]
+                if len(stats_list) == 60:
+                    time_width = max_time - stats_list[0][0]
+                else:
+                    time_width = 60 * sampling_interval
 
-                points = [(width - int(round(width * (max_time - stats_list[0][0]) / (100 * sampling_interval))), height)]
+                points = [(width - int(round(width * (max_time - stats_list[0][0]) / time_width)), height)]
 
                 for [stat_time, watts] in stats_list:
-                    time_pct = (max_time - stat_time) / (100 * sampling_interval)
+                    time_pct = (max_time - stat_time) / time_width
                     watts_pct = watts / max_watts
                     points.append((width - int(round(width * time_pct)), height - int(round(height * watts_pct))))
 
                 points.append((width, height))
 
-                graph.create_polygon(points, fill=highlight)
+                graph.winfo_toplevel().after(0, lambda: graph.create_polygon(points, fill=highlight))
+
+                for i in range(10):
+
+                    line_height = i / 10 * height
+
+                    graph.winfo_toplevel().after(0, lambda: graph.create_line(
+                        0,
+                        line_height,
+                        width,
+                        line_height,
+                        fill = dark
+                    ))
+                    graph.winfo_toplevel().after(0, lambda: graph.create_text(
+                        30,
+                        line_height - 10,
+                        text = str(int((10 - i) / 10 * max_watts)),
+                        font = (font, 15),
+                        fill = light
+                    ))
 
                 time.sleep(0.1)
 
-        except(NameError):
+            else:
+
+                time.sleep(0.5)
+
+        except(NameError, tkinter.TclError):
 
             time.sleep(0.5)
 
@@ -1219,7 +1248,8 @@ def update_status():
     global stats_list
     global max_watts
 
-    stats_list = []
+    if "stats_list" not in globals():
+        stats_list = []
 
     while True:
 
@@ -1305,7 +1335,7 @@ def update_status():
 
             time.sleep(sampling_interval)
 
-        except(NameError):
+        except(NameError, tkinter.TclError):
 
             time.sleep(0.5)
 
