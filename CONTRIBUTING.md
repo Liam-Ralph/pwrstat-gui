@@ -1,8 +1,9 @@
 # Contributing
 
-So far, this project is only compatible with Debian, and has
-only been tested on Ubuntu 24.04. If you wish to modify this
-project to:
+So far, this project is only confirmed to be compatible
+on Ubuntu 24.04 and Linux Mint 22.1, but is assumed to be
+compatible with any Debian-based operating system. If you
+wish to modify this project to
 
 1. Work on other versions of Linux
 2. Support more languages
@@ -10,14 +11,12 @@ project to:
 4. Any other changes
 
 you may, either by attemping to add your changes to this project
-or creating your own, assuming it follows the Liscence.
+or creating your own, assuming it follows this project's license.
 
 ## Help Contributing
 
-Information, including but not limited to:
-
-1. Files needed to create this project's .deb file
-2. Explanations for code, file structure, etc.
-3. General information
-
-may be provided upon request, depending on my availability.
+I will be adding a developer package to my website, which will
+include files used to build this project's .deb package, as well
+as some documentation. Other information and resources, such as
+explanantions or other files may be provided upon request to my
+Github account, depending on my availability.
