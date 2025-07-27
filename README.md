@@ -1,5 +1,5 @@
 # PwrStat GUI
-### Released March 2025 (planned)
+### Released August 2025 (planned)
 ### Version 0.0
 
 <br/>
@@ -43,16 +43,13 @@ downloading files (only main.py, images, and data are required)
 3. Install the file using `dpkg -i <file_name>.deb`, replacing
 `<file_name>` with the actual .deb file's name
 
+I will also add a developer package to my website, which will include
+a number of other files used to create the .deb package, as well as
+some documentation. This is not required to run the project, but may
+be useful for those looking to edit it.
+
 <br/>
 
 ## Operating System Support
-
-### Legend
- - Confirmed - Support for unedited versions of this
-   operating system have been confirmed by the developer
- - Assummed - Support for this operating system is assumed,
-   but has not been confirmed
-
-|Ubuntu 24.04 |Ubuntu 18.04 |Linux Mint 22|Linux Mint 21|Debian 12    |Other Debian |
-|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|
-|Confirmed    |Assumed      |Assumed      |Assumed      |Assumed      |Assumed      |
+This project is confirmed to work on Ubuntu 24.04 and Linux Mint 22.1,
+and is assumed to work on any Debian-based operating system.
