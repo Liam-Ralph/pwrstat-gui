@@ -29,12 +29,6 @@ import setproctitle
 
 from PIL import Image, ImageTk
 
-# Matplotlib
-
-"""from matplotlib import pyplot
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg"""
-
 # Others
 
 import csv
@@ -157,29 +151,42 @@ def change_font(new_font):
 
 def change_log_path():
 
-    # Settings Variable
+    # Settings Variables
 
     global log_path
+    global logging
 
-    # Choose Log Path
+    # Exit if Logging
 
-    choice = tkinter.filedialog.askdirectory(parent=window_settings)
-
-    if choice != "()":
-
-        log_path = choice
-
-        # Reload Windows
-
-        reload_windows()
-
-    else:
+    if logging:
 
         messagebox.showwarning(
             parent = window_settings,
             title = "Log Path Choosing Failed",
-            message = "Log path choosing failed: invalid choice."
+            message = "Log path choosing failed: cannot change path while logging active."
         )
+
+    else:
+
+        # Choose Log Path
+
+        choice = tkinter.filedialog.askdirectory(parent=window_settings)
+
+        if choice != "()":
+
+            log_path = choice
+
+            # Reload Windows
+
+            reload_windows()
+
+        else:
+
+            messagebox.showwarning(
+                parent = window_settings,
+                title = "Log Path Choosing Failed",
+                message = "Log path choosing failed: invalid choice."
+            )
 
 def change_sampling_interval(new_sampling_interval):
 
@@ -472,21 +479,6 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         window_home.update()
 
     # Main Right Frame
-
-    """pixels = 1 / pyplot.rcParams['figure.dpi']
-    figure = Figure(figsize=((window_width-400)*pixels, (window_height-60)*pixels), facecolor="grey", edgecolor="grey")
-
-    plot1 = figure.add_subplot(1, 1, 1)
-    plot1.plot([i**2 for i in range(101)])
-
-    canvas = FigureCanvasTkAgg(figure, master = frame_main_right)
-    canvas.draw()
-
-    # placing the canvas on the Tkinter window
-    canvas.get_tk_widget().pack()
-
-    # placing the toolbar on the Tkinter window
-    canvas.get_tk_widget().pack()"""
 
     graph = tkinter.Canvas(
         frame_main_right,
