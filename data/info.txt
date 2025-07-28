@@ -1,4 +1,4 @@
-Name: Liam Ralph
-Created: March 2025
-Version: 0.0
-Updated: March 2025
+Names: Liam Ralph
+Created: July 2025
+Version: 1.0.0
+Updated: July 2025

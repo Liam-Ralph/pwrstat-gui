@@ -1,6 +1,3 @@
-# Changelog
+## v1.0.0 (July 2025)
 
-<br/>
-
-## v0.0
-Currently in development.
+Initial app release.

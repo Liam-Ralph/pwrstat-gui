@@ -8,22 +8,25 @@
 
 # PwrStat GUI, a GUI for CyberPower's pwrstat terminal command.
 
+# Search convert-python for help converting this program into a
+# standalone Python program.
+
 
 # Imports
 
 # Tkinter
 
 import tkinter
-from tkinter import messagebox
-from tkinter import colorchooser
 import tkinter.filedialog
+from tkinter import colorchooser
+from tkinter import messagebox
 
 # System
 
 import os
-import sys
-import subprocess
 import setproctitle
+import subprocess
+import sys
 
 # Pillow Imaging Library
 
@@ -32,9 +35,11 @@ from PIL import Image, ImageTk
 # Others
 
 import csv
+import datetime
 import re
 import threading
 import time
+import traceback
 
 
 # Paths
@@ -42,6 +47,7 @@ import time
 global PATH_DATA
 global PATH_IMAGES
 
+# convert-python Change these paths
 PATH_DATA = "/usr/share/pwrstat-gui/data"
 PATH_IMAGES = "/usr/share/pwrstat-gui/images"
 
@@ -65,7 +71,7 @@ def change_color(color_type):
     global light
     global highlight
 
-    # Color Replacement
+    # Getting Color Choice
 
     color_raw = (
         colorchooser.askcolor(
@@ -73,6 +79,8 @@ def change_color(color_type):
             title = "Choose Color for " + color_type.capitalize()
         )[1]
     )
+
+    # Checking Color Choice
 
     if color_raw is not None and color_raw.startswith("#"):
 
@@ -111,13 +119,17 @@ def change_color(color_type):
 
         else:
 
+            # Color Used Elsewhere
+
             messagebox.showwarning(
                 parent = window_settings,
                 title = "Color Choosing Failed",
-                message = "Color choosing failed: color already selected."
+                message = "Color choosing failed: color already used elsewhere."
             )
 
     else:
+
+        # Operation Cancelled by User
 
         messagebox.showwarning(
             parent = window_settings,
@@ -127,12 +139,9 @@ def change_color(color_type):
 
 def change_font(new_font):
 
-    # Window Variable
+    # Global Variables
 
     global window_settings
-
-    # Settings Variable
-
     global font
 
     # Change Font Variable and Settings File
@@ -151,14 +160,16 @@ def change_font(new_font):
 
 def change_log_path():
 
-    # Settings Variables
+    # Global Variables
 
-    global log_path
     global logging
+    global log_path
 
     # Exit if Logging
 
     if logging:
+
+        # Logging Active
 
         messagebox.showwarning(
             parent = window_settings,
@@ -170,23 +181,33 @@ def change_log_path():
 
         # Choose Log Path
 
-        choice = tkinter.filedialog.askdirectory(parent=window_settings)
+        choice = tkinter.filedialog.askdirectory(parent=window_settings) + "/"
 
-        if choice != "()":
+        if not os.path.exists(choice):
 
-            log_path = choice
-
-            # Reload Windows
-
-            reload_windows()
-
-        else:
+            # Chosen Directory Does Not Exist
 
             messagebox.showwarning(
                 parent = window_settings,
                 title = "Log Path Choosing Failed",
-                message = "Log path choosing failed: invalid choice."
+                message = f"Log path choosing failed: Directory {choice} does not exist."
             )
+
+        else:
+
+            # Change Logging Path Variable and Settings File
+
+            with open(PATH_DATA+"/settings.txt", "r") as file:
+                text = file.read().strip().replace(log_path, choice)
+
+            log_path = choice
+
+            with open(PATH_DATA+"/settings.txt", "w") as file:
+                file.write(text)
+
+            # Reload Windows
+
+            reload_windows()
 
 def change_sampling_interval(new_sampling_interval):
 
@@ -194,7 +215,7 @@ def change_sampling_interval(new_sampling_interval):
 
     global sampling_interval
 
-    # Change Font Variable and Settings File
+    # Change Sampling Interval Variable and Settings File
 
     with open(PATH_DATA+"/settings.txt", "r") as file:
         text = (
@@ -214,6 +235,9 @@ def change_sampling_interval(new_sampling_interval):
     reload_windows()
 
 def check_exit_flag():
+
+    # Used to differentiate between closing windows and reloading windows,
+    # since the program will be halted on main window close
 
     # Global Variables
 
@@ -256,7 +280,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     # Info and Settings Variables
 
-    global name
+    global names
     global created
     global version
     global updated
@@ -506,7 +530,7 @@ def open_window_info(window_dimensions=[500, 500]):
 
     # Info and Settings Variables
 
-    global name
+    global names
     global created
     global version
     global updated
@@ -583,7 +607,7 @@ def open_window_info(window_dimensions=[500, 500]):
     tkinter.Label(
         frame_main,
         text = (
-            name + "\n" +
+            names + "\n" +
             f"Created {created}\n" +
             f"Version {version}\n" +
             f"Last Updated {updated}\n"
@@ -1102,7 +1126,7 @@ def reset_settings():
             """color-set: #000000, #101010, #202020, #404040, #AA0000
             font: Garamond
             log-path: NOT SET
-            sampling-interval: 1.0""".replace("    ", "")
+            sampling-interval: 1.0""".replace("    ", "") # remove code indents
         )
 
     # Reload Windows
@@ -1121,11 +1145,7 @@ def toggle_logging():
     global logging_button
     global log_path
 
-    # Logging Path
-
-    logging = not logging
-
-    if logging:
+    if not logging:
 
         # Start Logging
 
@@ -1137,50 +1157,46 @@ def toggle_logging():
                 message = "Logging failed: path not set."
             )
 
-            logging = False
             logging_button.deselect()
+            return
 
-        elif not os.path.exists(os.path.dirname(log_path)):
+        elif not os.path.exists(log_path):
 
             messagebox.showwarning(
                 parent = window_home,
                 title = "Logging Failed",
-                message = f"Logging failed: Directory {os.path.dirname(log_path)} does not exist."
+                message = f"Logging failed: Directory {log_path} does not exist."
             )
 
-            logging = False
             logging_button.deselect()
+            return
+        
+    # Change Logging
 
-        else:
-
-            if not os.path.exists(log_path):
-
-                with open(log_path, mode="w", newline="") as file:
-                    csv.writer(file).writerows(
-                        [
-                            [
-                                "Utility Voltage", "Output Voltage", "Battery Capacity",
-                                "Remaining Runtime", "Load (Watts)", "Load (%)"
-                            ]
-                        ]
-                    )
+    logging = not logging
 
 def update_graph():
 
-    global font
+    # Global Variables
 
     global stats_list
-    global max_watts
     global graph
     global sampling_interval
+    global max_watts
+    global font
 
     while True:
 
         try:
 
             if "stats_list" in globals() and "graph" in globals() and stats_list != []:
+            # Check if these variables exist yet
+
+                # Clear Graph
 
                 graph.delete(tkinter.ALL)
+
+                # Calculate Variables
 
                 width = graph.winfo_width()
                 height = graph.winfo_height()
@@ -1190,16 +1206,35 @@ def update_graph():
                 else:
                     time_width = 60 * sampling_interval
 
-                points = [(width - int(round(width * (max_time - stats_list[0][0]) / time_width)), height)]
+                # Create Polygon Points
+
+                # Bottom left point, polygon start point
+                points = [
+                    (width - int(round(width * (max_time - stats_list[0][0]) / time_width)), height)
+                ]
 
                 for [stat_time, watts] in stats_list:
+                    # Top points, show data
                     time_pct = (max_time - stat_time) / time_width
                     watts_pct = watts / max_watts
-                    points.append((width - int(round(width * time_pct)), height - int(round(height * watts_pct))))
+                    points.append((
+                        width - int(round(width * time_pct)),
+                        height - int(round(height * watts_pct))
+                    ))
 
+                # Bottom right point, polygon end point
                 points.append((width, height))
 
-                graph.winfo_toplevel().after(0, lambda: graph.create_polygon(points, fill=highlight))
+                # Create Polygon on Graph
+
+                # after() is needed because tkinter isn't thread-safe
+                # (stupid? maybe. functional? hopefully)
+                graph.winfo_toplevel().after(0, lambda: graph.create_polygon(
+                    points,
+                    fill = highlight
+                ))
+
+                # Create Graph Lines
 
                 for i in range(10):
 
@@ -1220,25 +1255,39 @@ def update_graph():
                         fill = light
                     ))
 
+                # Wait 100 Miliseconds to Update Graph
+
                 time.sleep(0.1)
 
             else:
 
+                # Variables not ready, wait and check again
                 time.sleep(0.5)
 
         except(NameError, tkinter.TclError):
 
+            # Error Caught, Print Warning and Wait
+
+            print(
+                "An error has been detected, and caught.\n" +
+                "If you don't notice any problems, this error can be ignored.\n\n" +
+                traceback.format_exc() + "\n"
+            )
+            
             time.sleep(0.5)
 
 def update_status():
 
     # Global Variables
 
-    global logging
-    global frame_main_center
-    global sampling_interval
     global stats_list
     global max_watts
+    global logging
+    global log_path
+    global frame_main_center
+    global sampling_interval
+
+    # Create Stats List
 
     if "stats_list" not in globals():
         stats_list = []
@@ -1246,6 +1295,8 @@ def update_status():
     while True:
 
         try:
+
+            # Get UPS Info
 
             ups_info_raw = (
                 subprocess.run(
@@ -1257,6 +1308,8 @@ def update_status():
 
             if "Properties" in ups_info_raw:
 
+                # UPS Known, Getting State
+
                 lines = ups_info_raw.replace(".", "").split("\n")
 
                 state = "Unknown"
@@ -1267,6 +1320,8 @@ def update_status():
                         break
 
                 if state == "Normal":
+
+                    # UPS Connected, Processing Info
 
                     values = ["0"] * 6
 
@@ -1290,13 +1345,49 @@ def update_status():
                             value = re.sub(r"[^\d(]", "", line)
                             values[4], values[5] = value.split("(")
 
+                    # Logging
+
                     if logging:
-                        pass
+
+                        file_path = (
+                            log_path + datetime.datetime.today().strftime("%Y-%m-%d") +
+                            "_pwrstat-gui-log.csv"
+                        )
+                        # e.g. /home/john-doe/Desktop/2000-01-01_pwrstat-gui-log.csv
+
+                        if not os.path.exists(file_path):
+
+                            # File Doesn't Exist, Create and Add First Row
+
+                            with open(file_path, mode="w", newline="") as file:
+                                csv.writer(file).writerows(
+                                    [[
+                                        "Time", "Utility Voltage", "Output Voltage",
+                                        "Battery Capacity", "Remaining Runtime",
+                                        "Load (Watts)", "Load (%)"
+                                    ]]
+                                )
+
+                        # Add Info Row
+
+                        extended_values = [str(time.time())]
+                        extended_values.extend(values)
+
+                        with open(file_path, mode="a", newline="") as file:
+                            csv.writer(file).writerows(
+                                [
+                                    extended_values
+                                ]
+                            )
+
+                    # Update Stats List
 
                     stats_list.append([time.time(), int(values[4])])
 
                     if len(stats_list) > 60:
                         stats_list = stats_list[-60:]
+
+                    # Update Main Window Values
 
                     values[0] += " Volts"
                     values[1] += " Volts"
@@ -1313,6 +1404,8 @@ def update_status():
 
                 else:
 
+                    # UPS Not Connected
+
                     for child in frame_main_center.winfo_children():
 
                         child.config(text="N/A")
@@ -1321,6 +1414,8 @@ def update_status():
 
             else:
 
+                # UPS Unknown
+
                 for child in frame_main_center.winfo_children():
 
                     child.config(text="N/A")
@@ -1328,6 +1423,14 @@ def update_status():
             time.sleep(sampling_interval)
 
         except(NameError, tkinter.TclError):
+
+            # Error Caught, Print Warning and Wait
+
+            print(
+                "An error has been detected, and caught.\n" +
+                "If you don't notice any problems, this error can be ignored.\n\n" +
+                traceback.format_exc() + "\n"
+            )
 
             time.sleep(0.5)
 
@@ -1338,7 +1441,7 @@ def main():
 
     # Info and Settings Variables
 
-    global name
+    global names
     global created
     global version
     global updated
@@ -1352,10 +1455,6 @@ def main():
     global log_path
     global sampling_interval
 
-    # Button Clicked
-
-    global clicked
-
     # Logging
 
     global logging
@@ -1365,10 +1464,12 @@ def main():
     # Exit Flag
 
     global exit_flag
+    global clicked
 
     exit_flag = True
 
     # Getting Root Privileges
+    # convert-python Remove this section, up to "Info and Settings Reading"
 
     if os.geteuid() != 0:
 
@@ -1392,7 +1493,7 @@ def main():
 
     with open(PATH_DATA+"/info.txt", "r") as file:
         info_raw = file.read().split("\n")
-    name = info_raw[0].replace("Name: ", "")
+    names = info_raw[0].replace("Names: ", "")
     created = info_raw[1].replace("Created: ", "")
     version = info_raw[2].replace("Version: ", "")
     updated = info_raw[3].replace("Updated: ", "")
@@ -1439,9 +1540,9 @@ def main():
         window_start,
         text = (
             "A graphical user interface for PowerPanel on Linux.\n" +
-            "Created by Liam Ralph.\n" +
+            "Created by " + names + ".\n" +
             "Licensed under the GNU General Public License v3.0.\n" +
-            "v0.0\n\n"
+            "v" + version + "\n\n"
         ),
         font = (font, 10),
         fg = light,
