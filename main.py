@@ -512,6 +512,16 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
     )
     graph.pack(fill=tkinter.BOTH, expand=True)
 
+    # Starting Threading
+
+    update_thread = threading.Thread(target=update_status)
+    update_thread.daemon = True
+    update_thread.start()
+
+    update_graph_thread = threading.Thread(target=update_graph)
+    update_graph_thread.daemon = True
+    update_graph_thread.start()
+
     # Open Child Window
 
     if settings_dimensions is not None:
@@ -1192,11 +1202,19 @@ def update_graph():
             if "stats_list" in globals() and "graph" in globals() and stats_list != []:
             # Check if these variables exist yet
 
-                # Clear Graph
+                # Clear Polygon From Graph
+                # The polygon is the data on the graph
 
-                graph.delete(tkinter.ALL)
+                graph.delete("polygon")
 
                 # Calculate Variables
+
+                if "width" in locals():
+                    prev_width = width
+                    prev_height = height
+                else:
+                    prev_width = 0
+                    prev_height = 0
 
                 width = graph.winfo_width()
                 height = graph.winfo_height()
@@ -1205,6 +1223,32 @@ def update_graph():
                     time_width = max_time - stats_list[0][0]
                 else:
                     time_width = 60 * sampling_interval
+
+                if prev_width != width or prev_height != height:
+                # If (prev_width exists and has changed) or (prev_width does not exist)
+                    
+                    graph.delete("all")
+
+                    # Create Graph Lines
+
+                    for i in range(10):
+
+                        line_height = i / 10 * height
+
+                        graph.winfo_toplevel().after(0, lambda: graph.create_line(
+                            0,
+                            line_height,
+                            width,
+                            line_height,
+                            fill = dark
+                        ))
+                        graph.winfo_toplevel().after(0, lambda: graph.create_text(
+                            30,
+                            line_height - 10,
+                            text = str(int((10 - i) / 10 * max_watts)),
+                            font = (font, 15),
+                            fill = light
+                        ))
 
                 # Create Polygon Points
 
@@ -1231,33 +1275,14 @@ def update_graph():
                 # (stupid? maybe. functional? hopefully)
                 graph.winfo_toplevel().after(0, lambda: graph.create_polygon(
                     points,
-                    fill = highlight
+                    fill = highlight,
+                    tags = "polygon"
                 ))
+                graph.winfo_toplevel().after(0, lambda: graph.tag_lower("polygon"))
 
-                # Create Graph Lines
+                # Wait 1 Second to Update Graph
 
-                for i in range(10):
-
-                    line_height = i / 10 * height
-
-                    graph.winfo_toplevel().after(0, lambda: graph.create_line(
-                        0,
-                        line_height,
-                        width,
-                        line_height,
-                        fill = dark
-                    ))
-                    graph.winfo_toplevel().after(0, lambda: graph.create_text(
-                        30,
-                        line_height - 10,
-                        text = str(int((10 - i) / 10 * max_watts)),
-                        font = (font, 15),
-                        fill = light
-                    ))
-
-                # Wait 100 Miliseconds to Update Graph
-
-                time.sleep(0.1)
+                time.sleep(0.5)
 
             else:
 
@@ -1573,16 +1598,6 @@ def main():
         time.sleep(5)
         window_start.destroy()
         sys.exit()
-
-    # Starting Threading
-
-    update_thread = threading.Thread(target=update_status)
-    update_thread.daemon = True
-    update_thread.start()
-
-    update_graph_thread = threading.Thread(target=update_graph)
-    update_graph_thread.daemon = True
-    update_graph_thread.start()
 
     # Clear Window
 
