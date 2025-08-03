@@ -252,7 +252,7 @@ def check_exit_flag():
 
         clicked.set(True)
 
-        sys.exit() 
+        sys.exit()
 
 def darken_color(color_raw):
 
@@ -1180,7 +1180,7 @@ def toggle_logging():
 
             logging_button.deselect()
             return
-        
+
     # Change Logging
 
     logging = not logging
@@ -1226,7 +1226,7 @@ def update_graph():
 
                 if prev_width != width or prev_height != height:
                 # If (prev_width exists and has changed) or (prev_width does not exist)
-                    
+
                     graph.delete("all")
 
                     # Create Graph Lines
@@ -1298,7 +1298,7 @@ def update_graph():
                 "If you don't notice any problems, this error can be ignored.\n\n" +
                 traceback.format_exc() + "\n"
             )
-            
+
             time.sleep(0.5)
 
 def update_status():
@@ -1434,7 +1434,7 @@ def update_status():
                     for child in frame_main_center.winfo_children():
 
                         child.config(text="N/A")
-                    
+
                     frame_main_center.winfo_children()[0].config(text=state)
 
             else:
