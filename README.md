@@ -41,5 +41,11 @@ be useful for those looking to edit it.
 <br/>
 
 ## Operating System Support
-This project is confirmed to work on Ubuntu 24.04 and Linux Mint 22.1,
-and is assumed to work on any Debian-based operating system.
+
+This project is confirmed to be compatible with:
+ - Ubuntu 24.04.3
+ - Ubuntu 25.04
+ - Linux Mint 22.1
+ - Debian 13
+
+Compatibility is assumed for all debian-based distros.

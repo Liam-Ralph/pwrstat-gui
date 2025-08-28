@@ -11,3 +11,7 @@ Initial app release.
 #### v1.0.2 (August 2025)
 
  - Changed button background colours for better text visibility.
+
+#### v1.0.3 (August 2025)
+
+ - Confirmed support for more operating systems.
