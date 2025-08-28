@@ -1,7 +1,7 @@
 # Contributing
 
 So far, this project is only confirmed to be compatible
-on Ubuntu 24.04 and Linux Mint 22.1, but is assumed to be
+on a few Debian-based operating systems, but is assumed to be
 compatible with any Debian-based operating system. If you
 wish to modify this project to
 
