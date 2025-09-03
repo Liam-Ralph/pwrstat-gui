@@ -1,4 +1,4 @@
 color-set: #000000, #101010, #202020, #404040, #AA0000
-font: Garamond
+font: DejaVu Serif
 log-path: NOT SET
 sampling-interval: 1.0

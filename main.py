@@ -20,10 +20,12 @@ import tkinter
 import tkinter.filedialog
 from tkinter import colorchooser
 from tkinter import messagebox
+from tkinter import ttk
 
 # System
 
 import os
+import platform
 import setproctitle
 import subprocess
 import sys
@@ -46,11 +48,14 @@ import traceback
 
 global PATH_DATA
 global PATH_IMAGES
+global PATH_DOC
+global PATH_LICENSE
 
 # convert-python Change these paths
 PATH_DATA = "/usr/share/pwrstat-gui/data"
 PATH_IMAGES = "/usr/share/pwrstat-gui/images"
-
+PATH_DOC = "/usr/share/doc/pwrstat-gui"
+PATH_LICENSE = "/usr/share/common-licenses/GPL-3"
 
 # Functions
 # Alphabetical order
@@ -90,7 +95,7 @@ def change_color(color_type):
 
             # Change Variable and Settings File
 
-            with open(PATH_DATA+"/settings.txt", "r") as file:
+            with open(PATH_DATA + "/settings.txt", "r") as file:
                 text = file.read().strip()
 
             match (color_type):
@@ -110,7 +115,7 @@ def change_color(color_type):
                     text = text.replace(highlight, color_raw, 1)
                     highlight = color_raw
 
-            with open(PATH_DATA+"/settings.txt", "w") as file:
+            with open(PATH_DATA + "/settings.txt", "w") as file:
                 file.write(text)
 
             # Reload Windows
@@ -137,21 +142,22 @@ def change_color(color_type):
             message = "Color choosing failed: operation cancelled."
         )
 
-def change_font(new_font):
+def change_font(event):
 
     # Global Variables
 
     global window_settings
     global font
+    global font_choice
 
     # Change Font Variable and Settings File
 
-    with open(PATH_DATA+"/settings.txt", "r") as file:
-        text = file.read().strip().replace(font, new_font)
+    with open(PATH_DATA + "/settings.txt", "r") as file:
+        text = file.read().strip().replace(font, font_choice.get())
 
-    font = new_font
+    font = font_choice.get()
 
-    with open(PATH_DATA+"/settings.txt", "w") as file:
+    with open(PATH_DATA + "/settings.txt", "w") as file:
         file.write(text)
 
     # Reload Windows
@@ -181,7 +187,7 @@ def change_log_path():
 
         # Choose Log Path
 
-        choice = tkinter.filedialog.askdirectory(parent=window_settings) + "/"
+        choice = tkinter.filedialog.askdirectory(parent = window_settings) + "/"
 
         if not os.path.exists(choice):
 
@@ -197,12 +203,12 @@ def change_log_path():
 
             # Change Logging Path Variable and Settings File
 
-            with open(PATH_DATA+"/settings.txt", "r") as file:
+            with open(PATH_DATA + "/settings.txt", "r") as file:
                 text = file.read().strip().replace(log_path, choice)
 
             log_path = choice
 
-            with open(PATH_DATA+"/settings.txt", "w") as file:
+            with open(PATH_DATA + "/settings.txt", "w") as file:
                 file.write(text)
 
             # Reload Windows
@@ -217,7 +223,7 @@ def change_sampling_interval(new_sampling_interval):
 
     # Change Sampling Interval Variable and Settings File
 
-    with open(PATH_DATA+"/settings.txt", "r") as file:
+    with open(PATH_DATA + "/settings.txt", "r") as file:
         text = (
             file.read().strip().replace(
                 "sampling-interval: " + str(sampling_interval),
@@ -227,7 +233,7 @@ def change_sampling_interval(new_sampling_interval):
 
     sampling_interval = new_sampling_interval
 
-    with open(PATH_DATA+"/settings.txt", "w") as file:
+    with open(PATH_DATA + "/settings.txt", "w") as file:
         file.write(text)
 
     # Reload Windows
@@ -258,7 +264,7 @@ def darken_color(color_raw):
 
     # Convert Hex Code to RGB
 
-    rgb = [int(color_raw.replace("#", "")[i:i+2], 16) for i in (0, 2, 4)]
+    rgb = [int(color_raw.replace("#", "")[i : i + 2], 16) for i in (0, 2, 4)]
 
     # Darken RGB
 
@@ -272,7 +278,7 @@ def darken_color(color_raw):
 
     return "#{0:02x}{1:02x}{2:02x}".format(rgb[0], rgb[1], rgb[2])
 
-def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
+def open_window_home(window_dimensions = [800, 600], settings_dimensions = None):
 
     # Home Window Variable
 
@@ -315,13 +321,13 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     window_home = tkinter.Tk()
     window_home.geometry(f"{window_width}x{window_height}")
-    window_home.minsize(width=window_width, height=window_height)
-    window_home.configure(bg=darkest)
+    window_home.minsize(width = window_width, height = window_height)
+    window_home.configure(bg = darkest)
     window_home.title("PwrStat GUI")
     window_home.protocol("WM_DELETE_WINDOW", check_exit_flag)
     window_home.iconphoto(
         True,
-        ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/logo.png"))
+        ImageTk.PhotoImage(Image.open(PATH_IMAGES + "/logo.png"))
     )
     window_home.update()
 
@@ -334,7 +340,8 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         bg = darkest
     )
     frame_main.pack_propagate(False)
-    frame_main.pack(fill=tkinter.BOTH, expand=True)
+    frame_main.pack(fill = tkinter.BOTH, expand = True)
+
     frame_footer = tkinter.Frame(
         window_home,
         width = window_width,
@@ -342,7 +349,8 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         bg = dark
     )
     frame_footer.pack_propagate(False)
-    frame_footer.pack(fill=tkinter.BOTH, expand=False)
+    frame_footer.pack(fill = tkinter.BOTH, expand = False)
+
     window_home.update()
 
     # Footer Frame Buttons
@@ -362,6 +370,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         side = tkinter.RIGHT,
         padx = 10
     )
+
     tkinter.Button(
         frame_footer,
         text = "Info",
@@ -377,6 +386,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         side = tkinter.RIGHT,
         padx = 10
     )
+
     tkinter.Button(
         frame_footer,
         text = "Settings",
@@ -392,6 +402,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         side = tkinter.RIGHT,
         padx = 10
     )
+
     window_home.update()
 
     # Logging Toggle
@@ -462,6 +473,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         fill = tkinter.BOTH,
         expand = True
     )
+
     window_home.update()
 
     # Main Left Frame
@@ -510,15 +522,15 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
         height = frame_main_right.winfo_height(),
         bg = darkest
     )
-    graph.pack(fill=tkinter.BOTH, expand=True)
+    graph.pack(fill = tkinter.BOTH, expand = True)
 
     # Starting Threading
 
-    update_thread = threading.Thread(target=update_status)
+    update_thread = threading.Thread(target = update_status)
     update_thread.daemon = True
     update_thread.start()
 
-    update_graph_thread = threading.Thread(target=update_graph)
+    update_graph_thread = threading.Thread(target = update_graph)
     update_graph_thread.daemon = True
     update_graph_thread.start()
 
@@ -531,7 +543,7 @@ def open_window_home(window_dimensions=[800, 600], settings_dimensions=None):
 
     window_home.mainloop()
 
-def open_window_info(window_dimensions=[500, 500]):
+def open_window_info(window_dimensions = [500, 650]):
 
     # Window Variables
 
@@ -557,14 +569,14 @@ def open_window_info(window_dimensions=[500, 500]):
     window_width = window_dimensions[0]
     window_height = window_dimensions[1]
 
-    window_info = tkinter.Toplevel(window_home, bg=darkest)
+    window_info = tkinter.Toplevel(window_home, bg = darkest)
     window_info.grab_set()
     window_info.geometry(f"{window_width}x{window_height}")
-    window_info.minsize(width=window_width, height=window_height)
+    window_info.minsize(width = window_width, height = window_height)
     window_info.title("PwrStat GUI Info")
     window_info.iconphoto(
         True,
-        ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/info.png"))
+        ImageTk.PhotoImage(Image.open(PATH_IMAGES + "/info.png"))
     )
 
     frame_main = tkinter.Frame(
@@ -574,7 +586,8 @@ def open_window_info(window_dimensions=[500, 500]):
         bg = darkest
     )
     frame_main.pack_propagate(False)
-    frame_main.pack(fill=tkinter.BOTH, expand=True)
+    frame_main.pack(fill = tkinter.BOTH, expand = True)
+
     frame_footer = tkinter.Frame(
         window_info,
         width = window_width,
@@ -582,7 +595,8 @@ def open_window_info(window_dimensions=[500, 500]):
         bg = dark
     )
     frame_footer.pack_propagate(False)
-    frame_footer.pack(fill=tkinter.BOTH, expand=False)
+    frame_footer.pack(fill = tkinter.BOTH, expand = False)
+
     window_info.update()
 
     # Close Window Button
@@ -609,24 +623,27 @@ def open_window_info(window_dimensions=[500, 500]):
     tkinter.Label(
         frame_main,
         text = "PwrStat GUI",
-        font = (font, 20),
+        font = (font, 16),
         fg = highlight,
         bg = darkest,
         height = 2
     ).pack()
+
     tkinter.Label(
         frame_main,
         text = (
             names + "\n" +
             f"Created {created}\n" +
             f"Version {version}\n" +
-            f"Last Updated {updated}\n"
+            f"Last Updated {updated}\n" +
+            "https://github.com/Liam-Ralph/pwrstat-gui"
         ),
         font = (font, 12),
         fg = light,
         bg = darkest,
         height = 5
     ).pack()
+
     window_info.update()
 
     # UPS Info
@@ -642,7 +659,7 @@ def open_window_info(window_dimensions=[500, 500]):
     tkinter.Label(
         frame_main,
         text = "UPS Information",
-        font = (font, 20),
+        font = (font, 16),
         fg = highlight,
         bg = darkest,
         height = 2
@@ -658,35 +675,191 @@ def open_window_info(window_dimensions=[500, 500]):
             for property_raw in properties_raw[1:]
         ]
 
+        label_text = ""
         for property in properties:
-            tkinter.Label(
-                frame_main,
-                text = f"{property[0]}: {property[1]}",
-                font = (font, 12),
-                fg = light,
-                bg = darkest,
-                height = 1
-            ).pack()
-            window_info.update()
+            label_text += f"{property[0]}: {property[1]}\n"
+        label_text = label_text.strip()
 
     else:
 
-        tkinter.Label(
-            frame_main,
-            text = (
-                "No UPS info available,\n" +
-                "check connection using lsusb."
-            ),
-            font = (font, 12),
-            fg = light,
-            bg = darkest,
-            height = 7
-        ).pack()
-        window_info.update()
+        label_text = "No UPS info available,\ncheck connection using lsusb."
+
+    tkinter.Label(
+        frame_main,
+        text = label_text,
+        font = (font, 12),
+        fg = light,
+        bg = darkest,
+        height = 4
+    ).pack()
+
+    window_info.update()
+
+    # Other Info Popups
+
+    tkinter.Label(
+        frame_main,
+        text = "Other Information",
+        font = (font, 16),
+        fg = highlight,
+        bg = darkest,
+        height = 2
+    ).pack()
+    window_info.update()
+
+    tkinter.Button(
+        frame_main,
+        text = "View Readme",
+        font = (font, 12),
+        width = 15,
+        height = 1,
+        fg = light,
+        bg = dark,
+        activeforeground = highlight,
+        activebackground = light,
+        command = lambda: open_window_popup("README.md")
+    ).pack(
+        pady = 5
+    )
+
+    tkinter.Button(
+        frame_main,
+        text = "View Changelog",
+        font = (font, 12),
+        width = 15,
+        height = 1,
+        fg = light,
+        bg = dark,
+        activeforeground = highlight,
+        activebackground = light,
+        command = lambda: open_window_popup("CHANGELOG.md")
+    ).pack(
+        pady = 5
+    )
+
+    tkinter.Button(
+        frame_main,
+        text = "View License",
+        font = (font, 12),
+        width = 15,
+        height = 1,
+        fg = light,
+        bg = dark,
+        activeforeground = highlight,
+        activebackground = light,
+        command = lambda: open_window_popup("License")
+    ).pack(
+        pady = 5
+    )
+
+    window_info.update()
 
     # Window Mainloop
 
     window_info.mainloop()
+
+def open_window_popup(popup_file):
+
+    # Global Variables
+
+    global window_info
+
+    # Popup Window Setup
+
+    window_width = 800
+    window_height = 600
+
+    window_popup = tkinter.Toplevel(window_info, bg = darkest)
+    window_popup.grab_set()
+    window_popup.geometry(f"{window_width}x{window_height}")
+    window_popup.minsize(width = window_width, height = window_height)
+    window_popup.title("PwrStat GUI Info")
+    window_popup.iconphoto(
+        True,
+        ImageTk.PhotoImage(Image.open(PATH_IMAGES + "/info.png"))
+    )
+    window_popup.update()
+
+    frame_main = tkinter.Frame(
+        window_popup,
+        width = window_width,
+        height = window_height - 60,
+        bg = darkest
+    )
+    frame_main.pack_propagate(False)
+    frame_main.pack(fill = tkinter.BOTH, expand = True)
+
+    frame_footer = tkinter.Frame(
+        window_popup,
+        width = window_width,
+        height = 60,
+        bg = dark
+    )
+    frame_footer.pack_propagate(False)
+    frame_footer.pack(fill = tkinter.BOTH, expand = False)
+
+    window_popup.update()
+
+    # Footer Frame Buttons
+
+    tkinter.Button(
+        frame_footer,
+        text = "Close",
+        font = (font, 12),
+        width = 10,
+        height = 1,
+        fg = light,
+        bg = dark,
+        activeforeground = highlight,
+        activebackground = light,
+        command = window_popup.destroy
+    ).pack(
+        side = tkinter.RIGHT,
+        padx = 10
+    )
+
+    # Adding Popup Text
+
+    if popup_file == "License":
+
+        label_text = (
+            "This license can also be found at\n" +
+            "Your Device: /usr/share/common-licenses/GPL-3\n" +
+            "Project Page (this is the official license for this project):\n" +
+            "https://github.com/Liam-Ralph/pwrstat-gui/blob/main/LICENSE\n" +
+            "GNU Website: https://www.gnu.org/licenses/gpl-3.0.en.html\n\n"
+        )
+        with open(PATH_LICENSE, "r") as file:
+            label_text += file.read().replace("    ", "")
+
+    else:
+
+        file_path = PATH_DOC + "/" + popup_file
+
+        with open(file_path, "r") as file:
+            label_text = file.read()
+        for item in ("# ", "#", "\n<br/>", "[", "__"):
+            label_text = label_text.replace(item, "")
+        label_text = label_text.replace("]", " ").replace("`", "\"")
+
+    text_widget = tkinter.Text(
+        frame_main,
+        font = (font, 12),
+        fg = light,
+        bg = darkest,
+        highlightthickness = 0,
+        borderwidth = 0
+    )
+    text_widget.pack(
+        padx = 10,
+        pady = 10,
+        expand = True,
+        fill = tkinter.BOTH
+    )
+    text_widget.tag_configure("center", justify="center")
+    text_widget.insert("1.0", label_text)
+    text_widget.tag_add("center", "1.0", "end")
+    window_popup.update()
 
 def open_window_settings(window_dimensions=[800, 600]):
 
@@ -706,20 +879,21 @@ def open_window_settings(window_dimensions=[800, 600]):
     global log_path
     global sampling_interval
 
+    global font_choice
+
     # Settings Window Setup
 
     window_width = window_dimensions[0]
     window_height = window_dimensions[1]
 
-    window_settings = tkinter.Toplevel(window_home, bg=darkest)
+    window_settings = tkinter.Toplevel(window_home, bg = darkest)
     window_settings.grab_set()
     window_settings.geometry(f"{window_width}x{window_height}")
-    window_settings.minsize(width=window_width, height=window_height)
-    window_settings.minsize(width=window_width, height=window_height)
+    window_settings.minsize(width = window_width, height = window_height)
     window_settings.title("PwrStat GUI Settings")
     window_settings.iconphoto(
         True,
-        ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/settings.png"))
+        ImageTk.PhotoImage(Image.open(PATH_IMAGES + "/settings.png"))
     )
 
     frame_main = tkinter.Frame(
@@ -729,14 +903,17 @@ def open_window_settings(window_dimensions=[800, 600]):
         bg = darkest
     )
     frame_main.pack_propagate(False)
-    frame_main.pack(fill=tkinter.BOTH, expand=True)
-    frame_footer = tkinter.Frame(window_settings,
+    frame_main.pack(fill = tkinter.BOTH, expand = True)
+
+    frame_footer = tkinter.Frame(
+        window_settings,
         width = window_width,
         height = 60,
         bg = dark
     )
     frame_footer.pack_propagate(False)
-    frame_footer.pack(fill=tkinter.BOTH, expand=False)
+    frame_footer.pack(fill = tkinter.BOTH, expand = False)
+
     window_settings.update()
 
     # Footer Frame Buttons
@@ -794,7 +971,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         bg = darken_color(darkest)
     )
     color_set_frame.pack_propagate(False)
-    color_set_frame.pack(fill=tkinter.BOTH, expand=True) # Actual height > 50
+    color_set_frame.pack(fill = tkinter.BOTH, expand = True) # Actual height > 50
 
     font_frame = tkinter.Frame(
         frame_main,
@@ -803,7 +980,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         bg = darkest
     )
     font_frame.pack_propagate(False)
-    font_frame.pack(fill=tkinter.BOTH, expand=True)
+    font_frame.pack(fill = tkinter.BOTH, expand = True)
 
     log_path_frame = tkinter.Frame(
         frame_main,
@@ -812,7 +989,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         bg = darken_color(darkest)
     )
     log_path_frame.pack_propagate(False)
-    log_path_frame.pack(fill=tkinter.BOTH, expand=True)
+    log_path_frame.pack(fill = tkinter.BOTH, expand = True)
 
     sampling_interval_frame = tkinter.Frame(
         frame_main,
@@ -821,7 +998,7 @@ def open_window_settings(window_dimensions=[800, 600]):
         bg = darkest
     )
     sampling_interval_frame.pack_propagate(False)
-    sampling_interval_frame.pack(fill=tkinter.BOTH, expand=True)
+    sampling_interval_frame.pack(fill = tkinter.BOTH, expand = True)
 
     window_settings.update()
 
@@ -957,27 +1134,24 @@ def open_window_settings(window_dimensions=[800, 600]):
         padx = 5
     )
 
+    font_list = subprocess.run(
+        "fc-list : family | sort | uniq",
+        shell = True,
+        capture_output = True,
+        text = True
+    ).stdout.strip().split("\n")
+
     font_choice = tkinter.StringVar()
     font_choice.set(font)
-    tkinter.OptionMenu(
+    font_combobox = ttk.Combobox(
         font_frame,
-        font_choice,
-        *[
-            "Garamond",
-            "Segoe UI",
-            "Times New Roman",
-            "Arial",
-            "Verdana",
-            "Helvetica",
-            "Ubuntu",
-            "Noto Sans",
-            "Comic Sans",
-            "Courier New",
-            "Hack",
-            "Monospace Regular 12",
-        ],
-        command = change_font
-    ).pack(
+        textvariable = font_choice
+    )
+    font_combobox["values"] = font_list
+    font_combobox["state"] = "readonly"
+    font_combobox.bind("<<ComboboxSelected>>", change_font)
+    font_combobox.current(font_list.index(font))
+    font_combobox.pack(
         side = tkinter.LEFT,
         padx = 5
     )
@@ -1125,16 +1299,16 @@ def reset_settings():
     medium = "#202020"
     light = "#404040"
     highlight = "#AA0000"
-    font = "Garamond"
+    font = "DejaVu Serif"
     log_path = "NOT SET"
     sampling_interval = 1.0
 
     # Resetting Settings File
 
-    with open(PATH_DATA+"/settings.txt", "w") as file:
+    with open(PATH_DATA + "/settings.txt", "w") as file:
         file.write(
             """color-set: #000000, #101010, #202020, #404040, #AA0000
-            font: Garamond
+            font: DejaVu Serif
             log-path: NOT SET
             sampling-interval: 1.0""".replace("    ", "") # remove code indents
         )
@@ -1384,7 +1558,7 @@ def update_status():
 
                             # File Doesn't Exist, Create and Add First Row
 
-                            with open(file_path, mode="w", newline="") as file:
+                            with open(file_path, mode = "w", newline = "") as file:
                                 csv.writer(file).writerows(
                                     [[
                                         "Time", "Utility Voltage", "Output Voltage",
@@ -1398,7 +1572,7 @@ def update_status():
                         extended_values = [str(time.time())]
                         extended_values.extend(values)
 
-                        with open(file_path, mode="a", newline="") as file:
+                        with open(file_path, mode = "a", newline = "") as file:
                             csv.writer(file).writerows(
                                 [
                                     extended_values
@@ -1422,10 +1596,10 @@ def update_status():
                     values[5] += "%"
 
                     children = frame_main_center.winfo_children()
-                    children[0].config(text="Normal")
+                    children[0].config(text = "Normal")
 
                     for i in range(6):
-                        children[i+1].config(text=values[i])
+                        children[i + 1].config(text = values[i])
 
                 else:
 
@@ -1433,9 +1607,9 @@ def update_status():
 
                     for child in frame_main_center.winfo_children():
 
-                        child.config(text="N/A")
+                        child.config(text = "N/A")
 
-                    frame_main_center.winfo_children()[0].config(text=state)
+                    frame_main_center.winfo_children()[0].config(text = state)
 
             else:
 
@@ -1443,7 +1617,7 @@ def update_status():
 
                 for child in frame_main_center.winfo_children():
 
-                    child.config(text="N/A")
+                    child.config(text = "N/A")
 
             time.sleep(sampling_interval)
 
@@ -1498,32 +1672,68 @@ def main():
 
     if os.geteuid() != 0:
 
-        # Get DISPLAY and XAUTHORITY if they exist
-        env = os.environ.copy()
-        display = env.get("DISPLAY", ":0")  # Default to :0 if missing
-        xauthority = env.get("XAUTHORITY", "/tmp/xauth_XIOaut")
+        if "antix" not in platform.platform().lower():
 
-        # Relaunch with pkexec and pass the environment variables
+            # Running on Non-antiX, using Pkexec
 
-        command = [
-            "pkexec",
-            "env",
-            f"DISPLAY={display}",
-            f"XAUTHORITY={xauthority}",
-            sys.executable
-        ] + sys.argv
-        os.execvp("pkexec", command)
+            # Get Display and XAuthority
+
+            env = os.environ.copy()
+            display = env.get("DISPLAY", ":0")  # Default to :0 if missing
+            xauthority = env.get("XAUTHORITY", "/tmp/xauth_XIOaut")
+
+            # Relaunch with Pkexec
+
+            command = [
+                "pkexec",
+                "env",
+                f"DISPLAY={display}",
+                f"XAUTHORITY={xauthority}",
+                sys.executable
+            ] + sys.argv
+            os.execvp("pkexec", command)
+
+        else:
+
+            # antiX, using regular sudo, PwrStat GUI fails
+
+            window_error = tkinter.Tk()
+            window_error.geometry("800x400")
+            window_error.configure(bg = "#000000")
+            window_error.title("PwrStat GUI Failed")
+            window_error.iconphoto(
+                False,
+                ImageTk.PhotoImage(Image.open(PATH_IMAGES + "/logo.png"))
+            )
+            window_error.update()
+
+            tkinter.Label(
+                window_error,
+                text = (
+                    "On antiX, you must run PwrStat GUI using\n" +
+                    "\"sudo pwrstat-gui\" in the terminal.\n" +
+                    "App shutdown in 10 seconds."
+                ),
+                font = ("DejaVu Serif", 16),
+                fg = "#AA0000",
+                bg = "#000000",
+                height = 3
+            ).pack()
+            window_error.update()
+            time.sleep(10)
+            window_error.destroy()
+            sys.exit()
 
     # Info and Settings Reading
 
-    with open(PATH_DATA+"/info.txt", "r") as file:
+    with open(PATH_DATA + "/info.txt", "r") as file:
         info_raw = file.read().split("\n")
     names = info_raw[0].replace("Names: ", "")
     created = info_raw[1].replace("Created: ", "")
     version = info_raw[2].replace("Version: ", "")
     updated = info_raw[3].replace("Updated: ", "")
 
-    with open(PATH_DATA+"/settings.txt", "r") as file:
+    with open(PATH_DATA + "/settings.txt", "r") as file:
         settings_raw = file.read().split("\n")
     color_set = settings_raw[0].replace("color-set: ", "").split(", ")
     darkest = color_set[0]
@@ -1539,13 +1749,13 @@ def main():
 
     window_start = tkinter.Tk()
     window_start.geometry("800x600")
-    window_start.minsize(width=800, height=600)
-    window_start.configure(bg=darkest)
+    window_start.minsize(width = 800, height = 600)
+    window_start.configure(bg = darkest)
     window_start.title("PwrStat GUI")
     window_start.protocol("WM_DELETE_WINDOW", check_exit_flag)
     window_start.iconphoto(
         False,
-        ImageTk.PhotoImage(Image.open(PATH_IMAGES+"/logo.png"))
+        ImageTk.PhotoImage(Image.open(PATH_IMAGES + "/logo.png"))
     )
     window_start.update()
 
@@ -1587,7 +1797,7 @@ def main():
             window_start,
             text = (
                 "PowerPanel Linux must be installed.\n" +
-                "App shutdown in 5 seconds."
+                "App shutdown in 10 seconds."
             ),
             font = (font, 20),
             fg = "#AA0000",
@@ -1595,7 +1805,7 @@ def main():
             height = 2
         ).pack()
         window_start.update()
-        time.sleep(5)
+        time.sleep(10)
         window_start.destroy()
         sys.exit()
 

@@ -1,7 +1,7 @@
 # PwrStat GUI
 ### Released July 2025
-### Version 1.0.2
-### Updated August 2025
+### Version 1.1.0
+### Updated September 2025
 
 <br/>
 
@@ -28,10 +28,10 @@ This application uses approximately 15 MiB of storage.
 
 ## Installation
 
-1. Download the .deb file [here](liam-ralph.github.io/projects/pwrstat-gui)
-2. Navigate the folder you downloaded to
+1. Download the .deb file [here](liam-ralph.github.io/projects/pwrstat-gui).
+2. Navigate the folder you downloaded to.
 3. Install the file using `apt install ./<file_name>.deb`, replacing
-`<file_name>` with the actual .deb file's name
+`<file_name>` with the actual .deb file's name.
 
 I have also added a developer package to my website, which includes
 a number of other files used to create the .deb package, as well as
@@ -47,5 +47,8 @@ This project is confirmed to be compatible with:
  - Ubuntu 25.04
  - Linux Mint 22.1
  - Debian 13
+ - Pop!_OS 22.04 (v1.1.0+)
+ - antiX 23.2 (v1.1.0+, must be started from terminal)
+ - MX Linux 23.6
 
 Compatibility is assumed for all debian-based distros.
