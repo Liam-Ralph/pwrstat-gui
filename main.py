@@ -95,28 +95,30 @@ def change_color(color_type):
 
             # Change Variable and Settings File
 
-            with open(PATH_DATA + "/settings.txt", "r") as file:
+            with open(PATH_DATA + "/settings.txt", "r+") as file:
+
                 text = file.read().strip()
 
-            match (color_type):
-                case "darkest":
-                    text = text.replace(darkest, color_raw, 1)
-                    darkest = color_raw
-                case "dark":
-                    text = text.replace(dark, color_raw, 1)
-                    dark = color_raw
-                case "medium":
-                    text = text.replace(medium, color_raw, 1)
-                    medium = color_raw
-                case "light":
-                    text = text.replace(light, color_raw, 1)
-                    light = color_raw
-                case "highlight":
-                    text = text.replace(highlight, color_raw, 1)
-                    highlight = color_raw
+                match (color_type):
+                    case "darkest":
+                        text = text.replace(darkest, color_raw, 1)
+                        darkest = color_raw
+                    case "dark":
+                        text = text.replace(dark, color_raw, 1)
+                        dark = color_raw
+                    case "medium":
+                        text = text.replace(medium, color_raw, 1)
+                        medium = color_raw
+                    case "light":
+                        text = text.replace(light, color_raw, 1)
+                        light = color_raw
+                    case "highlight":
+                        text = text.replace(highlight, color_raw, 1)
+                        highlight = color_raw
 
-            with open(PATH_DATA + "/settings.txt", "w") as file:
+                file.seek(0)
                 file.write(text)
+                file.truncate()
 
             # Reload Windows
 
@@ -142,23 +144,22 @@ def change_color(color_type):
             message = "Color choosing failed: operation cancelled."
         )
 
-def change_font(event):
+def change_font(new_font):
 
     # Global Variables
 
     global window_settings
     global font
-    global font_choice
 
     # Change Font Variable and Settings File
 
-    with open(PATH_DATA + "/settings.txt", "r") as file:
-        text = file.read().strip().replace(font, font_choice.get())
-
-    font = font_choice.get()
-
-    with open(PATH_DATA + "/settings.txt", "w") as file:
+    with open(PATH_DATA + "/settings.txt", "r+") as file:
+        text = file.read().strip().replace(font, new_font)
+        file.seek(0)
         file.write(text)
+        file.truncate()
+
+    font = new_font
 
     # Reload Windows
 
@@ -187,29 +188,29 @@ def change_log_path():
 
         # Choose Log Path
 
-        choice = tkinter.filedialog.askdirectory(parent = window_settings) + "/"
+        new_log_path = tkinter.filedialog.askdirectory(parent = window_settings) + "/"
 
-        if not os.path.exists(choice):
+        if not os.path.exists(new_log_path):
 
             # Chosen Directory Does Not Exist
 
             messagebox.showwarning(
                 parent = window_settings,
                 title = "Log Path Choosing Failed",
-                message = f"Log path choosing failed: Directory {choice} does not exist."
+                message = f"Log path choosing failed: Directory {new_log_path} does not exist."
             )
 
         else:
 
             # Change Logging Path Variable and Settings File
 
-            with open(PATH_DATA + "/settings.txt", "r") as file:
-                text = file.read().strip().replace(log_path, choice)
-
-            log_path = choice
-
-            with open(PATH_DATA + "/settings.txt", "w") as file:
+            with open(PATH_DATA + "/settings.txt", "r+") as file:
+                text = file.read().strip().replace(log_path, new_log_path)
+                file.seek(0)
                 file.write(text)
+                file.truncate()
+
+            log_path = new_log_path
 
             # Reload Windows
 
@@ -223,18 +224,18 @@ def change_sampling_interval(new_sampling_interval):
 
     # Change Sampling Interval Variable and Settings File
 
-    with open(PATH_DATA + "/settings.txt", "r") as file:
+    with open(PATH_DATA + "/settings.txt", "r+") as file:
         text = (
             file.read().strip().replace(
                 "sampling-interval: " + str(sampling_interval),
                 "sampling-interval: " + str(new_sampling_interval)
             ) # '"sampling-interval: " +' needed to prevent replacing an integer from color-set
         )
+        file.seek(0)
+        file.write(text)
+        file.truncate()
 
     sampling_interval = new_sampling_interval
-
-    with open(PATH_DATA + "/settings.txt", "w") as file:
-        file.write(text)
 
     # Reload Windows
 
@@ -879,8 +880,6 @@ def open_window_settings(window_dimensions=[800, 600]):
     global log_path
     global sampling_interval
 
-    global font_choice
-
     # Settings Window Setup
 
     window_width = window_dimensions[0]
@@ -1010,11 +1009,10 @@ def open_window_settings(window_dimensions=[800, 600]):
         font = (font, 14),
         fg = highlight,
         bg = darken_color(darkest),
-        width = 11,
         height = 1
     ).pack(
         side = tkinter.LEFT,
-        padx = 5
+        padx = 10
     )
 
     tkinter.Button(
@@ -1127,11 +1125,10 @@ def open_window_settings(window_dimensions=[800, 600]):
         font = (font, 14),
         fg = highlight,
         bg = darkest,
-        width = 6,
         height = 1
     ).pack(
         side = tkinter.LEFT,
-        padx = 5
+        padx = 10
     )
 
     font_list = subprocess.run(
@@ -1149,7 +1146,7 @@ def open_window_settings(window_dimensions=[800, 600]):
     )
     font_combobox["values"] = font_list
     font_combobox["state"] = "readonly"
-    font_combobox.bind("<<ComboboxSelected>>", change_font)
+    font_combobox.bind("<<ComboboxSelected>>", lambda event: change_font(font_choice.get()))
     font_combobox.current(font_list.index(font))
     font_combobox.pack(
         side = tkinter.LEFT,
@@ -1166,18 +1163,16 @@ def open_window_settings(window_dimensions=[800, 600]):
         font = (font, 14),
         fg = highlight,
         bg = darken_color(darkest),
-        width = (10 + len(log_path)),
         height = 1
     ).pack(
         side = tkinter.LEFT,
-        padx = 5
+        padx = 10
     )
 
     tkinter.Button(
         log_path_frame,
         text = "Change Log Path",
         font = (font, 10),
-        width = 16,
         height = 1,
         fg = light,
         bg = dark,
@@ -1199,14 +1194,13 @@ def open_window_settings(window_dimensions=[800, 600]):
         font = (font, 14),
         fg = highlight,
         bg = darkest,
-        width = 17,
         height = 1
     ).pack(
         side = tkinter.LEFT,
-        padx = 5
+        padx = 10
     )
 
-    tkinter.Scale(
+    sampling_interval_scale = tkinter.Scale(
         sampling_interval_frame,
         variable = sampling_interval_choice,
         from_ = 1,
@@ -1217,26 +1211,13 @@ def open_window_settings(window_dimensions=[800, 600]):
         bg = medium,
         troughcolor = dark,
         activebackground = light
-    ).pack(
+    )
+    sampling_interval_scale.pack(
         side = tkinter.LEFT,
         padx = 5
     )
-
-    tkinter.Button(
-        sampling_interval_frame,
-        text = "Update",
-        font = (font, 10),
-        width = 8,
-        height = 1,
-        fg = light,
-        bg = dark,
-        activeforeground = highlight,
-        activebackground = light,
-        command = lambda: change_sampling_interval(sampling_interval_choice.get())
-    ).pack(
-        side = tkinter.LEFT,
-        padx = 15
-    )
+    sampling_interval_scale.bind("<ButtonRelease-1>",
+        lambda event: change_sampling_interval(sampling_interval_choice.get()))
 
     window_settings.update()
 
@@ -1299,7 +1280,7 @@ def reset_settings():
     medium = "#202020"
     light = "#404040"
     highlight = "#AA0000"
-    font = "DejaVu Serif"
+    font = "DejaVu Sans"
     log_path = "NOT SET"
     sampling_interval = 1.0
 
@@ -1308,7 +1289,7 @@ def reset_settings():
     with open(PATH_DATA + "/settings.txt", "w") as file:
         file.write(
             """color-set: #000000, #101010, #202020, #404040, #AA0000
-            font: DejaVu Serif
+            font: DejaVu Sans
             log-path: NOT SET
             sampling-interval: 1.0""".replace("    ", "") # remove code indents
         )
@@ -1454,7 +1435,7 @@ def update_graph():
                 ))
                 graph.winfo_toplevel().after(0, lambda: graph.tag_lower("polygon"))
 
-                # Wait 1 Second to Update Graph
+                # Wait 500 Milliseconds to Update Graph
 
                 time.sleep(0.5)
 
@@ -1569,15 +1550,11 @@ def update_status():
 
                         # Add Info Row
 
-                        extended_values = [str(time.time())]
+                        extended_values = [datetime.datetime.now().strftime("%H:%M:%S")]
                         extended_values.extend(values)
 
                         with open(file_path, mode = "a", newline = "") as file:
-                            csv.writer(file).writerows(
-                                [
-                                    extended_values
-                                ]
-                            )
+                            csv.writer(file).writerows([extended_values])
 
                     # Update Stats List
 
@@ -1714,7 +1691,7 @@ def main():
                     "\"sudo pwrstat-gui\" in the terminal.\n" +
                     "App shutdown in 10 seconds."
                 ),
-                font = ("DejaVu Serif", 16),
+                font = ("DejaVu Sans", 16),
                 fg = "#AA0000",
                 bg = "#000000",
                 height = 3
