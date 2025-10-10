@@ -1,11 +1,17 @@
-## v1.1.1 (September 2025)
+## Version 1.1.2 (October 2025)
+
+ - Added documentation comments to functions.
+ - Confirmed support for Linux Mint 22.2.
+ - Updated CHANGELOG formatting (vx.y.z --> Version x.y.z)
+
+## Version 1.1.1 (September 2025)
 
  - Changed logging time from epoch to HH:MM:SS string.
  - Changed default font.
  - Fixed settings window text width.
  - Improved settings updating, removing need for sampling interval "Update" button.
 
-## v1.1.0 (September 2025)
+## Version 1.1.0 (September 2025)
 
  - Added viewing of README, CHANGELOG, and License in-app.
  - Tweaked code conventions.
@@ -18,20 +24,20 @@
  - Extended shutdown time to 10 seconds when PowerPanel or sudo permissions are
    missing.
 
-## v1.0.3 (August 2025)
+## Version 1.0.3 (August 2025)
 
  - Confirmed support for more operating systems.
 
-## v1.0.2 (August 2025)
+## Version 1.0.2 (August 2025)
 
  - Changed button background colours for better text visibility.
 
-## v1.0.1 (July 2025)
+## Version 1.0.1 (July 2025)
 
  - Changed graph updater code to prevent flashing images.
  - Reduced graph update frequency, reducing flashing but also reducing
    responsiveness to window size changes.
 
-## v1.0.0 (July 2025)
+## Version 1.0.0 (July 2025)
 
 Initial app release.
