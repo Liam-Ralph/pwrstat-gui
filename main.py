@@ -57,10 +57,15 @@ PATH_IMAGES = "/usr/share/pwrstat-gui/images"
 PATH_DOC = "/usr/share/doc/pwrstat-gui"
 PATH_LICENSE = "/usr/share/common-licenses/GPL-3"
 
+
 # Functions
 # Alphabetical order
 
 def change_color(color_type):
+    """
+    Change user's selected color with a popup box. Color to change (darkest,
+    dark, etc.) selected with color_type. Saves new color in settings file.
+    """
 
     # Window Variables
 
@@ -145,6 +150,9 @@ def change_color(color_type):
         )
 
 def change_font(new_font):
+    """
+    Change user's font to new_font. Saves new font in settings file.
+    """
 
     # Global Variables
 
@@ -166,6 +174,10 @@ def change_font(new_font):
     reload_windows()
 
 def change_log_path():
+    """
+    Change the path for saving logged data. Create popup for user to choose
+    new path. Save new path to settings file.
+    """
 
     # Global Variables
 
@@ -217,6 +229,10 @@ def change_log_path():
             reload_windows()
 
 def change_sampling_interval(new_sampling_interval):
+    """
+    Change sampling interval for updating home screen and logging to
+    new_sampling_interval. Save new sampling interval to settings file.
+    """
 
     # Settings Variable
 
@@ -242,9 +258,12 @@ def change_sampling_interval(new_sampling_interval):
     reload_windows()
 
 def check_exit_flag():
-
-    # Used to differentiate between closing windows and reloading windows,
-    # since the program will be halted on main window close
+    """
+    Check whether the exit flag is active. If the exit flag is active, the
+    program will exit (user closed home window). If the exit flag is inactive,
+    the windows are being reloaded (e.g. after settings change) and the program
+    does not exit.
+    """
 
     # Global Variables
 
@@ -262,6 +281,10 @@ def check_exit_flag():
         sys.exit()
 
 def darken_color(color_raw):
+    """
+    Return a darkened color by reducing each RGB value by 5. If the RGB value is
+    less than 5, set it to 5, lightening it.
+    """
 
     # Convert Hex Code to RGB
 
@@ -280,6 +303,12 @@ def darken_color(color_raw):
     return "#{0:02x}{1:02x}{2:02x}".format(rgb[0], rgb[1], rgb[2])
 
 def open_window_home(window_dimensions = [800, 600], settings_dimensions = None):
+    """
+    Open home/main window at window_dimensions[height, width]. If
+    settings_dimensions is specified, it will also be opened, but it is None by
+    default. Non-default settings are used when the windows are reloaded after
+    a settings change.
+    """
 
     # Home Window Variable
 
@@ -545,6 +574,10 @@ def open_window_home(window_dimensions = [800, 600], settings_dimensions = None)
     window_home.mainloop()
 
 def open_window_info(window_dimensions = [500, 650]):
+    """
+    Open info window, displaying app and UPS information, as well buttons for
+    the project's license, readme, and changelog.
+    """
 
     # Window Variables
 
@@ -760,6 +793,10 @@ def open_window_info(window_dimensions = [500, 650]):
     window_info.mainloop()
 
 def open_window_popup(popup_file):
+    """
+    Open a popup with the contents of popup_file (e.g. the project's license).
+    Called from info window.
+    """
 
     # Global Variables
 
@@ -863,6 +900,11 @@ def open_window_popup(popup_file):
     window_popup.update()
 
 def open_window_settings(window_dimensions=[800, 600]):
+    """
+    Open settings window, for changing user settings, at
+    window_dimensions[width, height]. Non-default settings are used when the
+    window is reloaded after a settings change.
+    """
 
     # Window Variables
 
@@ -1226,6 +1268,10 @@ def open_window_settings(window_dimensions=[800, 600]):
     window_settings.mainloop()
 
 def reload_windows():
+    """
+    Reload all open windows, which must include the home window, and can include
+    the settings window if it is open.
+    """
 
     # Window Variables
 
@@ -1261,6 +1307,9 @@ def reload_windows():
     )
 
 def reset_settings():
+    """
+    Reset all user settings to defaults. Save default settings to settings file.
+    """
 
     # Global Variables
 
@@ -1288,10 +1337,10 @@ def reset_settings():
 
     with open(PATH_DATA + "/settings.txt", "w") as file:
         file.write(
-            """color-set: #000000, #101010, #202020, #404040, #AA0000
-            font: DejaVu Sans
-            log-path: NOT SET
-            sampling-interval: 1.0""".replace("    ", "") # remove code indents
+            "color-set: #000000, #101010, #202020, #404040, #AA0000\n" +
+            "font: DejaVu Sans\n" +
+            "log-path: NOT SET\n" +
+            "sampling-interval: 1.0"
         )
 
     # Reload Windows
@@ -1299,6 +1348,9 @@ def reset_settings():
     reload_windows()
 
 def toggle_logging():
+    """
+    Toggle on/off logging of UPS info. Can fail if logging path does not exist.
+    """
 
     # Home Window
 
@@ -1341,6 +1393,9 @@ def toggle_logging():
     logging = not logging
 
 def update_graph():
+    """
+    Update graph on home window.
+    """
 
     # Global Variables
 
@@ -1457,6 +1512,10 @@ def update_graph():
             time.sleep(0.5)
 
 def update_status():
+    """
+    Update text information on the home screen, such as the UPS's status, load,
+    etc.
+    """
 
     # Global Variables
 
@@ -1614,6 +1673,9 @@ def update_status():
 # Main Function
 
 def main():
+    """
+    Main Function. Display startup window and open home window.
+    """
 
     # Info and Settings Variables
 
