@@ -1827,13 +1827,18 @@ def main():
 
     # Dependency Check
 
-    distro = subprocess.run(["cat", "/etc/*-release"], capture_output = True, text = True).lower()
+    with open("/etc/os-release", "r") as file:
+        distro = file.read()
+    with open("/etc/lsb-release", "r") as file:
+        distro += file.read()
     if "debian" in distro:
         command = ["dpkg-query", "--list", "powerpanel"]
     elif "fedora" in distro:
         command = ["dnf", "list", "installed", "powerpanel"]
-    else:
+    elif "arch" in distro:
         command = ["pacman", "-Q", "powerpanel"]
+    else:
+        command = ""
 
     if (not "powerpanel" in subprocess.run(
         command,
