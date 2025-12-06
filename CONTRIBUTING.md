@@ -1,9 +1,7 @@
 # Contributing
 
-So far, this project is only confirmed to be compatible
-on a few Debian-based operating systems, but is assumed to be
-compatible with any Debian-based operating system. If you
-wish to modify this project to
+So far, this project is only confirmed to be compatible with some
+Linux distributions. If you wish to modify this project to
 
 1. Work on other versions of Linux
 2. Support more languages
