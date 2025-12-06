@@ -1827,8 +1827,16 @@ def main():
 
     # Dependency Check
 
+    distro = subprocess.run(["cat", "/etc/*-release"], capture_output = True, text = True).lower()
+    if "debian" in distro:
+        command = ["dpkg-query", "--list", "powerpanel"]
+    elif "fedora" in distro:
+        command = ["dnf", "list", "installed", "powerpanel"]
+    else:
+        command = ["pacman", "-Q", "powerpanel"]
+
     if (not "powerpanel" in subprocess.run(
-        ["dpkg-query", "--list", "powerpanel"],
+        command,
         capture_output = True,
         text = True
     ).stdout):
