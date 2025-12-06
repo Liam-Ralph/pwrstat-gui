@@ -1,7 +1,7 @@
 # PwrStat GUI
 ### Released July 2025
-### Version 1.1.2
-### Updated October 2025
+### Version 1.2.0
+### Updated December 2025
 
 <br/>
 
@@ -42,7 +42,13 @@ be useful for those looking to edit it.
 
 ## Operating System Support
 
-This project is confirmed to be compatible with:
+Support is assumed for all debian-based, fedora-based, and arch-based distros.
+Some distros may require the Python program to be compiled locally. One example
+of this is Pop!_OS, due to its older version of GLIBC. Below is a list of all
+distros for which support has been confirmed.
+
+### Debian Based
+
  - Ubuntu 24.04.3
  - Ubuntu 25.04
  - Linux Mint 22.1
@@ -52,5 +58,13 @@ This project is confirmed to be compatible with:
  - antiX 23.2 (v1.1.0+, must be started from terminal)
  - MX Linux 23.6
 
-Compatibility is assumed for all debian-based distros. Older distros may require
-the Python program to be compiled on locally for older versions of GLIBC.
+### Fedora Based (all v1.2.0+)
+
+ - Fedora 42 KDE
+ - Nobara 42
+
+### Arch Based (all v1.2.0+)
+
+ - EndeavourOS Ganymede
+ - Manjaro 25.0.7 KDE
+ - CachyOS Desktop 250713

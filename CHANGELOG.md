@@ -1,3 +1,7 @@
+## Version 1.2.0 (December 2025)
+
+ - Confirmed support Fedora and Arch-based distros.
+
 ## Version 1.1.2 (October 2025)
 
  - Added documentation comments to functions.
