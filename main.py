@@ -1829,8 +1829,6 @@ def main():
 
     with open("/etc/os-release", "r") as file:
         distro = file.read()
-    with open("/etc/lsb-release", "r") as file:
-        distro += file.read()
     if "debian" in distro:
         command = ["dpkg-query", "--list", "powerpanel"]
     elif "fedora" in distro:
