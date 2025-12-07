@@ -1828,7 +1828,7 @@ def main():
     # Dependency Check
 
     with open("/etc/os-release", "r") as file:
-        distro = file.read()
+        distro = file.read().lower()
     if "debian" in distro:
         command = ["dpkg-query", "--list", "powerpanel"]
     elif "fedora" in distro:
@@ -1836,7 +1836,9 @@ def main():
     elif "arch" in distro:
         command = ["pacman", "-Q", "powerpanel"]
     else:
-        command = ""
+        command = "echo powerpanel"
+        # better to wrongly think powerpanel is installed and crash than
+        # wrongly assume it isn't and never run
 
     if (not "powerpanel" in subprocess.run(
         command,
