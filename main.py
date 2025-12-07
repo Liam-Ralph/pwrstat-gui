@@ -1647,6 +1647,22 @@ def update_status():
 
                     frame_main_center.winfo_children()[0].config(text = state)
 
+            elif "command not found" in ups_info_raw:
+
+                # PowerPanel Isn't Installed
+
+                messagebox.showwarning(
+                    parent = window_home,
+                    title = "Pwrstat Command Failed",
+                    message = (
+                        "The pwrstat command was not found." +
+                        "This may happen if PowerPanel is not installed." +
+                        "PwrStat GUI will shut down now."
+                    )
+                )
+
+                window_home.destroy()
+
             else:
 
                 # UPS Unknown
@@ -1824,42 +1840,6 @@ def main():
         height = 4
     ).pack()
     window_start.update()
-
-    # Dependency Check
-
-    with open("/etc/os-release", "r") as file:
-        distro = file.read().lower()
-    if "debian" in distro:
-        command = ["dpkg-query", "--list", "powerpanel"]
-    elif "fedora" in distro:
-        command = ["dnf", "list", "installed", "powerpanel"]
-    elif "arch" in distro:
-        command = ["pacman", "-Q", "powerpanel"]
-    else:
-        command = "echo powerpanel"
-        # better to wrongly think powerpanel is installed and crash than
-        # wrongly assume it isn't and never run
-
-    if (not "powerpanel" in subprocess.run(
-        command,
-        capture_output = True,
-        text = True
-    ).stdout):
-        tkinter.Label(
-            window_start,
-            text = (
-                "PowerPanel Linux must be installed.\n" +
-                "App shutdown in 10 seconds."
-            ),
-            font = (font, 20),
-            fg = "#AA0000",
-            bg = darkest,
-            height = 2
-        ).pack()
-        window_start.update()
-        time.sleep(10)
-        window_start.destroy()
-        sys.exit()
 
     # Clear Window
 
