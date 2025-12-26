@@ -51,7 +51,6 @@ distros for which support has been confirmed.
 
  - Ubuntu 24.04.3
  - Ubuntu 25.04
- - Linux Mint 22.1
  - Linux Mint 22.2
  - Debian 13
  - Pop!_OS 22.04 (v1.1.0+)
