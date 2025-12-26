@@ -59,11 +59,11 @@ distros for which support has been confirmed.
 
 ### Fedora Based (all v1.2.0+)
 
- - Fedora 43 KDE
+ - Fedora 43
  - Nobara 42
 
 ### Arch Based (all v1.2.0+)
 
  - EndeavourOS Ganymede
  - Manjaro 25.0.7 KDE
- - CachyOS Desktop 250713
+ - CachyOS Desktop 251129
