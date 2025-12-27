@@ -60,7 +60,7 @@ distros for which support has been confirmed.
 ### Fedora Based (all v1.2.0+)
 
  - Fedora 43
- - Nobara 42
+ - Nobara 43
 
 ### Arch Based (all v1.2.0+)
 
