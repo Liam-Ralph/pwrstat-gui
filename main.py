@@ -1647,7 +1647,7 @@ def update_status():
 
                     frame_main_center.winfo_children()[0].config(text = state)
 
-            elif "command not found" in ups_info_raw:
+            elif "command not found" in ups_info_raw or "No such file" in ups_info_raw:
 
                 # PowerPanel Isn't Installed
 
