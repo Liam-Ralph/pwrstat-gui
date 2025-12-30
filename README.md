@@ -22,7 +22,7 @@ which can be found on
 This application uses approximately 128 KiB of memory.
 
 ### Storage
-This application uses approximately 15 MiB of storage.
+This application uses approximately 17 MiB of storage.
 
 <br/>
 
@@ -53,17 +53,14 @@ distros for which support has been confirmed.
  - Ubuntu 25.04
  - Linux Mint 22.2
  - Debian 13
- - Pop!_OS 22.04 (v1.1.0+)
- - antiX 23.2 (v1.1.0+, must be started from terminal)
  - MX Linux 23.6
 
-### Fedora Based (all v1.2.0+)
+Version 1.1.0+
+ - Pop!_OS 24.04
+ - antiX 23.2 (must be started from terminal)
 
+### Fedora Based
+
+Version 1.2.0+
  - Fedora 43
  - Nobara 43
-
-### Arch Based (all v1.2.0+)
-
- - EndeavourOS Ganymede
- - Manjaro 25.0.7 KDE
- - CachyOS Desktop 251129
