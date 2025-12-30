@@ -1,6 +1,6 @@
 ## Version 1.2.0 (December 2025)
 
- - Confirmed support for Fedora and Arch-based distros.
+ - Confirmed support for Fedora-based distros and Pop!_OS 24.04.
 
 ## Version 1.1.2 (October 2025)
 

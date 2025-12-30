@@ -14,7 +14,5 @@ or creating your own, assuming it follows this project's license.
 ## Help Contributing
 
 I have added a developer package to my website, which includes
-files used to build this project's .deb package, as well
-as some documentation. Other information and resources, such as
-explanantions or other files may be provided upon request to my
-Github account, depending on my availability.
+files used to build this project's packages, as well as some
+documentation.
