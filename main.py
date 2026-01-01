@@ -8,8 +8,9 @@
 
 # PwrStat GUI, a GUI for CyberPower's pwrstat terminal command.
 
-# Search convert-python for help converting this program into a
-# standalone Python program.
+# To convert this script into a standalone Python program, change
+# the paths under Paths, and remove the section "Getting Root
+# Privileges" (up to "Info and Settings Reading")
 
 
 # Imports
@@ -51,7 +52,6 @@ global PATH_IMAGES
 global PATH_DOC
 global PATH_LICENSE
 
-# convert-python Change these paths
 PATH_DATA = "/usr/share/pwrstat-gui/data"
 PATH_IMAGES = "/usr/share/pwrstat-gui/images"
 PATH_DOC = "/usr/share/doc/pwrstat-gui"
@@ -1723,7 +1723,6 @@ def main():
     exit_flag = True
 
     # Getting Root Privileges
-    # convert-python Remove this section, up to "Info and Settings Reading"
 
     if os.geteuid() != 0:
 

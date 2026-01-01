@@ -17,14 +17,16 @@ the UPS. Can also log gathered information in a CSV file.
 
 This project requires __CyberPower's PowerPanel for Linux__,
 which can be found on
-[CyberPower's website](https://www.cyberpowersystems.com/products/software/power-panel-personal/). It also requires the DejaVu Sans font family. This is
-included by default with most distros, and will be installed when missing.
+[CyberPower's website](https://www.cyberpowersystems.com/products/software/power-panel-personal/).
+It also requires the DejaVu Sans font family. This is
+included by default with most distros, and will be
+installed when missing.
 
 ### Memory
 This application uses approximately 128 KiB of memory.
 
 ### Storage
-This application uses approximately 17 MiB of storage. Slightly more storage
+This application uses approximately 19 MiB of storage. Slightly more storage
 will be used during installation. Debian-based distros also require
 `fonts-dejavu-core`, which is usually installed by default, and takes about 2
 MiB. Fedora-based distros also require `dejavu-sans-fonts`, which takes about
