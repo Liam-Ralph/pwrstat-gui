@@ -1,7 +1,7 @@
 # PwrStat GUI
 ### Released July 2025
 ### Version 1.2.0
-### Updated December 2025
+### Updated January 2026
 
 <br/>
 
@@ -37,21 +37,19 @@ MiB. Fedora-based distros also require `dejavu-sans-fonts`, which takes about
 1. Download the appropriate file
    [here](liam-ralph.github.io/projects/pwrstat-gui).
 2. Navigate the folder you downloaded to.
-3. 
+3. Install the package file, either from the terminal or your distro's GUI.
 
-I have also added a developer package to my website, which includes
-a number of other files used to create the .deb package, as well as
-some documentation. This is not required to run the project, but may
-be useful for those looking to edit it.
+I have also added two developer packages to my website, which include
+a number of other files used to create the .deb and .rpm packages, as
+well as some documentation. These are not required to install the package,
+but may be useful for those looking to edit it.
 
 <br/>
 
 ## Operating System Support
 
-Support is assumed for all debian-based, fedora-based, and arch-based distros.
-Some distros may require the Python program to be compiled locally. One example
-of this is Pop!_OS, due to its older version of GLIBC. Below is a list of all
-distros for which support has been confirmed.
+Support is assumed for all Debian- and Fedora-based distros. Below is a list of
+all distros for which support has been confirmed.
 
 ### Debian Based
 

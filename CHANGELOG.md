@@ -1,4 +1,4 @@
-## Version 1.2.0 (December 2025)
+## Version 1.2.0 (January 2026)
 
  - Confirmed support for Fedora-based distros and Pop!_OS 24.04.
  - Added scripts in package files for local Python compilation.
