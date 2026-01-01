@@ -1,4 +1,4 @@
-# Copyright (C) 2026 Liam Ralph
+# Copyright (C) 2025-2026 Liam Ralph
 # https://github.com/liam-ralph
 
 # This program, including this file, is licensed under the
