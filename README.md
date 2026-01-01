@@ -14,24 +14,30 @@ the UPS. Can also log gathered information in a CSV file.
 <br/>
 
 ## Requirements
+
 This project requires __CyberPower's PowerPanel for Linux__,
 which can be found on
-[CyberPower's website](https://www.cyberpowersystems.com/products/software/power-panel-personal/).
+[CyberPower's website](https://www.cyberpowersystems.com/products/software/power-panel-personal/). It also requires the DejaVu Sans font family. This is
+included by default with most distros, and will be installed when missing.
 
 ### Memory
 This application uses approximately 128 KiB of memory.
 
 ### Storage
-This application uses approximately 17 MiB of storage.
+This application uses approximately 17 MiB of storage. Slightly more storage
+will be used during installation. Debian-based distros also require
+`fonts-dejavu-core`, which is usually installed by default, and takes about 2
+MiB. Fedora-based distros also require `dejavu-sans-fonts`, which takes about
+6 MiB.
 
 <br/>
 
 ## Installation
 
-1. Download the .deb file [here](liam-ralph.github.io/projects/pwrstat-gui).
+1. Download the appropriate file
+   [here](liam-ralph.github.io/projects/pwrstat-gui).
 2. Navigate the folder you downloaded to.
-3. Install the file using `apt install ./<file_name>.deb`, replacing
-`<file_name>` with the actual .deb file's name.
+3. 
 
 I have also added a developer package to my website, which includes
 a number of other files used to create the .deb package, as well as
