@@ -1726,57 +1726,22 @@ def main():
 
     if os.geteuid() != 0:
 
-        if "antix" not in platform.platform().lower():
+        # Get Display and XAuthority
 
-            # Running on Non-antiX, using Pkexec
+        env = os.environ.copy()
+        display = env.get("DISPLAY", ":0")  # Default to :0 if missing
+        xauthority = env.get("XAUTHORITY", "/tmp/xauth_XIOaut")
 
-            # Get Display and XAuthority
+        # Relaunch with Pkexec
 
-            env = os.environ.copy()
-            display = env.get("DISPLAY", ":0")  # Default to :0 if missing
-            xauthority = env.get("XAUTHORITY", "/tmp/xauth_XIOaut")
-
-            # Relaunch with Pkexec
-
-            command = [
-                "pkexec",
-                "env",
-                f"DISPLAY={display}",
-                f"XAUTHORITY={xauthority}",
-                sys.executable
-            ] + sys.argv
-            os.execvp("pkexec", command)
-
-        else:
-
-            # antiX, using regular sudo, PwrStat GUI fails
-
-            window_error = tkinter.Tk()
-            window_error.geometry("800x400")
-            window_error.configure(bg = "#000000")
-            window_error.title("PwrStat GUI Failed")
-            window_error.iconphoto(
-                False,
-                ImageTk.PhotoImage(Image.open(PATH_IMAGES + "/logo.png"))
-            )
-            window_error.update()
-
-            tkinter.Label(
-                window_error,
-                text = (
-                    "On antiX, you must run PwrStat GUI using\n" +
-                    "\"sudo pwrstat-gui\" in the terminal.\n" +
-                    "App shutdown in 10 seconds."
-                ),
-                font = ("DejaVu Sans", 16),
-                fg = "#AA0000",
-                bg = "#000000",
-                height = 3
-            ).pack()
-            window_error.update()
-            time.sleep(10)
-            window_error.destroy()
-            sys.exit()
+        command = [
+            "pkexec",
+            "env",
+            f"DISPLAY={display}",
+            f"XAUTHORITY={xauthority}",
+            sys.executable
+        ] + sys.argv
+        os.execvp("pkexec", command)
 
     # Info and Settings Reading
 
