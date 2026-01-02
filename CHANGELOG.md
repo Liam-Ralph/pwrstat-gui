@@ -1,8 +1,6 @@
 ## Version 1.2.0 (January 2026)
 
  - Confirmed support for Fedora-based distros and Pop!_OS 24.04.
- - Added scripts in package files for local Python compilation.
-     - This should allow for expanded compatibility.
  - Settings will now be persistent across versions.
 
 ## Version 1.1.2 (October 2025)
