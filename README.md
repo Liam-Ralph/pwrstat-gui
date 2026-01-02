@@ -60,10 +60,11 @@ all distros for which support has been confirmed.
  - Linux Mint 22.2
  - Debian 13
  - MX Linux 23.6
-
-Version 1.1.0+
  - Pop!_OS 24.04
- - antiX 23.2 (must be started from terminal)
+
+Pop!_OS 22.04 is no longer supported as of version 1.2.0, but you can compile
+the executable yourself (for instructions, see the developer package). antiX is
+not supported, as the required dependency powerpanel will not install.
 
 ### Fedora Based
 
