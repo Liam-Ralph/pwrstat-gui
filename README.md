@@ -26,8 +26,8 @@ installed when missing.
 This application uses approximately 128 KiB of memory.
 
 ### Storage
-This application uses approximately 19 MiB of storage. Slightly more storage
-will be used during installation. Debian-based distros also require
+This application uses approximately 19 MiB of storage for the .deb package, and
+about 22 MiB for the .rpm package. Debian-based distros also require
 `fonts-dejavu-core`, which is usually installed by default, and takes about 2
 MiB. Fedora-based distros also require `dejavu-sans-fonts`, which takes about
 6 MiB.
