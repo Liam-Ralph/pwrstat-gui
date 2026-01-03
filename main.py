@@ -1,4 +1,4 @@
-# Copyright (C) 2025 Liam Ralph
+# Copyright (C) 2025-2026 Liam Ralph
 # https://github.com/liam-ralph
 
 # This program, including this file, is licensed under the
@@ -8,8 +8,9 @@
 
 # PwrStat GUI, a GUI for CyberPower's pwrstat terminal command.
 
-# Search convert-python for help converting this program into a
-# standalone Python program.
+# To convert this script into a standalone Python program, change
+# the paths under Paths, and remove the section "Getting Root
+# Privileges" (up to "Info and Settings Reading")
 
 
 # Imports
@@ -51,7 +52,6 @@ global PATH_IMAGES
 global PATH_DOC
 global PATH_LICENSE
 
-# convert-python Change these paths
 PATH_DATA = "/usr/share/pwrstat-gui/data"
 PATH_IMAGES = "/usr/share/pwrstat-gui/images"
 PATH_DOC = "/usr/share/doc/pwrstat-gui"
@@ -1647,6 +1647,22 @@ def update_status():
 
                     frame_main_center.winfo_children()[0].config(text = state)
 
+            elif "command not found" in ups_info_raw or "No such file" in ups_info_raw:
+
+                # PowerPanel Isn't Installed
+
+                messagebox.showwarning(
+                    parent = window_home,
+                    title = "Pwrstat Command Failed",
+                    message = (
+                        "The pwrstat command was not found." +
+                        "This may happen if PowerPanel is not installed." +
+                        "PwrStat GUI will shut down now."
+                    )
+                )
+
+                window_home.destroy()
+
             else:
 
                 # UPS Unknown
@@ -1707,61 +1723,25 @@ def main():
     exit_flag = True
 
     # Getting Root Privileges
-    # convert-python Remove this section, up to "Info and Settings Reading"
 
     if os.geteuid() != 0:
 
-        if "antix" not in platform.platform().lower():
+        # Get Display and XAuthority
 
-            # Running on Non-antiX, using Pkexec
+        env = os.environ.copy()
+        display = env.get("DISPLAY", ":0")  # Default to :0 if missing
+        xauthority = env.get("XAUTHORITY", "/tmp/xauth_XIOaut")
 
-            # Get Display and XAuthority
+        # Relaunch with Pkexec
 
-            env = os.environ.copy()
-            display = env.get("DISPLAY", ":0")  # Default to :0 if missing
-            xauthority = env.get("XAUTHORITY", "/tmp/xauth_XIOaut")
-
-            # Relaunch with Pkexec
-
-            command = [
-                "pkexec",
-                "env",
-                f"DISPLAY={display}",
-                f"XAUTHORITY={xauthority}",
-                sys.executable
-            ] + sys.argv
-            os.execvp("pkexec", command)
-
-        else:
-
-            # antiX, using regular sudo, PwrStat GUI fails
-
-            window_error = tkinter.Tk()
-            window_error.geometry("800x400")
-            window_error.configure(bg = "#000000")
-            window_error.title("PwrStat GUI Failed")
-            window_error.iconphoto(
-                False,
-                ImageTk.PhotoImage(Image.open(PATH_IMAGES + "/logo.png"))
-            )
-            window_error.update()
-
-            tkinter.Label(
-                window_error,
-                text = (
-                    "On antiX, you must run PwrStat GUI using\n" +
-                    "\"sudo pwrstat-gui\" in the terminal.\n" +
-                    "App shutdown in 10 seconds."
-                ),
-                font = ("DejaVu Sans", 16),
-                fg = "#AA0000",
-                bg = "#000000",
-                height = 3
-            ).pack()
-            window_error.update()
-            time.sleep(10)
-            window_error.destroy()
-            sys.exit()
+        command = [
+            "pkexec",
+            "env",
+            f"DISPLAY={display}",
+            f"XAUTHORITY={xauthority}",
+            sys.executable
+        ] + sys.argv
+        os.execvp("pkexec", command)
 
     # Info and Settings Reading
 
@@ -1824,29 +1804,6 @@ def main():
         height = 4
     ).pack()
     window_start.update()
-
-    # Dependency Check
-
-    if (not "powerpanel" in subprocess.run(
-        ["dpkg-query", "--list", "powerpanel"],
-        capture_output = True,
-        text = True
-    ).stdout):
-        tkinter.Label(
-            window_start,
-            text = (
-                "PowerPanel Linux must be installed.\n" +
-                "App shutdown in 10 seconds."
-            ),
-            font = (font, 20),
-            fg = "#AA0000",
-            bg = darkest,
-            height = 2
-        ).pack()
-        window_start.update()
-        time.sleep(10)
-        window_start.destroy()
-        sys.exit()
 
     # Clear Window
 
