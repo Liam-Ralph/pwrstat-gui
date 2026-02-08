@@ -4,7 +4,7 @@
 # This program, including this file, is licensed under the
 # GNU General Public License v3.0 (GNU GPLv3).
 # See LICENSE or this project's source for more information.
-# Project Source: https://github.com/liam-ralph/pwrstat-gui
+# Project source: https://github.com/liam-ralph/pwrstat-gui
 
 # PwrStat GUI, a GUI for CyberPower's pwrstat terminal command.
 
@@ -1729,7 +1729,7 @@ def main():
         # Get Display and XAuthority
 
         env = os.environ.copy()
-        display = env.get("DISPLAY", ":0")  # Default to :0 if missing
+        display = env.get("DISPLAY", ":0") # Default to :0 if missing
         xauthority = env.get("XAUTHORITY", "/tmp/xauth_XIOaut")
 
         # Relaunch with Pkexec
