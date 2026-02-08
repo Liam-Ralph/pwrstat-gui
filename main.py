@@ -26,7 +26,6 @@ from tkinter import ttk
 # System
 
 import os
-import platform
 import setproctitle
 import subprocess
 import sys
