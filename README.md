@@ -23,7 +23,7 @@ included by default with most distros, and will be
 installed when missing.
 
 ### Memory
-This application uses approximately 128 KiB of memory.
+This application uses approximately 256 KiB of memory.
 
 ### Storage
 This application uses approximately 19 MiB of storage for the .deb package, and
@@ -57,7 +57,7 @@ all distros for which support has been confirmed.
 
  - Ubuntu 24.04.3
  - Ubuntu 25.04
- - Linux Mint 22.2
+ - Linux Mint 22.3
  - Debian 13
  - MX Linux 23.6
  - Pop!_OS 24.04
