@@ -62,8 +62,11 @@ PATH_LICENSE = "/usr/share/common-licenses/GPL-3"
 
 def change_color(color_type):
     """
-    Change user's selected color with a popup box. Color to change (darkest,
-    dark, etc.) selected with color_type. Saves new color in settings file.
+    Change user's selected color with a popup box. Saves new color in settings
+    file.
+
+    :param color_type: Decides the color (darkest, dark, medium, etc.) to
+    change.
     """
 
     # Window Variables
@@ -151,6 +154,8 @@ def change_color(color_type):
 def change_font(new_font):
     """
     Change user's font to new_font. Saves new font in settings file.
+
+    :param new_font: The font to change to.
     """
 
     # Global Variables
@@ -229,8 +234,10 @@ def change_log_path():
 
 def change_sampling_interval(new_sampling_interval):
     """
-    Change sampling interval for updating home screen and logging to
-    new_sampling_interval. Save new sampling interval to settings file.
+    Change sampling interval for updating home screen and logging. Save new
+    sampling interval to settings file.
+
+    :param new_sampling_interval: The sampling interval to change to.
     """
 
     # Settings Variable
@@ -283,6 +290,8 @@ def darken_color(color_raw):
     """
     Return a darkened color by reducing each RGB value by 5. If the RGB value is
     less than 5, set it to 5, lightening it.
+
+    :param color_raw: The color to be darkened.
     """
 
     # Convert Hex Code to RGB
@@ -303,10 +312,13 @@ def darken_color(color_raw):
 
 def open_window_home(window_dimensions = [800, 600], settings_dimensions = None):
     """
-    Open home/main window at window_dimensions[height, width]. If
-    settings_dimensions is specified, it will also be opened, but it is None by
-    default. Non-default settings are used when the windows are reloaded after
-    a settings change.
+    Open home/main window. Non-default settings are used when the windows are
+    reloaded after a settings change.
+
+    :param window_dimensions: The dimensions to open the home window at.
+    Defaults to 800 by 600.
+    :param settings_dimensions: The dimensions to open the settings window at.
+    Defaults to None, in which case the settings window will not be opened.
     """
 
     # Home Window Variable
@@ -576,6 +588,9 @@ def open_window_info(window_dimensions = [500, 650]):
     """
     Open info window, displaying app and UPS information, as well buttons for
     the project's license, readme, and changelog.
+
+    :param window_dimensions: The dimensions to open the info window at.
+    Defaults to 500 by 650.
     """
 
     # Window Variables
@@ -793,8 +808,11 @@ def open_window_info(window_dimensions = [500, 650]):
 
 def open_window_popup(popup_file):
     """
-    Open a popup with the contents of popup_file (e.g. the project's license).
-    Called from info window.
+    Open a popup. Called from info window.
+
+    :param popup_file: The popup file to open (e.g. the project's license). If
+    the file is "License", it will open the project's license from PATH_LICENSE.
+    Otherwise, it will be the name of a file in PATH_DOC.
     """
 
     # Global Variables
@@ -900,9 +918,11 @@ def open_window_popup(popup_file):
 
 def open_window_settings(window_dimensions=[800, 600]):
     """
-    Open settings window, for changing user settings, at
-    window_dimensions[width, height]. Non-default settings are used when the
-    window is reloaded after a settings change.
+    Open settings window, for changing user settings. Non-default settings are
+    used when the window is reloaded after a settings change.
+
+    :param window_dimensions: The dimensions to open the settings window at.
+    Defaults to 800 by 600.
     """
 
     # Window Variables
