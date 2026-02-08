@@ -69,10 +69,8 @@ def change_color(color_type):
     change.
     """
 
-    # Window Variables
+    # Settings Window
 
-    global window_home
-    global window_info
     global window_settings
 
     # Settings Variables
