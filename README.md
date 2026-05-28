@@ -50,7 +50,7 @@ or in the AUR for Arch-based distros.
 ## Development
 
 I have added some developer packages on
-[GitHub](https://github.com/liam-ralph/pwrstat-gui-dev-pkg). These include the
+[GitHub](https://github.com/liam-ralph/pwrstat-gui-dev-pkgs). These include the
 files used to create packages and some documentation.
 
 <br/>
