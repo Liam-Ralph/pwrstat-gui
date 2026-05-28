@@ -1,7 +1,7 @@
 # PwrStat GUI
 ### Released July 2025
-### Version 1.2.0
-### Updated January 2026
+### Version 1.3.0
+### Updated May 2026
 
 <br/>
 
@@ -10,6 +10,7 @@ A graphical user interface for CyberPower's PowerPanel
 Linux software using Python's tkinter library. Runs the
 command `sudo pwrstat -status` to gather information from
 the UPS. Can also log gathered information in a CSV file.
+Not affiliated with CyberPower.
 
 <br/>
 
@@ -26,32 +27,38 @@ installed when missing.
 This application uses approximately 256 KiB of memory.
 
 ### Storage
-This application uses approximately 19 MiB of storage for the .deb package, and
-about 22 MiB for the .rpm package. Debian-based distros also require
-`fonts-dejavu-core`, which is usually installed by default, and takes about 2
-MiB. Fedora-based distros also require `dejavu-sans-fonts`, which takes about
-6 MiB.
+
+Debian-based
+19 MiB
+Dependencies: fonts-dejavu-core (2 MiB)
+
+Fedora-based
+22 MiB
+Dependencies: fonts-dejavu-core (6 MiB)
+
+Arch-based
+XX MiB
+Dependencies: fonts-dejavu-core (X MiB)
 
 <br/>
 
 ## Installation
 
-1. Download the appropriate file
-   [here](liam-ralph.github.io/projects/pwrstat-gui).
-2. Navigate the folder you downloaded to.
-3. Install the package file, either from the terminal or your distro's GUI.
+Packages can be found either on this respository's GitHub page under released,
+or in the AUR for Arch-based distros.
 
-I have also added two developer packages to my website, which include
-a number of other files used to create the .deb and .rpm packages, as
-well as some documentation. These are not required to install the package,
-but may be useful for those looking to edit it.
+## Development
+
+I have added some developer packages on
+[GitHub](https://github.com/liam-ralph/pwrstat-gui-dev-pkg). These include the
+files used to create packages and some documentation.
 
 <br/>
 
 ## Operating System Support
 
-Support is assumed for all Debian- and Fedora-based distros. Below is a list of
-all distros for which support has been confirmed.
+Support is assumed for all distros based on Debian, Fedora, and Arch. Below is a
+list of distros with confirmed support.
 
 ### Debian Based
 
@@ -61,10 +68,6 @@ all distros for which support has been confirmed.
  - Debian 13
  - MX Linux 23.6
  - Pop!_OS 24.04
-
-Pop!_OS 22.04 is no longer supported as of version 1.2.0, but you can compile
-the executable yourself (for instructions, see the developer package). antiX is
-not supported, as the required dependency powerpanel will not install.
 
 ### Fedora Based
 
