@@ -1,3 +1,7 @@
+## Version 1.3.0 (May 2026)
+
+ - Added support for Arch-based distros.
+
 ## Version 1.2.0 (January 2026)
 
  - Confirmed support for Fedora-based distros and Pop!_OS 24.04.
