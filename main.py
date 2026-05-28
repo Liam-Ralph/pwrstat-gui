@@ -8,6 +8,8 @@
 
 # PwrStat GUI, a GUI for CyberPower's pwrstat terminal command.
 
+# Not affiliated with CyberPower.
+
 # To convert this script into a standalone Python program, change
 # the paths under Paths, and remove the section "Getting Root
 # Privileges" (up to "Info and Settings Reading")
