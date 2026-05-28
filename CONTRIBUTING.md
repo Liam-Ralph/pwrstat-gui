@@ -13,6 +13,5 @@ or creating your own, assuming it follows this project's license.
 
 ## Help Contributing
 
-I have added a developer package to my website, which includes
-files used to build this project's packages, as well as some
-documentation.
+I have added developer packages to
+[GitHub](https://github.com/liam-ralph/pwrstat-gui-dev-pkg)
