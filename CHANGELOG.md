@@ -1,4 +1,4 @@
-## Version 1.3.0 (May 2026)
+## Version 1.3.0 (June 2026)
 
  - Added support for Arch-based distros.
 
