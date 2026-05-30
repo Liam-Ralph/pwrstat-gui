@@ -9,4 +9,4 @@
 Files and documentation to aid any who want to
 add changes to [PwrStat GUI](https://github.com/liam-ralph/pwrstat-gui).
 Includes packages for distros based on Debian,
-Fedora, and Arch.
+Fedora, and Arch. Not affiliated with CyberPower.
