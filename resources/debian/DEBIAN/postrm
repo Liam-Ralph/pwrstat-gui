@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+# Only needed if previous install fails
+rm -rf /var/lib/pwrstat-gui/

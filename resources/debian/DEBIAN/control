@@ -1,0 +1,11 @@
+Package: pwrstat-gui
+Version: VERSION
+Section: utils
+Priority: optional
+Architecture: amd64
+Essential: no
+Depends: powerpanel, fonts-dejavu-core
+Installed-Size: INSTALLED_SIZE
+Maintainer: Liam Ralph <liamralph42@gmail.com>
+Description: A GUI for CyberPower PowerPanel on Linux.
+Homepage: https://github.com/Liam-Ralph/pwrstat-gui

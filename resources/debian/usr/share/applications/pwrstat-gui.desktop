@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=PwrStat GUI
+Type=Application
+Version=VERSION
+Exec=pwrstat-gui
+Icon=pwrstat-gui
+GenericName=PwrStat GUI
+Comment=A GUI for PowerPanel on Linux
+Keywords=pwrstat-gui;pwrstat;ups;cyberpower;hardware;system
+Categories=Utility;System;Administration
+StartupWMClass=Tk

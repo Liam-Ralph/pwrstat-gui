@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+if [ -f /usr/share/pwrstat-gui/data/settings.txt ]; then
+    echo "Existing install found, saving settings..."
+    mkdir -p /var/lib/pwrstat-gui/
+    cp /usr/share/pwrstat-gui/data/settings.txt /var/lib/pwrstat-gui/
+fi
