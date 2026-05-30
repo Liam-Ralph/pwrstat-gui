@@ -33,7 +33,17 @@ done <pwrstat-gui-clone/README.md
 
 # Debian
 if [ $1 == "debian" ]; then
-    mkdir -p package-build/debian/pwrstat-gui_${version}_x86_64/
+    build_path="package-build/debian/pwrstat-gui_${version}_x86_64"
+    mkdir -p $build_path
+    cp -r resources/debian/* $build_path
+    cp pwrstat-gui $build_path/usr/bin/
+    sed -i -e "s/VERSION/$version/g" $build_path/DEBIAN/control
+    sed -i -e "s/VERSION/$version/g" $build_path/usr/share/applications/pwrstat-gui.desktop
+    cp pwrstat-gui-clone/README.md $build_path/usr/share/doc/pwrstat-gui/README.md
+    cp pwrstat-gui-clone/CHANGELOG.md $build_path/usr/share/doc/pwrstat-gui/CHANGELOG.md
+    cp -r pwrstat-gui-clone/data $build_path/usr/share/pwrstat-gui/
+    cp -r pwrstat-gui-clone/images $build_path/usr/share/pwrstat-gui/
+    dpkg -b $build_path
 
 # Fedora
 elif [ $1 == "fedora" ]; then
