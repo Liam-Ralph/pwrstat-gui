@@ -36,6 +36,7 @@ if [ $1 == "debian" ]; then
     build_path="package-build/debian/pwrstat-gui_${version}_x86_64"
     mkdir -p $build_path
     cp -r resources/debian/* $build_path
+    mkdir -p $build_path/usr/{bin/, share/pwrstat-gui/}
     cp pwrstat-gui $build_path/usr/bin/
     sed -i -e "s/VERSION/$version/g" $build_path/DEBIAN/control
     sed -i -e "s/VERSION/$version/g" $build_path/usr/share/applications/pwrstat-gui.desktop
