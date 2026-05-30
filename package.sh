@@ -45,6 +45,7 @@ if [ $1 == "debian" ]; then
     cp -r pwrstat-gui-clone/data $build_path/usr/share/pwrstat-gui/
     cp -r pwrstat-gui-clone/images $build_path/usr/share/pwrstat-gui/
     dpkg -b $build_path
+    mv $build_path.deb pwrstat-gui_${version}_x86_64.deb
 
 # Fedora
 elif [ $1 == "fedora" ]; then
