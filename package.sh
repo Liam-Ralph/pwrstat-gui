@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Checking for distro group argument
-if (( $# != 1 )); then
+if (( $# == 0 )); then
     echo -e "\nMissing required distro group argument (debian, fedora, or arch).\n"
     exit 1
 fi
@@ -34,6 +34,9 @@ done <pwrstat-gui-clone/README.md
 # Debian
 if [ $1 == "debian" ]; then
     build_path="package-build/debian/pwrstat-gui_${version}_x86_64"
+    if [[ $* == *"--lts"]]; then
+        build_path="package-build/debian/pwrstat-gui_${version}-lts_x86_64"
+    fi
     mkdir -p $build_path
     cp -r resources/debian/* $build_path
     mkdir -p $build_path/usr/{bin/,share/pwrstat-gui/}
