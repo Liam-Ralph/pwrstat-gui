@@ -33,9 +33,10 @@ done <pwrstat-gui-clone/README.md
 
 # Debian
 if [ $1 == "debian" ]; then
-    build_path="package-build/debian/pwrstat-gui_${version}_x86_64"
-    if [[ $* == *"--lts"]]; then
-        build_path="package-build/debian/pwrstat-gui_${version}-lts_x86_64"
+    if [ $2 == "lts" ]; then
+        build_path="package-build/debian/pwrstat-gui_${version}_x86_64_lts"
+    else
+        build_path="package-build/debian/pwrstat-gui_${version}_x86_64"
     fi
     mkdir -p $build_path
     cp -r resources/debian/* $build_path
