@@ -1,15 +1,18 @@
 #!/bin/bash
 
 # Removing old executable if it exists
+
 rm -f pwrstat-gui
 
 # Cloning repo if necessary
+
 if [ ! -d "pwrstat-gui-clone" ]; then
     echo -e "\nCloning PwrStat GUI repository from GitHub...\n"
     git clone https://github.com/liam-ralph/pwrstat-gui pwrstat-gui-clone
 fi
 
 # Setting up virtual environment if necessary
+
 if [ ! -d "compile-venv" ]; then
     echo -e "\nCreating virtual environment...\n"
     python3 -m venv compile-venv
@@ -19,6 +22,7 @@ if [ ! -d "compile-venv" ]; then
 fi
 
 # Compiling using PyInstaller
+
 echo -e "\nCompiling...\n"
 cd compile-venv
 bin/python3 -m PyInstaller \
