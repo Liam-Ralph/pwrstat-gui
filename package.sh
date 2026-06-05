@@ -9,7 +9,7 @@ while getopts "d:l" flag; do
     case $flag in
         d) distro_group=$OPTARG ;;
         l) lts_flag=true ;;
-        *) echo -e "\nInvalid flag, usage: ./package.sh -d <distro group> [-l]\n"; exit 1 ;;
+        *) echo -e "\nUsage: ./package.sh -d <distro group (debian/fedora/arch)> [-l]\n"; exit 1 ;;
     esac
 done
 
