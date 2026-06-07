@@ -37,7 +37,7 @@ case $distro_group in
         ;;
 
     arch)
-        sudo pacman -S git base-devel --noconfirm
+        sudo pacman -S git base-devel devtools --noconfirm
         ;;
 
     *)
