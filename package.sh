@@ -79,9 +79,9 @@ case $distro_group in
     debian)
 
         # Setting build path
-        build_path="package-build/debian/pwrstat-gui_${version}_x86_64"
+        build_path="package-build/pwrstat-gui_${version}_x86_64"
         if [ $lts_flag == true ]; then
-            build_path="package-build/debian/pwrstat-gui_lts_${version}_x86_64"
+            build_path="package-build/pwrstat-gui_lts_${version}_x86_64"
         fi
 
         mkdir -p $build_path
@@ -95,18 +95,18 @@ case $distro_group in
 
         # Building package
         dpkg -b $build_path
-        mv $build_path.deb ${build_path:21}.deb
+        mv $build_path.deb ${build_path:14}.deb
 
         ;;
 
     fedora)
 
         # Setting build path
-        mkdir -p package-build/fedora/
-        cd package-build/fedora/
+        mkdir package-build/
+        cd package-build/
         rpmdev-setuptree
         cd ../../
-        rpmbuild_path="package-build/fedora/rpmbuild"
+        rpmbuild_path="package-build/rpmbuild"
 
         # SPECS
         cp resources/fedora/pwrstat-gui.spec $rpmbuild_path/SPECS/pwrstat-gui.spec
@@ -122,14 +122,15 @@ case $distro_group in
 
         # Building package
         rpmbuild -bb $rpmbuild_path/SPECS/pwrstat-gui
-        mv $rpmbuild_path/RPMS/x86_64/pwrstat-gui-*.rpm package-build/fedora/
+        mv $rpmbuild_path/RPMS/x86_64/pwrstat-gui-*.rpm ./
 
         ;;
 
     arch)
 
-        mkdir -p package-build/arch/
-    
+        # Setting build path
+        build_path="package-build"
+        mkdir -p $build_path
         ;;
 
     *)
