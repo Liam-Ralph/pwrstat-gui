@@ -1,5 +1,30 @@
 #!/bin/bash
 
+# Funtions
+
+copy_usr_resources() {
+
+    # Copy resources
+    cp -r resources/common/* $1
+    mkdir -p $1/usr/{bin/,share/pwrstat-gui/} # Empty dirs won't exist in repo
+
+    # /usr/bin
+    cp pwrstat-gui $1/usr/bin/
+
+    # /usr/share/applications
+    sed -i -e "s/VERSION/$version/g" $1/usr/share/applications/pwrstat-gui.desktop
+
+    # /usr/share/doc/pwrstat-gui
+    cp pwrstat-gui-clone/README.md $1/usr/share/doc/pwrstat-gui/README.md
+    cp pwrstat-gui-clone/CHANGELOG.md $1/usr/share/doc/pwrstat-gui/CHANGELOG.md
+
+    # /usr/share/pwrstat-gui
+    cp -r pwrstat-gui-clone/data $1/usr/share/pwrstat-gui/
+    cp -r pwrstat-gui-clone/images $1/usr/share/pwrstat-gui/
+
+}
+
+
 # Parsing Flags
 
 distro_group=""
@@ -52,30 +77,59 @@ done <pwrstat-gui-clone/README.md
 case $distro_group in
 
     debian)
+
+        # Setting build path
         build_path="package-build/debian/pwrstat-gui_${version}_x86_64"
         if [ $lts_flag == true ]; then
-            build_path+="_lts"
+            build_path="package-build/debian/pwrstat-gui_lts_${version}_x86_64"
         fi
+
         mkdir -p $build_path
-        cp -r resources/debian/* $build_path
-        mkdir -p $build_path/usr/{bin/,share/pwrstat-gui/}
-        cp pwrstat-gui $build_path/usr/bin/
+
+        # DEBIAN
+        cp -r resources/debian/* $build_path/DEBIAN/
         sed -i -e "s/VERSION/$version/g" $build_path/DEBIAN/control
-        sed -i -e "s/VERSION/$version/g" $build_path/usr/share/applications/pwrstat-gui.desktop
-        cp pwrstat-gui-clone/README.md $build_path/usr/share/doc/pwrstat-gui/README.md
-        cp pwrstat-gui-clone/CHANGELOG.md $build_path/usr/share/doc/pwrstat-gui/CHANGELOG.md
-        cp -r pwrstat-gui-clone/data $build_path/usr/share/pwrstat-gui/
-        cp -r pwrstat-gui-clone/images $build_path/usr/share/pwrstat-gui/
+
+        # Creating source
+        copy_usr_resources $build_path
+
+        # Building package
         dpkg -b $build_path
         mv $build_path.deb ${build_path:21}.deb
+
         ;;
 
     fedora)
+
+        # Setting build path
         mkdir -p package-build/fedora/
+        cd package-build/fedora/
+        rpmdev-setuptree
+        cd ../../
+        rpmbuild_path="package-build/fedora/rpmbuild"
+
+        # SPECS
+        cp resources/fedora/pwrstat-gui.spec $rpmbuild_path/SPECS/pwrstat-gui.spec
+        sed -i -e "s/VERSION/$version/g" $rpmbuild_path/SPECS/pwrstat-gui.spec
+
+        # Creating source
+        source_dir="pwrstat-gui-$version"
+        mkdir $rpmbuild_path/SOURCES/$source_dir
+        copy_usr_resources $rpmbuild_path/SOURCES/$source_dir
+        cd $rpmbuild_path/SOURCES/
+        tar -czf $source_dir.tar.gz $source_dir
+        cd ../../../
+
+        # Building package
+        rpmbuild -bb $rpmbuild_path/SPECS/pwrstat-gui
+        mv $rpmbuild_path/RPMS/x86_64/pwrstat-gui-*.rpm package-build/fedora/
+
         ;;
 
     arch)
+
         mkdir -p package-build/arch/
+    
         ;;
 
     *)
