@@ -2,11 +2,10 @@
 pkgname=pwrstat-gui
 pkgver=VERSION
 pkgrel=1
-epoch=
-pkgdesc=""
-arch=()
+pkgdesc="A GUI for CyperPower PowerPanel on Linux."
+arch=(x86_64)
 url="https://github.com/liam-ralph/pwrstat-gui"
-license=("GPLv3+")
+license=("GPL-3.0-or-later")
 groups=()
 depends=()
 makedepends=()
