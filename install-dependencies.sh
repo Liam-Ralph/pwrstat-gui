@@ -34,11 +34,11 @@ case $distro_group in
         ;;
 
     fedora)
-        sudo dnf install git rpmdevtools binutils -y
+        sudo dnf install git rpmdevtools python3-tkinter binutils -y
         ;;
 
     arch)
-        sudo pacman -S git base-devel binutils --noconfirm
+        sudo pacman -S git base-devel tk binutils --noconfirm
         ;;
 
     *)
