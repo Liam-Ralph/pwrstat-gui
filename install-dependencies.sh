@@ -15,6 +15,7 @@ done
 
 if [ -z $distro_group ]; then
     echo -e "\nMissing required distro group argument (debian, fedora, or arch).\n"
+    echo -e "\nUsage: ./package.sh -d <distro group (debian/fedora/arch)> [-p <python version>]\n"
     exit 1
 fi
 
@@ -24,7 +25,7 @@ case $distro_group in
 
     debian)
         sudo apt update
-        sudo apt install git -y
+        sudo apt install git python3-venv python3-tk -y
         if [ ! -z $python_version ]; then
             sudo apt-add-repository ppa:deadsnakes/ppa -y
             sudo apt update

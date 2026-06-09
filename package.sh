@@ -42,6 +42,7 @@ done
 
 if [ -z $distro_group ]; then
     echo -e "\nMissing required distro group argument (debian, fedora, or arch).\n"
+    echo -e "\nUsage: ./package.sh -d <distro group (debian/fedora/arch)> [-l]\n"
     exit 1
 fi
 
@@ -70,7 +71,7 @@ while read p; do
         version=${p:12}
         break
     fi
-done <pwrstat-gui-clone/README.md
+done < pwrstat-gui-clone/README.md
 
 # Creating package structure
 
@@ -86,12 +87,15 @@ case $distro_group in
 
         mkdir -p $build_path
 
-        # DEBIAN
-        cp -r resources/debian/* $build_path/DEBIAN/
-        sed -i -e "s/VERSION/$version/g" $build_path/DEBIAN/control
-
         # Creating source
         copy_usr_resources $build_path
+
+        # DEBIAN
+        mkdir $build_path/DEBIAN
+        cp -r resources/debian/* $build_path/DEBIAN/
+        sed -i -e "s/VERSION/$version/g" $build_path/DEBIAN/control
+        sed -i -e "s/INSTALLED_SIZE/$(du -s $build_path/usr | awk '{print $1}')/g" \
+            $build_path/DEBIAN/control
 
         # Building package
         dpkg -b $build_path
@@ -108,10 +112,6 @@ case $distro_group in
         cd ../../
         rpmbuild_path="package-build/rpmbuild"
 
-        # SPECS
-        cp resources/fedora/pwrstat-gui.spec $rpmbuild_path/SPECS/pwrstat-gui.spec
-        sed -i -e "s/VERSION/$version/g" $rpmbuild_path/SPECS/pwrstat-gui.spec
-
         # Creating source
         source_dir="pwrstat-gui-$version"
         mkdir $rpmbuild_path/SOURCES/$source_dir
@@ -119,6 +119,10 @@ case $distro_group in
         cd $rpmbuild_path/SOURCES/
         tar -czf $source_dir.tar.gz $source_dir
         cd ../../../
+
+        # SPECS
+        cp resources/fedora/pwrstat-gui.spec $rpmbuild_path/SPECS/pwrstat-gui.spec
+        sed -i -e "s/VERSION/$version/g" $rpmbuild_path/SPECS/pwrstat-gui.spec
 
         # Building package
         rpmbuild -bb $rpmbuild_path/SPECS/pwrstat-gui
@@ -132,21 +136,21 @@ case $distro_group in
         build_path="package-build"
         mkdir -p $build_path
 
-        # PKGBUILD
-        cp resources/arch/PKGBUILD $build_path/PKGBUILD
-        sed -i -e "s/VERSION/$version/g" $build_path/PKGBUILD
-
         # Creating source
         mkdir $build_path/pwrstat-gui-$version
         copy_usr_resources $build_path/pwrstat-gui-$version
         cd $build_path
         tar -czf pwrstat-gui-$version.tar.gz pwrstat-gui-$version
         rm -rf pwrstat-gui-$version
+        cd ..
 
-        # Creating SHA256SUM
-        sed -i -e "s/SHA256SUM/$(sha256sum pwrstat-gui-$version.tar.gz | awk '{print $1}')/g" PKGBUILD
+        # PKGBUILD
+        cp resources/arch/PKGBUILD $build_path/PKGBUILD
+        sed -i -e "s/VERSION/$version/g" $build_path/PKGBUILD
+        sed -i -e "s/SHA256SUM/$(sha256sum pwrstat-gui-$version.tar.gz | awk '{print $1}')/g" $build_path/PKGBUILD
 
         # Building package
+        cd $build_path
         makepkg
         cd ..
         mv $build_path/pwrstat-gui-*.pkg.tar.zst ./
