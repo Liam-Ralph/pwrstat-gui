@@ -7,7 +7,8 @@ while getopts "d:p:" flag; do
     case $flag in
         d) distro_group=$OPTARG ;;
         p) python_version=$OPTARG ;;
-        *) echo -e "Usage: ./package.sh -d <distro group (debian/fedora/arch)> [-p <python version>]"; exit 1 ;;
+        *) echo -e "Usage: ./package.sh -d <distro group (debian/fedora/arch)> " \
+            "[-p <python version>]"; exit 1 ;;
     esac
 done
 
