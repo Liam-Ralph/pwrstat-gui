@@ -34,15 +34,15 @@ while getopts "d:l" flag; do
     case $flag in
         d) distro_group=$OPTARG ;;
         l) lts_flag=true ;;
-        *) echo -e "\nUsage: ./package.sh -d <distro group (debian/fedora/arch)> [-l]\n"; exit 1 ;;
+        *) echo -e "Usage: ./package.sh -d <distro group (debian/fedora/arch)> [-l]"; exit 1 ;;
     esac
 done
 
 # Checking for distro group argument
 
 if [ -z $distro_group ]; then
-    echo -e "\nMissing required distro group argument (debian, fedora, or arch).\n"
-    echo -e "\nUsage: ./package.sh -d <distro group (debian/fedora/arch)> [-l]\n"
+    echo -e "Missing required distro group argument (debian, fedora, or arch)."
+    echo -e "Usage: ./package.sh -d <distro group (debian/fedora/arch)> [-l]"
     exit 1
 fi
 
