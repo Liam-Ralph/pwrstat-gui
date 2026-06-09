@@ -5,11 +5,11 @@
 git_branch=""
 python_version="3"
 
-while getopts "g:p:" flag; do
+while getopts "b:p:" flag; do
     case $flag in
-        g) git_branch=$OPTARG ;;
+        b) git_branch=$OPTARG ;;
         p) python_version=$OPTARG ;;
-        *) echo -e "\nUsage: ./compile.sh -g <git branch> -p <python version>\n"; exit 1 ;;
+        *) echo -e "Usage: ./compile.sh -b <git branch> -p <python version>"; exit 1 ;;
     esac
 done
 
