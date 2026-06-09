@@ -6,7 +6,7 @@ Summary: A GUI for CyperPower PowerPanel on Linux.
 
 License: GPLv3+
 URL: https://github.com/Liam-Ralph/pwrstat-gui
-Requires: powerpanel dejavu-sans-fonts
+Requires: powerpanel dejavu-sans-fonts polkit
 Source0: %{name}-%{version}.tar.gz
 
 %description

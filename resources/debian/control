@@ -4,7 +4,7 @@ Section: utils
 Priority: optional
 Architecture: amd64
 Essential: no
-Depends: powerpanel, fonts-dejavu-core
+Depends: powerpanel, fonts-dejavu-core, pkexec
 Installed-Size: INSTALLED_SIZE
 Maintainer: Liam Ralph <liamralph42@gmail.com>
 Description: A GUI for CyberPower PowerPanel on Linux.
