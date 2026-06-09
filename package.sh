@@ -131,6 +131,26 @@ case $distro_group in
         # Setting build path
         build_path="package-build"
         mkdir -p $build_path
+
+        # PKGBUILD
+        cp resources/arch/PKGBUILD $build_path/PKGBUILD
+        sed -i -e "s/VERSION/$version/g" $build_path/PKGBUILD
+
+        # Creating source
+        mkdir $build_path/pwrstat-gui-$version
+        copy_usr_resources $build_path/pwrstat-gui-$version
+        cd $build_path
+        tar -czf pwrstat-gui-$version.tar.gz pwrstat-gui-$version
+        rm -rf pwrstat-gui-$version
+
+        # Creating SHA256SUM
+        sed -i -e "s/SHA256SUM/$(sha256sum pwrstat-gui-$version.tar.gz | awk '{print $1}')/g" PKGBUILD
+
+        # Building package
+        makepkg
+        cd ..
+        mv $build_path/pwrstat-gui-*.pkg.tar.zst ./
+
         ;;
 
     *)

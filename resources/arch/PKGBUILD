@@ -6,41 +6,12 @@ pkgdesc="A GUI for CyperPower PowerPanel on Linux."
 arch=(x86_64)
 url="https://github.com/liam-ralph/pwrstat-gui"
 license=("GPL-3.0-or-later")
-groups=()
-depends=()
-makedepends=()
-checkdepends=()
-optdepends=()
-provides=()
-conflicts=()
-replaces=()
-backup=()
-options=()
-install=
-changelog=
-source=("$pkgname-$pkgver.tar.gz"
-        "$pkgname-$pkgver.patch")
-noextract=()
-sha256sums=()
-validpgpkeys=()
-
-prepare() {
-	cd "$pkgname-$pkgver"
-	patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
-}
-
-build() {
-	cd "$pkgname-$pkgver"
-	./configure --prefix=/usr
-	make
-}
-
-check() {
-	cd "$pkgname-$pkgver"
-	make -k check
-}
+backup=("usr/share/pwrstat-gui/data/settings.txt")
+source=("$pkgname-$pkgver.tar.gz")
+sha256sums=(SHA256SUM)
 
 package() {
 	cd "$pkgname-$pkgver"
-	make DESTDIR="$pkgdir/" install
+    cp -r "$srcdir/$pkgname-$pkgver/usr/" "$pkgdir/"
+    chmod 755 "$pkgdir/usr/bin/pwrstat-gui"
 }
