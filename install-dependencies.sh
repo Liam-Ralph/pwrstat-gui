@@ -34,11 +34,11 @@ case $distro_group in
         ;;
 
     fedora)
-        sudo dnf install git rpmdevtools -y
+        sudo dnf install git rpmdevtools binutils -y
         ;;
 
     arch)
-        sudo pacman -S git base-devel --noconfirm
+        sudo pacman -S git base-devel binutils --noconfirm
         ;;
 
     *)
