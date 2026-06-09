@@ -2,3 +2,6 @@
 /compile-venv/
 /pwrstat-gui
 /package-build/
+*.deb
+*.rpm
+*.pkg.tar.zst
