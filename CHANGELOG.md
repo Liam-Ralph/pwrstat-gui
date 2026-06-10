@@ -1,6 +1,7 @@
 ## Version 1.3.0 (June 2026)
 
  - Added support for Arch-based distros.
+ - Updated memory usage to include memory used by root processes.
 
 ## Version 1.2.0 (January 2026)
 
