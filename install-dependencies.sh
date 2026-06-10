@@ -39,7 +39,7 @@ case $distro_group in
         ;;
 
     arch)
-        sudo pacman -S git base-devel tk binutils --noconfirm
+        sudo pacman -S git base-devel tk ttf-dejavu binutils --noconfirm
         ;;
 
     *)
