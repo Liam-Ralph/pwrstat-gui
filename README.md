@@ -6,6 +6,7 @@
 <br/>
 
 ## Description
+
 A graphical user interface for CyberPower's PowerPanel
 Linux software using Python's tkinter library. Runs the
 command `sudo pwrstat -status` to gather information from
@@ -24,6 +25,7 @@ included by default with most distros, and will be
 installed when missing.
 
 ### Memory
+
 This application uses approximately 256 KiB of memory.
 
 ### Storage
@@ -38,7 +40,7 @@ Dependencies: fonts-dejavu-core (6 MiB)
 
 Arch-based
 XX MiB
-Dependencies: fonts-dejavu-core (X MiB)
+Dependencies: fonts-dejavu-core (10 MiB)
 
 <br/>
 
