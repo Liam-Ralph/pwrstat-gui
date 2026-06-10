@@ -82,7 +82,7 @@ case $distro_group in
         # Setting build path
         build_path="package-build/pwrstat-gui_${version}_x86_64"
         if [ $lts_flag == true ]; then
-            build_path="package-build/pwrstat-gui_lts_${version}_x86_64"
+            build_path="package-build/pwrstat-gui_${version}_lts_x86_64"
         fi
 
         mkdir -p $build_path
@@ -126,7 +126,11 @@ case $distro_group in
 
         # Building package
         rpmbuild -bb $rpmbuild_path/SPECS/pwrstat-gui
-        mv $rpmbuild_path/RPMS/x86_64/pwrstat-gui-*.rpm ./
+        if [ $lts_flag == true ]; then
+            mv $rpmbuild_path/RPMS/x86_64/pwrstat-gui-*.rpm ./pwrstat-gui_${version}_lts_x86_64.rpm
+        else
+            mv $rpmbuild_path/RPMS/x86_64/pwrstat-gui-*.rpm ./pwrstat-gui_${version}_x86_64.rpm
+        fi
 
         ;;
 
@@ -154,7 +158,11 @@ case $distro_group in
         cd $build_path
         makepkg
         cd ..
-        mv $build_path/pwrstat-gui-*.pkg.tar.zst ./
+        if [ $lts_flag == true ]; then
+            mv $build_path/pwrstat-gui-*.pkg.tar.zst ./pwrstat-gui_${version}_lts_x86_64.pkg.tar.zst
+        else
+            mv $build_path/pwrstat-gui-*.pkg.tar.zst ./pwrstat-gui_${version}_x86_64.pkg.tar.zst
+        fi
 
         ;;
 
