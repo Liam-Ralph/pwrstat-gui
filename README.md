@@ -29,7 +29,7 @@ dependency in packaged applications.
 |      Debian     |      Fedora     |       Arch      |
 |-----------------|-----------------|-----------------|
 |fonts-dejavu-core|dejavu-sans-fonts|    ttf-dejavu   |
-|      pkexec     |      polkit     |      polkit     |
+|      polkit     |      polkit     |      polkit     |
 
 Minimum glibc version requirement by package. You can check your distro's
 version with `ldd --version`.
