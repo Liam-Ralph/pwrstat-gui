@@ -76,25 +76,30 @@ Support is assumed for all distros based on Debian, Fedora, and Arch. Below is a
 list of distros with confirmed support. Italics indicate the distro used to
 compile its supported package.
 
-|Distro     |Version|Supports|
-|-----------|-------|--------|
+|Distro             |Version|Supports|
+|-------------------|-------|--------|
 </br>
-|Debian     |13     |Reg     |
-|           |12     |LTS     |
-|Ubuntu     |24.04  |*Reg*   |
-|           |22.04  |*LTS*   |
-|Linux Mint |22.3   |Reg     |
-|Pop!_OS    |24.04  |Reg     |
-|MX Linux   |25.2   |Reg     |
-|antiX      |26     |Reg     |
-|Zorin OS   |18.1   |Reg     |
+|Debian             |13     |Reg     |
+|                   |12     |LTS     |
+|Ubuntu             |24.04  |*Reg*   |
+|                   |22.04  |*LTS*   |
+|Linux Mint         |22.3   |Reg     |
+|Pop!_OS<sup>1</sup>|24.04  |Reg     |
+|MX Linux           |25.2   |Reg     |
+|antiX<sup>2</sup>  |26     |Reg     |
+|Zorin OS           |18.1   |Reg     |
 </br>
-|Fedora     |44     |*Reg*   |
-|           |43     |*LTS*   |
-|Nobara     |43     |LTS     |
-|Bazzite    |44     |Reg     |
+|Fedora             |44     |*Reg*   |
+|                   |43     |*LTS*   |
+|Nobara             |43     |LTS     |
+|Bazzite            |44     |Reg     |
 </br>
-|Arch       |       |Reg     |
-|EndeavourOS|       |Reg     |
-|Manjaro    |       |Reg     |
-|CachyOS    |       |Reg     |
+|Arch               |       |Reg     |
+|EndeavourOS        |       |Reg     |
+|Manjaro            |       |Reg     |
+|CachyOS            |       |Reg     |
+
+</br>
+<sup>1</sup> Run `xhost +local:pwrstat-gui` in your terminal after installing.
+
+<sup>2</sup> Must be started from terminal, as polkit's GUI won't open.
