@@ -127,12 +127,11 @@ case $distro_group in
         fi
 
         # Building package
-        cp -r $rpmbuild_path ~/rpmbuild/
+        mv $rpmbuild_path ~/rpmbuild/
         cd ~/rpmbuild
         rpmbuild -bb $rpmbuild_path/SPECS/pwrstat-gui.spec
         cd -
-        cp -r ~/rpmbuild/ $rpmbuild_path
-        rm -rf ~/rpmbuild
+        mv ~/rpmbuild/ $rpmbuild_path
         if [ $lts_flag == true ]; then
             mv $rpmbuild_path/RPMS/x86_64/pwrstat-gui-*.rpm ./pwrstat-gui_${version}_lts_x86_64.rpm
         else
