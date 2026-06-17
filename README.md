@@ -29,8 +29,7 @@ can be installed using `install-dependencies.sh`.
 You can compile the Python code using `compile.sh`,
 which uses PyInstaller inside a virtual environment.
 `compile.sh` has two flags:
- - -b \[Optional\] The branch of pwrstat-gui to use (uses main if unspecified).
- - -v \[Optional\] The version of Python to use (uses your system's python3 if
+ - -b \[Optional\] The branch of pwrstat-gui to use (uses default if
    unspecified).
 
 <br/>

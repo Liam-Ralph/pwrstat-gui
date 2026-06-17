@@ -27,11 +27,6 @@ case $distro_group in
     debian)
         sudo apt update
         sudo apt install git python3-venv python3-tk binutils -y
-        if [ ! -z $python_version ]; then
-            sudo apt-add-repository ppa:deadsnakes/ppa -y
-            sudo apt update
-            sudo apt install python$python_version -y
-        fi
         ;;
 
     fedora)
