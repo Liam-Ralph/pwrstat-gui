@@ -31,16 +31,17 @@ dependency in packaged applications.
 |fonts-dejavu-core|dejavu-sans-fonts|    ttf-dejavu   |
 |      polkit     |      polkit     |      polkit     |
 
-Minimum glibc version requirement by package. You can check your distro's
-version with `ldd --version`.
+The operating system used to compile each package, as well as that OS's glibc
+and Python versions. A target system may not have an older version of glibc
+than the one used for packaging, but it may have an older Python version.
 
-|Package   |glibc|
-|----------|-----|
-|Debian    |2.39 |
-|Debian LTS|2.27 |
-|Fedora    |2.43 |
-|Fedora LTS|2.42 |
-|Arch      |2.43 |
+|Package   |Operating System|glibc|Python |
+|----------|----------------|-----|-------|
+|Debian    |Ubuntu 24.04    |2.39 |3.12.3 |
+|Debian LTS|Ubuntu 22.04    |2.35 |3.10.12|
+|Fedora    |Fedora 44       |2.43 |3.14.5 |
+|Fedora LTS|Fedora 43       |2.42 |3.14.5 |
+|Arch      |Arch            |2.43 |3.14.5 |
 
 If your distro is unsupported, you can try creating your own
 package using the developer packages.
@@ -79,9 +80,9 @@ compile its supported package.
 |-----------|-------|--------|
 </br>
 |Debian     |13     |Reg     |
-|           |11     |LTS     |
+|           |12     |LTS     |
 |Ubuntu     |24.04  |*Reg*   |
-|           |18.04  |*LTS*   |
+|           |22.04  |*LTS*   |
 |Linux Mint |22.3   |Reg     |
 |Pop!_OS    |24.04  |Reg     |
 |MX Linux   |25.2   |Reg     |
