@@ -129,7 +129,7 @@ case $distro_group in
         # Building package
         mv $rpmbuild_path ~/rpmbuild/
         cd ~/rpmbuild
-        rpmbuild -bb $rpmbuild_path/SPECS/pwrstat-gui.spec
+        rpmbuild -bb SPECS/pwrstat-gui.spec
         cd -
         mv ~/rpmbuild/ $rpmbuild_path
         if [ $lts_flag == true ]; then
