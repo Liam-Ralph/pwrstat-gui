@@ -114,7 +114,7 @@ case $distro_group in
 
         # Creating source
         source_dir="pwrstat-gui-$version"
-        mkdir $rpmbuild_path/SOURCES/$source_dir
+        mkdir -p $rpmbuild_path/SOURCES/$source_dir
         copy_usr_resources $rpmbuild_path/SOURCES/$source_dir
         cd $rpmbuild_path/SOURCES/
         tar -czf $source_dir.tar.gz $source_dir
@@ -138,7 +138,7 @@ case $distro_group in
 
         # Setting build path
         build_path="package-build"
-        mkdir -p $build_path
+        mkdir $build_path
 
         # Creating source
         mkdir $build_path/pwrstat-gui-$version
