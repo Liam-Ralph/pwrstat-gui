@@ -123,7 +123,7 @@ case $distro_group in
 
         # Backing up any existing rpmbuild
         if [ -d ~/rpmbuild ]; then
-            mv ~/rpmbuild ~/rpmbuild-backup
+            mv ~/rpmbuild/ ~/rpmbuild-backup/
         fi
 
         # Building package
