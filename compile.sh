@@ -3,13 +3,11 @@
 # Parsing Flags
 
 git_branch=""
-python_version="3"
 
-while getopts "b:p:" flag; do
+while getopts "b:" flag; do
     case $flag in
         b) git_branch=$OPTARG ;;
-        p) python_version=$OPTARG ;;
-        *) echo -e "Usage: ./compile.sh -b <git branch> -p <python version>"; exit 1 ;;
+        *) echo -e "Usage: ./compile.sh -b <git branch>"; exit 1 ;;
     esac
 done
 
@@ -33,8 +31,8 @@ fi
 
 if [ ! -d "compile-venv" ]; then
     echo -e "\nCreating virtual environment...\n"
-    python${python_version} -m venv compile-venv
-    compile-venv/bin/python$python_version -m pip install --upgrade pyinstaller pillow setproctitle
+    python3 -m venv compile-venv
+    compile-venv/bin/python3 -m pip install --upgrade pyinstaller pillow setproctitle
     mkdir compile-venv/pyinstaller-files
     cp pwrstat-gui-clone/main.py compile-venv/pyinstaller-files/pwrstat-gui.py
 fi
