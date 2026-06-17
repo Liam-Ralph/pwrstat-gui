@@ -122,7 +122,7 @@ case $distro_group in
         sed -i -e "s/VERSION/$version/g" $rpmbuild_path/SPECS/pwrstat-gui.spec
 
         # Building package
-        rpmbuild -bb $rpmbuild_path/SPECS/pwrstat-gui
+        rpmbuild -bb $rpmbuild_path/SPECS/pwrstat-gui.spec
         if [ $lts_flag == true ]; then
             mv $rpmbuild_path/RPMS/x86_64/pwrstat-gui-*.rpm ./pwrstat-gui_${version}_lts_x86_64.rpm
         else
