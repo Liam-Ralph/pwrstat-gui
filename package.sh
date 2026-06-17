@@ -121,7 +121,7 @@ case $distro_group in
         cp resources/fedora/pwrstat-gui.spec $rpmbuild_path/SPECS/pwrstat-gui.spec
         sed -i -e "s/VERSION/$version/g" $rpmbuild_path/SPECS/pwrstat-gui.spec
         sed -i -e \
-            "s/CHANGELOG/\"* ${date +"%a %b %d %Y"} Liam Ralph <liamralph42@gmail.com>$version\n" \
+            "s/CHANGELOG/\"* $(date +"%a %b %d %Y") Liam Ralph <liamralph42@gmail.com>$version\n" \
             "- Available in app or on GitHub.\"/g" \
             $rpmbuild_path/SPECS/pwrstat-gui.spec
 
