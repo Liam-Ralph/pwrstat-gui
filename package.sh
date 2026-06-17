@@ -106,15 +106,12 @@ case $distro_group in
     fedora)
 
         # Setting build path
-        mkdir package-build/
-        cd package-build/
-        rpmdev-setuptree
-        cd ../../
+        mkdir -p package-build/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
         rpmbuild_path="package-build/rpmbuild"
 
         # Creating source
         source_dir="pwrstat-gui-$version"
-        mkdir -p $rpmbuild_path/SOURCES/$source_dir
+        mkdir $rpmbuild_path/SOURCES/$source_dir
         copy_usr_resources $rpmbuild_path/SOURCES/$source_dir
         cd $rpmbuild_path/SOURCES/
         tar -czf $source_dir.tar.gz $source_dir
