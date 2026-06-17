@@ -128,7 +128,7 @@ case $distro_group in
 
         # Building package
         mv $rpmbuild_path ~/rpmbuild/
-        cd ~/rpmbuild
+        cd ~/rpmbuild/
         rpmbuild -bb SPECS/pwrstat-gui.spec
         cd -
         mv ~/rpmbuild/ $rpmbuild_path
