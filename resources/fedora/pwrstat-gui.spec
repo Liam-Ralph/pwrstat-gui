@@ -57,4 +57,4 @@ sudo rm -rf /var/lib/pwrstat-gui/
 /usr/share/pwrstat-gui/images/settings.png
 
 %changelog
-CHANGELOG
+%autochangelog
