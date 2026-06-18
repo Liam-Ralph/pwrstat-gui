@@ -35,13 +35,11 @@ The operating system used to compile each package, as well as that OS's glibc
 and Python versions. A target system may not have an older version of glibc
 than the one used for packaging, but it may have an older Python version.
 
-|Package   |Operating System|glibc|Python |
-|----------|----------------|-----|-------|
-|Debian    |Ubuntu 24.04    |2.39 |3.12.3 |
-|Debian LTS|Ubuntu 22.04    |2.35 |3.10.12|
-|Fedora    |Fedora 44       |2.43 |3.14.5 |
-|Fedora LTS|Fedora 43       |2.42 |3.14.5 |
-|Arch      |Arch            |2.43 |3.14.5 |
+|Package|Operating System|glibc|Python |
+|-------|----------------|-----|-------|
+|Debian |Ubuntu 22.04    |2.35 |3.10.12|
+|Fedora |Fedora 43       |2.42 |3.14.5 |
+|Arch   |Arch            |2.43 |3.14.5 |
 
 If your distro is unsupported, you can try creating your own
 package using the developer packages.
@@ -59,7 +57,7 @@ varying based on distro and needed dependencies.
 
 ## Installation
 
-Packages can be found on this respository's GitHub page.
+Packages can be found on this respository's GitHub page under releases.
 
 ## Development
 
@@ -73,33 +71,33 @@ to automate compilation and packaging.
 ## Operating System Support
 
 Support is assumed for all distros based on Debian, Fedora, and Arch. Below is a
-list of distros with confirmed support. Italics indicate the distro used to
-compile its supported package.
+list of distros with confirmed support.
 
-|Distro             |Version|Supports|
-|-------------------|-------|--------|
+|Distro             |Version|
+|-------------------|-------|
 </br>
-|Debian             |13     |Reg     |
-|                   |12     |LTS     |
-|Ubuntu             |24.04  |*Reg*   |
-|                   |22.04  |*LTS*   |
-|Linux Mint         |22.3   |Reg     |
-|Pop!_OS<sup>1</sup>|24.04  |Reg     |
-|MX Linux           |25.2   |Reg     |
-|antiX<sup>2</sup>  |26     |Reg     |
-|Zorin OS           |18.1   |Reg     |
+|Debian             |13     |
+|                   |12     |
+|Ubuntu             |24.04  |
+|                   |22.04  |
+|Linux Mint         |22.3   |
+|Pop!_OS<sup>1</sup>|24.04  |
+|MX Linux           |25.2   |
+|antiX<sup>2</sup>  |26     |
+|Zorin OS           |18.1   |
 </br>
-|Fedora             |44     |*Reg*   |
-|                   |43     |*LTS*   |
-|Nobara             |43     |LTS     |
-|Bazzite            |44     |Reg     |
+|Fedora             |44     |
+|                   |43     |
+|Nobara             |43     |
 </br>
-|Arch               |       |Reg     |
-|EndeavourOS        |       |Reg     |
-|Manjaro            |       |Reg     |
-|CachyOS            |       |Reg     |
+|Arch               |       |
+|EndeavourOS        |       |
+|Manjaro            |       |
+|CachyOS            |       |
 
 </br>
+
 <sup>1</sup> Run `xhost +local:pwrstat-gui` in your terminal after installing.
-
 <sup>2</sup> Must be started from terminal, as polkit's GUI won't open.
+Bazzite is not supported. It may run, but you cannot change any settings. A fix
+is expected in the next release.
