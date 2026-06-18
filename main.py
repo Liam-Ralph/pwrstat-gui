@@ -56,7 +56,10 @@ global PATH_LICENSE
 PATH_DATA = "/usr/share/pwrstat-gui/data"
 PATH_IMAGES = "/usr/share/pwrstat-gui/images"
 PATH_DOC = "/usr/share/doc/pwrstat-gui"
-PATH_LICENSE = "/usr/share/common-licenses/GPL-3"
+if os.path.exists("/usr/share/common-licenses/GPL-3"):
+    PATH_LICENSE = "/usr/share/common-licenses/GPL-3"
+else:
+    PATH_LICENSE = "/usr/share/licenses/pwrstat-gui/LICENSE"
 
 
 # Functions
