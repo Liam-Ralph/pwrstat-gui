@@ -50,6 +50,7 @@ sudo rm -rf /var/lib/pwrstat-gui/
 /usr/share/doc/pwrstat-gui/README.md
 /usr/share/icons/hicolor/512x512/apps/pwrstat-gui.png
 /usr/share/icons/hicolor/scalable/pwrstat-gui.svg
+/usr/share/licenses/pwrstat-gui/LICENSE
 /usr/share/pwrstat-gui/data/info.txt
 /usr/share/pwrstat-gui/data/settings.txt
 /usr/share/pwrstat-gui/images/info.png
