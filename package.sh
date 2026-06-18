@@ -171,9 +171,9 @@ case $distro_group in
         makepkg
         cd ..
         if [ $lts_flag == true ]; then
-            mv $build_path/pwrstat-gui-*.pkg.tar.zst ./pwrstat-gui_${version}_lts_x86_64.pkg.tar.zst
+            mv $build_path/pwrstat-gui-${version}*.pkg.tar.zst ./pwrstat-gui_${version}_lts_x86_64.pkg.tar.zst
         else
-            mv $build_path/pwrstat-gui-*.pkg.tar.zst ./pwrstat-gui_${version}_x86_64.pkg.tar.zst
+            mv $build_path/pwrstat-gui-${version}*.pkg.tar.zst ./pwrstat-gui_${version}_x86_64.pkg.tar.zst
         fi
 
         ;;
