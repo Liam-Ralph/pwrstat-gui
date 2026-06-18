@@ -2,6 +2,7 @@
 
  - Added support for Arch-based distros.
  - Updated memory usage to include memory used by root processes.
+ - Fixed missing LICENSE in packaged application on non-Debian systems.
 
 ## Version 1.2.0 (January 2026)
 
