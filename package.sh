@@ -18,6 +18,12 @@ copy_usr_resources() {
     cp pwrstat-gui-clone/README.md $1/usr/share/doc/pwrstat-gui/README.md
     cp pwrstat-gui-clone/CHANGELOG.md $1/usr/share/doc/pwrstat-gui/CHANGELOG.md
 
+    # /usr/share/licenses/pwrstat-gui
+    if (( $# == 1 )); then
+        mkdir -p $1/usr/share/licenses/pwrstat-gui
+        cp pwrstat-gui-clone/LICENSE $1/usr/share/licenses/pwrstat-gui/LICENSE
+    fi
+
     # /usr/share/pwrstat-gui
     cp -r pwrstat-gui-clone/data $1/usr/share/pwrstat-gui/
     cp -r pwrstat-gui-clone/images $1/usr/share/pwrstat-gui/
@@ -88,7 +94,7 @@ case $distro_group in
         mkdir -p $build_path
 
         # Creating source
-        copy_usr_resources $build_path
+        copy_usr_resources $build_path debian
 
         # DEBIAN
         mkdir $build_path/DEBIAN
