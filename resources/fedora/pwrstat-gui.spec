@@ -17,30 +17,11 @@ A GUI for CyperPower PowerPanel on Linux.
 %prep
 %autosetup
 
-%pre
-if [ -f /usr/share/pwrstat-gui/data/settings.txt ]; then
-    echo "Existing install found, saving settings..."
-    sudo mkdir -p /var/lib/pwrstat-gui/
-    sudo cp /usr/share/pwrstat-gui/data/settings.txt /var/lib/pwrstat-gui/
-fi
-
 %install
 cp -a * $RPM_BUILD_ROOT/
 
-%post
-if [ -f /var/lib/pwrstat-gui/settings.txt ]; then
-    echo "Loading existing settings..."
-    sudo rm -f /usr/share/pwrstat-gui/data/settings.txt
-    sudo cp /var/lib/pwrstat-gui/settings.txt /usr/share/pwrstat-gui/data/
-    sudo rm -rf /var/lib/pwrstat-gui/
-fi
-
 %clean
 rm -rf $RPM_BUILD_ROOT
-
-%postun
-# Only needed if previous install fails
-sudo rm -rf /var/lib/pwrstat-gui/
 
 %files
 /usr/bin/pwrstat-gui
@@ -52,7 +33,7 @@ sudo rm -rf /var/lib/pwrstat-gui/
 /usr/share/icons/hicolor/scalable/pwrstat-gui.svg
 /usr/share/licenses/pwrstat-gui/LICENSE
 /usr/share/pwrstat-gui/data/info.txt
-/usr/share/pwrstat-gui/data/settings.txt
+%config(noreplace) /usr/share/pwrstat-gui/data/settings.txt
 /usr/share/pwrstat-gui/images/info.png
 /usr/share/pwrstat-gui/images/logo.png
 /usr/share/pwrstat-gui/images/settings.png
