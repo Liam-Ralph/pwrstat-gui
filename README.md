@@ -17,7 +17,8 @@ Not affiliated with CyberPower.
 
 ## Requirements
 
-x86_64 is the only supported architecture.
+x86_64 is the only supported architecture. CyberPower's PowerPanel Personal
+requires systemd.
 
 This project requires __CyberPower's PowerPanel for Linux__,
 which can be found on
@@ -83,7 +84,6 @@ list of distros with confirmed support.
 |Linux Mint         |22.3   |
 |Pop!_OS<sup>1</sup>|24.04  |
 |MX Linux           |25.2   |
-|antiX<sup>2</sup>  |26     |
 |Zorin OS           |18.1   |
 </br>
 |Fedora             |44     |
@@ -98,6 +98,6 @@ list of distros with confirmed support.
 </br>
 
 <sup>1</sup> Run `xhost +local:pwrstat-gui` in your terminal after installing.
-<sup>2</sup> Must be started from terminal, as polkit's GUI won't open.
 Bazzite is not supported. It may run, but you cannot change any settings. A fix
 is expected in the next release.
+antiX is not supported, due to PowerPanel Personal requiring systemd.
