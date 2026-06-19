@@ -50,7 +50,7 @@ This application uses approximately 25 MiB of memory.
 
 ### Storage
 
-This application uses approximately 20 MiB of storage,
+This application uses approximately 20-50 MiB of storage,
 varying based on distro and needed dependencies.
 
 <br/>
