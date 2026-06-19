@@ -71,8 +71,8 @@ to automate compilation and packaging.
 
 ## Operating System Support
 
-Support is assumed for all distros based on Debian, Fedora, and Arch. Below is a
-list of distros with confirmed support.
+Support is assumed for all distros based on Debian, Fedora, and Arch, except
+Bazzite and antiX. Below is a list of distros with confirmed support.
 
 |Distro             |Version|
 |-------------------|-------|
@@ -81,19 +81,11 @@ list of distros with confirmed support.
 |                   |12     |
 |Ubuntu             |24.04  |
 |                   |22.04  |
-|Linux Mint         |22.3   |
-|Pop!_OS<sup>1</sup>|24.04  |
-|MX Linux           |25.2   |
-|Zorin OS           |18.1   |
 </br>
 |Fedora             |44     |
 |                   |43     |
-|Nobara             |43     |
 </br>
 |Arch               |       |
-|EndeavourOS        |       |
-|Manjaro            |       |
-|CachyOS            |       |
 
 </br>
 
