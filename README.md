@@ -76,15 +76,12 @@ Bazzite and antiX. Below is a list of distros with confirmed support.
 
 |Distro             |Version|
 |-------------------|-------|
-</br>
 |Debian             |13     |
 |                   |12     |
 |Ubuntu             |24.04  |
 |                   |22.04  |
-</br>
 |Fedora             |44     |
 |                   |43     |
-</br>
 |Arch               |       |
 
 </br>
