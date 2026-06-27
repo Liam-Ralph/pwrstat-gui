@@ -207,7 +207,10 @@ def change_log_path():
 
         # Choose Log Path
 
-        new_log_path = tkinter.filedialog.askdirectory(parent = window_settings) + "/"
+        initialdir = log_path if os.path.exists(log_path) else "/home/" + os.getlogin()
+        new_log_path = tkinter.filedialog.askdirectory(
+            parent = window_settings, initialdir = initialdir
+        ) + "/"
 
         if not os.path.exists(new_log_path):
 
@@ -1336,6 +1339,7 @@ def reset_settings():
     global medium
     global light
     global highlight
+
     global font
     global log_path
     global sampling_interval
@@ -1624,6 +1628,11 @@ def update_status():
                                         "Load (Watts)", "Load (%)"
                                     ]]
                                 )
+
+                            # Chown File to Regular User
+
+                            username = os.getlogin()
+                            subprocess.run(["chown", f"{username}:{username}", file_path])
 
                         # Add Info Row
 
