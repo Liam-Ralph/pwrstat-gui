@@ -1,3 +1,9 @@
+## Version 1.3.1 (June 2026)
+
+ - Fixed logging file permissions.
+ - Changed default sampling interval.
+ - Changed minimum sampling interval to be based on UPS polling rate.
+
 ## Version 1.3.0 (June 2026)
 
  - Added support for Arch-based distros.

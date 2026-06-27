@@ -1263,10 +1263,17 @@ def open_window_settings(window_dimensions=[800, 600]):
         padx = 10
     )
 
+    with open("/etc/pwrstatd.conf", "r") as file:
+        ups_polling_rate = float(
+            [
+                line for line in file.read().strip().split("\n") if "ups-polling-rate" in line
+            ][0].split("=")[1].strip()
+        )
+
     sampling_interval_scale = tkinter.Scale(
         sampling_interval_frame,
         variable = sampling_interval_choice,
-        from_ = 1,
+        from_ = min(ups_polling_rate, sampling_interval),
         to = 10,
         resolution = 0.5,
         orient = tkinter.HORIZONTAL,
@@ -1280,7 +1287,20 @@ def open_window_settings(window_dimensions=[800, 600]):
         padx = 5
     )
     sampling_interval_scale.bind("<ButtonRelease-1>",
-        lambda event: change_sampling_interval(sampling_interval_choice.get()))
+        lambda event: change_sampling_interval(sampling_interval_choice.get())
+    )
+
+    tkinter.Label(
+        sampling_interval_frame,
+        text = "Minimum based on ups-polling-rate in /etc/pwrstatd.conf",
+        font = (font, 10),
+        fg = highlight,
+        bg = darkest,
+        height = 1
+    ).pack(
+        side = tkinter.LEFT,
+        padx = 10
+    )
 
     window_settings.update()
 
