@@ -328,21 +328,15 @@ def open_window_home(window_dimensions = [800, 600], settings_dimensions = None)
 
     global window_home
 
-    # Info and Settings Variables
-
-    global names
-    global created
-    global version
-    global updated
+    # Settings Variables
 
     global darkest
     global dark
     global medium
     global light
     global highlight
+
     global font
-    global log_path
-    global sampling_interval
 
     # Logging and Status
 
@@ -613,6 +607,7 @@ def open_window_info(window_dimensions = [500, 650]):
     global medium
     global light
     global highlight
+
     global font
 
     # Info Window Setup
@@ -940,6 +935,7 @@ def open_window_settings(window_dimensions=[800, 600]):
     global medium
     global light
     global highlight
+
     global font
     global log_path
     global sampling_interval
@@ -1727,6 +1723,7 @@ def main():
     global medium
     global light
     global highlight
+
     global font
     global log_path
     global sampling_interval
