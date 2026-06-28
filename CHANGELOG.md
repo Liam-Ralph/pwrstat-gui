@@ -3,6 +3,8 @@
  - Fixed logging file permissions.
  - Changed default sampling interval.
  - Changed minimum sampling interval to be based on UPS polling rate.
+ - Moved user settings to XDG_CONFIG_HOME.
+ - Changed info and settings formatting.
 
 ## Version 1.3.0 (June 2026)
 
@@ -19,7 +21,7 @@
 
  - Added documentation comments to functions.
  - Confirmed support for Linux Mint 22.2.
- - Updated CHANGELOG formatting (vx.y.z --> Version x.y.z)
+ - Updated CHANGELOG formatting (vx.y.z --> Version x.y.z).
 
 ## Version 1.1.1 (September 2025)
 
