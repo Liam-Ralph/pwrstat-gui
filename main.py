@@ -46,12 +46,19 @@ import time
 import traceback
 
 
+# Username
+
+global USERNAME
+
+USERNAME = os.getlogin()
+
 # Paths
 
 global PATH_DATA
 global PATH_IMAGES
 global PATH_DOC
 global PATH_LICENSE
+global PATH_SETTINGS
 
 PATH_DATA = "/usr/share/pwrstat-gui/data"
 PATH_IMAGES = "/usr/share/pwrstat-gui/images"
@@ -60,6 +67,9 @@ if os.path.exists("/usr/share/common-licenses/GPL-3"):
     PATH_LICENSE = "/usr/share/common-licenses/GPL-3"
 else:
     PATH_LICENSE = "/usr/share/licenses/pwrstat-gui/LICENSE"
+PATH_SETTINGS = (
+    os.environ.get("XDG_CONFIG_HOME", f"/home/{USERNAME}/.config") + "/pwrstat-gui/settings.conf"
+)
 
 
 # Functions
@@ -105,30 +115,19 @@ def change_color(color_type):
 
             # Change Variable and Settings File
 
-            with open(PATH_DATA + "/settings.txt", "r+") as file:
+            match (color_type):
+                case "darkest":
+                    darkest = color_raw
+                case "dark":
+                    dark = color_raw
+                case "medium":
+                    medium = color_raw
+                case "light":
+                    light = color_raw
+                case "highlight":
+                    highlight = color_raw
 
-                text = file.read().strip()
-
-                match (color_type):
-                    case "darkest":
-                        text = text.replace(darkest, color_raw, 1)
-                        darkest = color_raw
-                    case "dark":
-                        text = text.replace(dark, color_raw, 1)
-                        dark = color_raw
-                    case "medium":
-                        text = text.replace(medium, color_raw, 1)
-                        medium = color_raw
-                    case "light":
-                        text = text.replace(light, color_raw, 1)
-                        light = color_raw
-                    case "highlight":
-                        text = text.replace(highlight, color_raw, 1)
-                        highlight = color_raw
-
-                file.seek(0)
-                file.write(text)
-                file.truncate()
+            write_settings_file()
 
             # Reload Windows
 
@@ -168,13 +167,8 @@ def change_font(new_font):
 
     # Change Font Variable and Settings File
 
-    with open(PATH_DATA + "/settings.txt", "r+") as file:
-        text = file.read().strip().replace(font, new_font)
-        file.seek(0)
-        file.write(text)
-        file.truncate()
-
     font = new_font
+    write_settings_file()
 
     # Reload Windows
 
@@ -209,34 +203,17 @@ def change_log_path():
 
         initialdir = log_path if os.path.exists(log_path) else "/home/" + os.getlogin()
         new_log_path = tkinter.filedialog.askdirectory(
-            parent = window_settings, initialdir = initialdir
+            parent = window_settings, initialdir = initialdir, mustexist = True
         ) + "/"
 
-        if not os.path.exists(new_log_path):
+        # Change Logging Path Variable and Settings File
 
-            # Chosen Directory Does Not Exist
+        log_path = new_log_path
+        write_settings_file()
 
-            messagebox.showwarning(
-                parent = window_settings,
-                title = "Log Path Choosing Failed",
-                message = f"Log path choosing failed: Directory {new_log_path} does not exist."
-            )
+        # Reload Windows
 
-        else:
-
-            # Change Logging Path Variable and Settings File
-
-            with open(PATH_DATA + "/settings.txt", "r+") as file:
-                text = file.read().strip().replace(log_path, new_log_path)
-                file.seek(0)
-                file.write(text)
-                file.truncate()
-
-            log_path = new_log_path
-
-            # Reload Windows
-
-            reload_windows()
+        reload_windows()
 
 def change_sampling_interval(new_sampling_interval):
     """
@@ -252,18 +229,8 @@ def change_sampling_interval(new_sampling_interval):
 
     # Change Sampling Interval Variable and Settings File
 
-    with open(PATH_DATA + "/settings.txt", "r+") as file:
-        text = (
-            file.read().strip().replace(
-                "sampling-interval: " + str(sampling_interval),
-                "sampling-interval: " + str(new_sampling_interval)
-            ) # '"sampling-interval: " +' needed to prevent replacing an integer from color-set
-        )
-        file.seek(0)
-        file.write(text)
-        file.truncate()
-
     sampling_interval = new_sampling_interval
+    write_settings_file()
 
     # Reload Windows
 
@@ -1347,9 +1314,12 @@ def reload_windows():
         settings_dimensions = current_settings_dimensions
     )
 
-def reset_settings():
+def reset_settings(reload_windows_flag = True):
     """
     Reset all user settings to defaults. Save default settings to settings file.
+
+    :reload_windows_flag: Whether to run reload_windows(). False when run from
+    main window (windows don't exist yet).
     """
 
     # Global Variables
@@ -1364,30 +1334,30 @@ def reset_settings():
     global log_path
     global sampling_interval
 
+    # Reading Default Settings
+
+    with open(PATH_DATA + "/defaults.conf", "r") as file:
+        default_settings = file.read().split("\n")
+
     # Resetting Variables
 
-    darkest = "#000000"
-    dark = "#101010"
-    medium = "#202020"
-    light = "#404040"
-    highlight = "#AA0000"
-    font = "DejaVu Sans"
-    log_path = "NOT SET"
-    sampling_interval = 1.0
+    color_set = default_settings[0].replace("color_set = ", "").split(", ")
+    darkest = color_set[0]
+    dark = color_set[1]
+    medium = color_set[2]
+    light = color_set[3]
+    highlight = color_set[4]
+    font = default_settings[1].replace("font = ", "")
+    log_path = default_settings[2].replace("log_path = ", "")
+    sampling_interval = float(default_settings[3].replace("sampling_interval = ", ""))
 
     # Resetting Settings File
 
-    with open(PATH_DATA + "/settings.txt", "w") as file:
-        file.write(
-            "color-set: #000000, #101010, #202020, #404040, #AA0000\n" +
-            "font: DejaVu Sans\n" +
-            "log-path: NOT SET\n" +
-            "sampling-interval: 1.0"
-        )
+    write_settings_file()
 
     # Reload Windows
-
-    reload_windows()
+    if reload_windows_flag:
+        reload_windows()
 
 def toggle_logging():
     """
@@ -1651,8 +1621,7 @@ def update_status():
 
                             # Chown File to Regular User
 
-                            username = os.getlogin()
-                            subprocess.run(["chown", f"{username}:{username}", file_path])
+                            subprocess.run(["chown", f"{USERNAME}:{USERNAME}", file_path])
 
                         # Add Info Row
 
@@ -1732,6 +1701,40 @@ def update_status():
 
             time.sleep(0.5)
 
+def write_settings_file():
+    """
+    Write the settings.conf file using current settings.
+    """
+
+    # Settings Variables
+
+    global darkest
+    global dark
+    global medium
+    global light
+    global highlight
+
+    global font
+    global log_path
+    global sampling_interval
+
+    # Write Settings File
+
+    settings_dir = os.path.dirname(PATH_SETTINGS)
+    if not os.path.exists(settings_dir):
+        os.mkdir(settings_dir)
+        subprocess.run(["chown", f"{USERNAME}:{USERNAME}", settings_dir])
+
+    with open(PATH_SETTINGS, "w") as file:
+        file.write(
+            f"color_set = {darkest}, {dark}, {medium}, {light}, {highlight}\n" +
+            f"font = {font}\n" +
+            f"log_path = {log_path}\n" +
+            f"sampling_interval = {sampling_interval}\n"
+        )
+
+    subprocess.run(["chown", f"{USERNAME}:{USERNAME}", PATH_SETTINGS])
+
 
 # Main Function
 
@@ -1795,22 +1798,25 @@ def main():
 
     with open(PATH_DATA + "/info.txt", "r") as file:
         info_raw = file.read().split("\n")
-    names = info_raw[0].replace("Names: ", "")
-    created = info_raw[1].replace("Created: ", "")
-    version = info_raw[2].replace("Version: ", "")
-    updated = info_raw[3].replace("Updated: ", "")
+    names = info_raw[0].replace("Names = ", "")
+    created = info_raw[1].replace("Created = ", "")
+    version = info_raw[2].replace("Version = ", "")
+    updated = info_raw[3].replace("Updated = ", "")
 
-    with open(PATH_DATA + "/settings.txt", "r") as file:
+    if not os.path.exists(PATH_SETTINGS):
+        reset_settings(False)
+
+    with open(PATH_SETTINGS, "r") as file:
         settings_raw = file.read().split("\n")
-    color_set = settings_raw[0].replace("color-set: ", "").split(", ")
+    color_set = settings_raw[0].replace("color_set = ", "").split(", ")
     darkest = color_set[0]
     dark = color_set[1]
     medium = color_set[2]
     light = color_set[3]
     highlight = color_set[4]
-    font = settings_raw[1].replace("font: ", "")
-    log_path = settings_raw[2].replace("log-path: ", "")
-    sampling_interval = float(settings_raw[3].replace("sampling-interval: ", ""))
+    font = settings_raw[1].replace("font = ", "")
+    log_path = settings_raw[2].replace("log_path = ", "")
+    sampling_interval = float(settings_raw[3].replace("sampling_interval = ", ""))
 
     # Window Setup
 
