@@ -62,16 +62,28 @@ global PATH_DOC
 global PATH_LICENSE
 global PATH_SETTINGS
 
-PATH_DATA = "/usr/share/pwrstat-gui/data"
-PATH_IMAGES = "/usr/share/pwrstat-gui/images"
-PATH_DOC = "/usr/share/doc/pwrstat-gui"
-if os.path.exists("/usr/share/common-licenses/GPL-3"):
-    PATH_LICENSE = "/usr/share/common-licenses/GPL-3"
+if __file__ == "/usr/bin/pwrstat-gui":
+
+    PATH_DATA = "/usr/share/pwrstat-gui/data"
+    PATH_IMAGES = "/usr/share/pwrstat-gui/images"
+    PATH_DOC = "/usr/share/doc/pwrstat-gui"
+    if os.path.exists("/usr/share/common-licenses/GPL-3"):
+        PATH_LICENSE = "/usr/share/common-licenses/GPL-3"
+    else:
+        PATH_LICENSE = "/usr/share/licenses/pwrstat-gui/LICENSE"
+    PATH_SETTINGS = (
+        os.environ.get("XDG_CONFIG_HOME", f"/home/{USERNAME}/.config") +
+        "/pwrstat-gui/settings.conf"
+    )
+
 else:
-    PATH_LICENSE = "/usr/share/licenses/pwrstat-gui/LICENSE"
-PATH_SETTINGS = (
-    os.environ.get("XDG_CONFIG_HOME", f"/home/{USERNAME}/.config") + "/pwrstat-gui/settings.conf"
-)
+
+    project_dir = os.path.dirname(__file__)
+    PATH_DATA = project_dir + "/data"
+    PATH_IMAGES = project_dir + "/images"
+    PATH_DOC = project_dir
+    PATH_LICENSE = project_dir + "/LICENSE"
+    PATH_SETTINGS = PATH_DATA + "/settings.conf"
 
 
 # Functions
