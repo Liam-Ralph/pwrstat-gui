@@ -32,7 +32,8 @@ fi
 if [ ! -d "compile-venv" ]; then
     echo -e "\nCreating virtual environment...\n"
     python3 -m venv compile-venv
-    compile-venv/bin/python3 -m pip install --upgrade pyinstaller pillow setproctitle
+    compile-venv/bin/python3 -m pip install --upgrade \
+        pyinstaller pillow setproctitle tkinterweb markdown
     mkdir compile-venv/pyinstaller-files
     cp pwrstat-gui-clone/main.py compile-venv/pyinstaller-files/pwrstat-gui.py
 fi
