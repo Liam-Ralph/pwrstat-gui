@@ -5,6 +5,8 @@
  - Changed minimum sampling interval to be based on UPS polling rate.
  - Moved user settings to XDG_CONFIG_HOME.
  - Changed info and settings formatting.
+ - Added Markdown interpretation to info popups.
+ - Changed default light colour.
 
 ## Version 1.3.0 (June 2026)
 

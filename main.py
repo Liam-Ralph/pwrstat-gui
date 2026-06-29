@@ -24,6 +24,7 @@ import tkinter.filedialog
 from tkinter import colorchooser
 from tkinter import messagebox
 from tkinter import ttk
+import tkinterweb
 
 # System
 
@@ -40,6 +41,7 @@ from PIL import Image, ImageTk
 
 import csv
 import datetime
+import markdown
 import re
 import threading
 import time
@@ -857,31 +859,35 @@ def open_window_popup(popup_file):
 
     else:
 
-        file_path = PATH_DOC + "/" + popup_file
+        # Read Markdown File
 
+        file_path = PATH_DOC + "/" + popup_file
         with open(file_path, "r") as file:
             label_text = file.read()
-        for item in ("# ", "#", "\n<br/>", "[", "__"):
-            label_text = label_text.replace(item, "")
-        label_text = label_text.replace("]", " ").replace("`", "\"")
+        
+        # Convert Markdown to HTML
 
-    text_widget = tkinter.Text(
+        html = markdown.markdown(label_text, extensions = ["tables"])
+
+    html_frame = tkinterweb.HtmlFrame(
         frame_main,
-        font = (font, 12),
-        fg = light,
-        bg = darkest,
-        highlightthickness = 0,
-        borderwidth = 0
     )
-    text_widget.pack(
+    html_frame.add_html(html)
+    font_family = "sans-serif" if "Sans" in font else "monospace" if "Mono" in font else "serif"
+    html_frame.add_css(
+        "body {\n" +
+        f"    background-color: {darkest};" +
+        f"    color: {light};" +
+        f"    font-family: \"{font}\", {font_family};\n" +
+        "}"
+    )
+    html_frame.pack(
         padx = 10,
         pady = 10,
         expand = True,
         fill = tkinter.BOTH
     )
-    text_widget.tag_configure("center", justify="center")
-    text_widget.insert("1.0", label_text)
-    text_widget.tag_add("center", "1.0", "end")
+
     window_popup.update()
 
 def open_window_settings(window_dimensions=[800, 600]):
@@ -1502,14 +1508,14 @@ def update_graph():
                 ))
                 graph.winfo_toplevel().after(0, lambda: graph.tag_lower("polygon"))
 
-                # Wait 500 Milliseconds to Update Graph
+                # Wait to Update Graph
 
-                time.sleep(0.5)
+                time.sleep(sampling_interval)
 
             else:
 
                 # Variables not ready, wait and check again
-                time.sleep(0.5)
+                time.sleep(sampling_interval)
 
         except(NameError, tkinter.TclError):
 
@@ -1521,7 +1527,7 @@ def update_graph():
                 traceback.format_exc() + "\n"
             )
 
-            time.sleep(0.5)
+            time.sleep(sampling_interval)
 
 def update_status():
     """
