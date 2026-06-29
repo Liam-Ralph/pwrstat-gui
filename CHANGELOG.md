@@ -7,6 +7,8 @@
  - Changed info and settings formatting.
  - Added Markdown interpretation to info popups.
  - Changed default light colour.
+ - Fixed svg icon path in PwrStat GUI Developer Packages.
+ - Added path toggle based file location.
 
 ## Version 1.3.0 (June 2026)
 
