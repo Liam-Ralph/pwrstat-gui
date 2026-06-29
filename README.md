@@ -1,6 +1,6 @@
 # PwrStat Developer Packages
 ### Released June 2026
-### Version 2.0.0
+### Version 2.0.1
 ### Updated June 2026
 
 </br>
