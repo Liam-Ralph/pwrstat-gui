@@ -871,6 +871,24 @@ def open_window_popup(popup_file):
         with open(PATH_LICENSE, "r") as file:
             label_text += file.read().replace("    ", "")
 
+        text_widget = tkinter.Text(
+            frame_main,
+            font = (font, 12),
+            fg = light,
+            bg = darkest,
+            highlightthickness = 0,
+            borderwidth = 0
+        )
+        text_widget.pack(
+            padx = 10,
+            pady = 10,
+            expand = True,
+            fill = tkinter.BOTH
+        )
+        text_widget.tag_configure("center", justify="center")
+        text_widget.insert("1.0", label_text)
+        text_widget.tag_add("center", "1.0", "end")
+
     else:
 
         # Read Markdown File
@@ -878,29 +896,29 @@ def open_window_popup(popup_file):
         file_path = PATH_DOC + "/" + popup_file
         with open(file_path, "r") as file:
             label_text = file.read()
-        
+
         # Convert Markdown to HTML
 
         html = markdown.markdown(label_text, extensions = ["tables"])
 
-    html_frame = tkinterweb.HtmlFrame(
-        frame_main,
-    )
-    html_frame.add_html(html)
-    font_family = "sans-serif" if "Sans" in font else "monospace" if "Mono" in font else "serif"
-    html_frame.add_css(
-        "body {\n" +
-        f"    background-color: {darkest};" +
-        f"    color: {light};" +
-        f"    font-family: \"{font}\", {font_family};\n" +
-        "}"
-    )
-    html_frame.pack(
-        padx = 10,
-        pady = 10,
-        expand = True,
-        fill = tkinter.BOTH
-    )
+        html_frame = tkinterweb.HtmlFrame(
+            frame_main,
+        )
+        html_frame.add_html(html)
+        font_family = "sans-serif" if "Sans" in font else "monospace" if "Mono" in font else "serif"
+        html_frame.add_css(
+            "body {\n" +
+            f"    background-color: {darkest};" +
+            f"    color: {light};" +
+            f"    font-family: \"{font}\", {font_family};\n" +
+            "}"
+        )
+        html_frame.pack(
+            padx = 10,
+            pady = 10,
+            expand = True,
+            fill = tkinter.BOTH
+        )
 
     window_popup.update()
 
