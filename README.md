@@ -72,8 +72,8 @@ can be installed using `install-dependencies.sh`.
 You can compile the Python code using `compile.sh`,
 which uses PyInstaller inside a virtual environment.
 `compile.sh` has one flag:
- - -c \[Optional\] No arguments. If the flag is present, compile-venv will be
-   removed prior to compilation.
+ - -c \[Optional\] No arguments. If the flag is present, PyInstaller files will
+   be removed prior to compilation. with -cc, compile-venv will be removed.
 
 You can package the project using `package.sh`, which will also
 run `compile.sh` if you haven't already.
