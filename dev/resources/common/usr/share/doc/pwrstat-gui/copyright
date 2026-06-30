@@ -1,0 +1,9 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Source: https://github.com/Liam-Ralph/pwrstat-gui
+Upstream-Name: PwrStat GUI
+Upstream-Contact: Liam Ralph <liamralph42@gmail.com>
+
+Files:
+ *
+Copyright: 2025-2026 Liam Ralph
+License: GPL-3
