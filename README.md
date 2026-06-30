@@ -51,8 +51,8 @@ This application uses approximately 25 MiB of memory.
 
 ### Storage
 
-This application uses approximately 20-50 MiB of storage,
-varying based on distro and needed dependencies.
+This application uses approximately 20 MiB of storage,
+varying based on distro.
 
 <br/>
 
@@ -65,6 +65,22 @@ Packages can be found on this respository's GitHub page under releases.
 I have added some developer packages under dev. These include the
 files used to create packages and some documentation, as well as some scripts
 to automate compilation and packaging.
+
+Packages required to compile and package PwrStat GUI
+can be installed using `install-dependencies.sh`.
+`install-dependencies.sh` has one flag:
+ - -d \[Required\] Distro group (debian, fedora, or arch).
+
+You can compile the Python code using `compile.sh`,
+which uses PyInstaller inside a virtual environment.
+
+You can package the project using `package.sh`, which will also
+run `compile.sh` if you haven't already.
+`package.sh` has two flags:
+ - -d \[Required\] Distro group (debian, fedora, or arch) to target.
+ - -l \[Optional\] No arguments. If flag is present, the package's name
+   will be changed to signify an LTS version.
+
 
 <br/>
 
