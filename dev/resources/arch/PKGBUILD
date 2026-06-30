@@ -1,0 +1,17 @@
+# Maintainer: Liam Ralph <liamralph42@gmail.com>
+pkgname=pwrstat-gui
+pkgver=VERSION
+pkgrel=1
+pkgdesc="A GUI for CyperPower PowerPanel on Linux."
+arch=(x86_64)
+url="https://github.com/liam-ralph/pwrstat-gui"
+license=("GPL-3.0-or-later")
+depends=(ttf-dejavu polkit)
+source=("$pkgname-$pkgver.tar.gz")
+sha256sums=(SHA256SUM)
+
+package() {
+	cd "$pkgname-$pkgver"
+    cp -r "$srcdir/$pkgname-$pkgver/usr/" "$pkgdir/"
+    chmod 755 "$pkgdir/usr/bin/pwrstat-gui"
+}
