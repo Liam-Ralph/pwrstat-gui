@@ -80,9 +80,9 @@ if absolute_paths:
 
 else:
 
-    project_dir = os.path.dirname(__file__)
-    PATH_DATA = project_dir + "/data"
-    PATH_IMAGES = project_dir + "/images"
+    project_dir = os.path.dirname(os.path.dirname(__file__))
+    PATH_DATA = project_dir + "src/data"
+    PATH_IMAGES = project_dir + "src/images"
     PATH_DOC = project_dir
     PATH_LICENSE = project_dir + "/LICENSE"
     PATH_SETTINGS = PATH_DATA + "/settings.conf"
