@@ -10,9 +10,9 @@ wheels/
 .venv
 
 /data/settings.conf
-/dev/compile-venv/
-/dev/pwrstat-gui
-/dev/package-build/
+/pkg/compile-venv/
+/pkg/pwrstat-gui
+/pkg/package-build/
 *.deb
 *.rpm
 *.pkg.tar.zst
