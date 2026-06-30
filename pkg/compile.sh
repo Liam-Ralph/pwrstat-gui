@@ -19,12 +19,12 @@ if [ ! -d "compile-venv" ]; then
     compile-venv/bin/python3 -m pip install --upgrade \
         pyinstaller pillow setproctitle tkinterweb markdown
     mkdir compile-venv/pyinstaller-files
-    cp ../src/main.py compile-venv/pyinstaller-files/pwrstat-gui.py
 fi
 
 # Compiling using PyInstaller
 
 echo -e "\nCompiling...\n"
+cp ../src/main.py compile-venv/pyinstaller-files/pwrstat-gui.py
 cd compile-venv
 bin/python3 -m PyInstaller \
     --onefile \

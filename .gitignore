@@ -9,6 +9,7 @@ wheels/
 # Virtual environments
 .venv
 
+# Package files
 /data/settings.conf
 /pkg/compile-venv/
 /pkg/pwrstat-gui

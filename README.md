@@ -43,7 +43,7 @@ than the one used for packaging, but it may have an older Python version.
 |Arch   |Arch            |2.43 |3.14.5 |
 
 If your distro is unsupported, you can try creating your own
-package using the developer packages.
+package using the scripts under pkg.
 
 ### Memory
 
@@ -60,11 +60,9 @@ varying based on distro.
 
 Packages can be found on this respository's GitHub page under releases.
 
-## Development
+## Packaging
 
-I have added some developer packages under dev. These include the
-files used to create packages and some documentation, as well as some scripts
-to automate compilation and packaging.
+You can use the scripts under pkg to create a complete Linux package.
 
 Packages required to compile and package PwrStat GUI
 can be installed using `install-dependencies.sh`.
@@ -73,6 +71,9 @@ can be installed using `install-dependencies.sh`.
 
 You can compile the Python code using `compile.sh`,
 which uses PyInstaller inside a virtual environment.
+`compile.sh` has one flag:
+ - -c \[Optional\] No arguments. If the flag is present, compile-venv will be
+   removed prior to compilation.
 
 You can package the project using `package.sh`, which will also
 run `compile.sh` if you haven't already.
