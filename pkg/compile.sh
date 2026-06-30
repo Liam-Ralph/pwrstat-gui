@@ -27,7 +27,7 @@ echo -e "\nCompiling...\n"
 cp ../src/main.py compile-venv/pyinstaller-files/pwrstat-gui.py
 cd compile-venv
 bin/python3 -m PyInstaller \
-    --onefile \
+    --onefile --optimize=2 --strip \
     --distpath=pyinstaller-files/dist --workpath=pyinstaller-files/build \
     --hidden-import=PIL --hidden-import=PIL._tkinter_finder --hidden-import=tkinter \
     pyinstaller-files/pwrstat-gui.py
