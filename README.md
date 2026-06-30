@@ -102,6 +102,6 @@ Bazzite and antiX. Below is a list of distros with confirmed support.
 
 </br>
 
-Bazzite is not supported. It may run, but you cannot change any settings. A fix
-is expected in the next release.
+Bazzite should be supported, but you may need to run `xhost +local:pwrstat-gui`
+after installing.
 antiX is not supported, due to PowerPanel Personal requiring systemd.
