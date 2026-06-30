@@ -1,5 +1,6 @@
-## Version 1.3.1 (June 2026)
+## Version 1.4.0 (June 2026)
 
+ - Combined with PwrStat GUI Developer Packages.
  - Fixed logging file permissions.
  - Changed default sampling interval.
  - Changed minimum sampling interval to be based on UPS polling rate.
