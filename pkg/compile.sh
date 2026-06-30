@@ -2,14 +2,28 @@
 
 # Parsing Flags
 
+clean=0
+
 while getopts "c" flag; do
     case $flag in
-        c) rm -rf compile-venv ;;
+        c) (( clean++ )) ;;
         *) 
-            echo -e "Usage: ./compile.sh [-c] <remove PyInstaller files before compilation>\n"
+            echo -e "Usage: ./compile.sh\n" \
+                "    [-c] <remove PyInstaller files before compilation>\n" \
+                "    [-cc] <remove compile-venv before compilation"
             exit 1 ;;
     esac
 done
+
+if [ -d "compile-venv" ]; then
+    if (( clean == 1 )); then
+        echo "Remove pyinstaller files"
+        rm -rf compile-venv/{pyinstaller-files,pwrstat-gui.spec}
+        ls compile-venv
+    elif (( clean == 2 )); then
+        rm -rf compile-venv
+    fi
+fi
 
 # Setting up virtual environment if necessary
 
@@ -18,6 +32,9 @@ if [ ! -d "compile-venv" ]; then
     python3 -m venv compile-venv
     compile-venv/bin/python3 -m pip install --upgrade \
         pyinstaller pillow setproctitle tkinterweb markdown
+fi
+
+if [ ! -d "compile-venv/pyinstaller-files" ]; then
     mkdir compile-venv/pyinstaller-files
 fi
 
