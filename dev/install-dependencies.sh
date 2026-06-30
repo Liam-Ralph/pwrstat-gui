@@ -26,15 +26,15 @@ case $distro_group in
 
     debian)
         sudo apt update
-        sudo apt install git python3-venv python3-tk binutils -y
+        sudo apt install python3-venv python3-tk binutils -y
         ;;
 
     fedora)
-        sudo dnf install git rpmdevtools python3-tkinter binutils -y
+        sudo dnf install rpmdevtools python3-tkinter binutils -y
         ;;
 
     arch)
-        sudo pacman -S git base-devel tk ttf-dejavu binutils --noconfirm
+        sudo pacman -S base-devel tk ttf-dejavu binutils --noconfirm
         ;;
 
     *)

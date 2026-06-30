@@ -15,18 +15,18 @@ copy_usr_resources() {
     sed -i -e "s/VERSION/$version/g" $1/usr/share/applications/pwrstat-gui.desktop
 
     # /usr/share/doc/pwrstat-gui
-    cp pwrstat-gui-clone/README.md $1/usr/share/doc/pwrstat-gui/README.md
-    cp pwrstat-gui-clone/CHANGELOG.md $1/usr/share/doc/pwrstat-gui/CHANGELOG.md
+    cp ../README.md $1/usr/share/doc/pwrstat-gui/README.md
+    cp ../CHANGELOG.md $1/usr/share/doc/pwrstat-gui/CHANGELOG.md
 
     # /usr/share/licenses/pwrstat-gui
     if (( $# == 1 )); then
         mkdir -p $1/usr/share/licenses/pwrstat-gui
-        cp pwrstat-gui-clone/LICENSE $1/usr/share/licenses/pwrstat-gui/LICENSE
+        cp ../LICENSE $1/usr/share/licenses/pwrstat-gui/LICENSE
     fi
 
     # /usr/share/pwrstat-gui
-    cp -r pwrstat-gui-clone/data $1/usr/share/pwrstat-gui/
-    cp -r pwrstat-gui-clone/images $1/usr/share/pwrstat-gui/
+    cp -r ../src/data $1/usr/share/pwrstat-gui/
+    cp -r ../src/images $1/usr/share/pwrstat-gui/
 
 }
 
@@ -63,13 +63,6 @@ if [ ! -e "pwrstat-gui" ]; then
     ./compile.sh
 fi
 
-# Cloning repo if necessary
-
-if [ ! -d "pwrstat-gui-clone" ]; then
-    echo -e "\nCloning PwrStat GUI repository from GitHub...\n"
-    git clone https://github.com/liam-ralph/pwrstat-gui pwrstat-gui-clone
-fi
-
 # Getting version from repo README
 
 while read p; do
@@ -77,7 +70,7 @@ while read p; do
         version=${p:12}
         break
     fi
-done < pwrstat-gui-clone/README.md
+done < ../README.md
 
 # Creating package structure
 

@@ -1,31 +1,8 @@
 #!/bin/bash
 
-# Parsing Flags
-
-git_branch=""
-
-while getopts "b:" flag; do
-    case $flag in
-        b) git_branch=$OPTARG ;;
-        *) echo -e "Usage: ./compile.sh -b <git branch>"; exit 1 ;;
-    esac
-done
-
 # Removing old executable if it exists
 
 rm -f pwrstat-gui
-
-# Cloning repo if necessary
-
-if [ ! -d "pwrstat-gui-clone" ]; then
-    echo -e "\nCloning PwrStat GUI repository from GitHub...\n"
-    git clone https://github.com/liam-ralph/pwrstat-gui pwrstat-gui-clone
-    if [ ! -z $git_branch ]; then
-        cd pwrstat-gui-clone
-        git checkout $git_branch
-        cd ..
-    fi
-fi
 
 # Setting up virtual environment if necessary
 
@@ -35,7 +12,7 @@ if [ ! -d "compile-venv" ]; then
     compile-venv/bin/python3 -m pip install --upgrade \
         pyinstaller pillow setproctitle tkinterweb markdown
     mkdir compile-venv/pyinstaller-files
-    cp pwrstat-gui-clone/main.py compile-venv/pyinstaller-files/pwrstat-gui.py
+    cp ../src/main.py compile-venv/pyinstaller-files/pwrstat-gui.py
 fi
 
 # Compiling using PyInstaller
