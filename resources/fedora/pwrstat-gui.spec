@@ -30,10 +30,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/share/doc/pwrstat-gui/copyright
 /usr/share/doc/pwrstat-gui/README.md
 /usr/share/icons/hicolor/512x512/apps/pwrstat-gui.png
-/usr/share/icons/hicolor/scalable/pwrstat-gui.svg
+/usr/share/icons/hicolor/scalable/apps/pwrstat-gui.svg
 /usr/share/licenses/pwrstat-gui/LICENSE
 /usr/share/pwrstat-gui/data/info.txt
-%config(noreplace) /usr/share/pwrstat-gui/data/settings.txt
+/usr/share/pwrstat-gui/data/defaults.conf
 /usr/share/pwrstat-gui/images/info.png
 /usr/share/pwrstat-gui/images/logo.png
 /usr/share/pwrstat-gui/images/settings.png

@@ -7,7 +7,6 @@ arch=(x86_64)
 url="https://github.com/liam-ralph/pwrstat-gui"
 license=("GPL-3.0-or-later")
 depends=(ttf-dejavu polkit)
-backup=("usr/share/pwrstat-gui/data/settings.txt")
 source=("$pkgname-$pkgver.tar.gz")
 sha256sums=(SHA256SUM)
 
