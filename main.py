@@ -1529,7 +1529,7 @@ def update_graph():
             else:
 
                 # Variables not ready, wait and check again
-                time.sleep(sampling_interval)
+                time.sleep(0.5)
 
         except(NameError, tkinter.TclError):
 
