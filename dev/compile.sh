@@ -1,8 +1,25 @@
 #!/bin/bash
 
-# Removing old executable if it exists
+# Parsing Flags
 
-rm -f pwrstat-gui
+clean=0
+
+while getopts "c" flag; do
+    case $flag in
+        c) ((clean++)) ;;
+        *) 
+            echo -e "Usage: ./compile.sh\n" \
+                "[-c] <remove PyInstaller files before compilation>\n" \
+                "[-cc] <remove compile-venv before compilation>"
+            exit 1 ;;
+    esac
+done
+
+if [ -d "compile-venv" ]; then
+    if (( clean == 1 )); then
+        rm -rf compile-venv/{pyinstaller-files, pwrstat-gui.spec, pyvenv.cfg}
+    elif (( clean == 2 )); then
+        rm -rf compile-venv
 
 # Setting up virtual environment if necessary
 
