@@ -56,13 +56,15 @@ USERNAME = os.getlogin()
 
 # Paths
 
+absolute_paths = True
+
 global PATH_DATA
 global PATH_IMAGES
 global PATH_DOC
 global PATH_LICENSE
 global PATH_SETTINGS
 
-if __file__ == "/usr/bin/pwrstat-gui":
+if absolute_paths:
 
     PATH_DATA = "/usr/share/pwrstat-gui/data"
     PATH_IMAGES = "/usr/share/pwrstat-gui/images"
