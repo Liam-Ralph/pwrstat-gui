@@ -62,8 +62,7 @@ Packages can be found on this respository's GitHub page under releases.
 
 ## Development
 
-I have added some developer packages on
-[GitHub](https://github.com/liam-ralph/pwrstat-gui-dev-pkgs). These include the
+I have added some developer packages under dev. These include the
 files used to create packages and some documentation, as well as some scripts
 to automate compilation and packaging.
 

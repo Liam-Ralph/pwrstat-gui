@@ -13,5 +13,4 @@ or creating your own, assuming it follows this project's license.
 
 ## Help Contributing
 
-I have added developer packages to
-[GitHub](https://github.com/liam-ralph/pwrstat-gui-dev-pkgs)
+I have added developer packages under dev.
