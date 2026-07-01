@@ -1,7 +1,7 @@
 # PwrStat GUI
 ### Released July 2025
 ### Version 1.4.0
-### Updated June 2026
+### Updated July 2026
 
 <br/>
 
