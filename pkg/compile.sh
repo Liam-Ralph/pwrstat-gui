@@ -7,7 +7,7 @@ clean=0
 while getopts "c" flag; do
     case $flag in
         c) (( clean++ )) ;;
-        *) 
+        *)
             echo -e "Usage: ./compile.sh\n" \
                 "    [-c] <remove PyInstaller files before compilation>\n" \
                 "    [-cc] <remove compile-venv before compilation"

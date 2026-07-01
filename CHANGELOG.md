@@ -1,4 +1,4 @@
-## Version 1.4.0 (June 2026)
+## Version 1.4.0 (July 2026)
 
  - Combined with PwrStat GUI Developer Packages.
  - Fixed logging file permissions.
