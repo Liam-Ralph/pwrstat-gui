@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Parsing Flags
 
 distro_group=""
