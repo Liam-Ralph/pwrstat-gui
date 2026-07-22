@@ -1,7 +1,7 @@
 Name: pwrstat-gui
 Version: VERSION
 Release: %{?dist}
-Packager: Liam Ralph <liamralph42@gmail.com>
+Packager: Liam Ralph <liamralph@tutamail.com>
 Summary: A GUI for CyperPower PowerPanel on Linux.
 
 License: GPLv3+

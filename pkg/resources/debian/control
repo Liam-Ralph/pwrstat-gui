@@ -6,6 +6,6 @@ Architecture: amd64
 Essential: no
 Depends: powerpanel, fonts-dejavu-core, pkexec
 Installed-Size: INSTALLED_SIZE
-Maintainer: Liam Ralph <liamralph42@gmail.com>
+Maintainer: Liam Ralph <liamralph@tutamail.com>
 Description: A GUI for CyberPower PowerPanel on Linux.
 Homepage: https://github.com/Liam-Ralph/pwrstat-gui
