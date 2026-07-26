@@ -88,7 +88,7 @@ run `compile.sh` if you haven't already.
 ## Operating System Support
 
 Support is assumed for all distros based on Debian, Fedora, and Arch, except
-Bazzite and antiX. Below is a list of distros with confirmed support.
+antiX. Below is a list of distros with confirmed support.
 
 |Distro             |Version|
 |-------------------|-------|
