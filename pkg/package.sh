@@ -121,8 +121,8 @@ case $distro_group in
         sed -i -e "s/VERSION/$version/g" $rpmbuild_path/SPECS/pwrstat-gui.spec
 
         # Backing up any existing rpmbuild
-        if [ -d "~/rpmbuild" ]; then
-            mv ~/rpmbuild/ ~/rpmbuild-backup/
+        if [ -e "~/rpmbuild" ]; then
+            mv ~/rpmbuild ~/rpmbuild-backup
         fi
 
         # Building package
