@@ -60,6 +60,8 @@ varying based on distro.
 
 Packages can be found on this respository's GitHub page under releases.
 
+<br/>
+
 ## Packaging
 
 You can use the scripts under pkg to create a complete Linux package.
