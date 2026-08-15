@@ -1,3 +1,7 @@
+## Version 1.4.1 (August 2026)
+
+ - Added minor changes.
+
 ## Version 1.4.0 (July 2026)
 
  - Combined with PwrStat GUI Developer Packages.

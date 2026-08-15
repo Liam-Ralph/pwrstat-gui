@@ -1,7 +1,7 @@
 # PwrStat GUI
 ### Released July 2025
-### Version 1.4.0
-### Updated July 2026
+### Version 1.4.1
+### Updated August 2026
 
 <br/>
 
@@ -39,8 +39,8 @@ than the one used for packaging, but it may have an older Python version.
 |Package|Operating System|glibc|Python |
 |-------|----------------|-----|-------|
 |Debian |Ubuntu 22.04    |2.35 |3.10.12|
-|Fedora |Fedora 43       |2.42 |3.14.5 |
-|Arch   |Arch            |2.43 |3.14.5 |
+|Fedora |Fedora 43       |2.42 |3.14.6 |
+|Arch   |Arch            |2.44 |3.14.7 |
 
 If your distro is unsupported, you can try creating your own
 package using the scripts under pkg.
@@ -52,7 +52,7 @@ This application uses approximately 25 MiB of memory.
 ### Storage
 
 This application uses approximately 20 MiB of storage,
-varying based on distro.
+varying by distro.
 
 <br/>
 
